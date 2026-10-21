@@ -203,6 +203,7 @@ Kinetic's A/B harness and quick reviews render SwiftUI to PNG on macOS. Know its
 - `ScrollView`, `List` and navigation bars render **empty** with `ImageRenderer`; for review renders, put the content in a `VStack` behind a `#if os(macOS)`/gallery flag and keep the real `ScrollView`/`List`/`NavigationStack` for the app.
 - Dynamic Type does not scale (`@ScaledMetric`, text styles stay at Large): XXL evidence needs the iOS Simulator. A gallery entry that forces the accessibility *layout* branch is useful but must be labelled "layout only, text not scaled".
 - `ProgressView` may draw as a solid square; mark loading renders as approximate.
+- Navigation bars/toolbars are not drawn: keep the real `NavigationStack` + `.toolbar` for the app (inside `#if canImport(UIKit)` where it uses iOS-only placements such as `.topBarLeading`) and give gallery entries a stand-in bar view so the renders show the header.
 - A `fixedSize` stack wrapped in `.frame(maxHeight: .infinity, alignment: .top)` still reports its full height as the minimum; add `minHeight: 0` so the device frame doesn't overflow and re-centre.
 - Content taller than the fixed render frame is **centred and compressed** (rows overlap, text clips). For review renders, lay the screen out at its natural height and crop: `content.fixedSize(horizontal: false, vertical: true).frame(width: 393, height: 852, alignment: .top).clipped()`.
 - Dark mode: pass `.environment(\.colorScheme, .dark)` and render inside `NSAppearance(named: .darkAqua)!.performAsCurrentDrawingAppearance { }` so dynamic `NSColor`s resolve.

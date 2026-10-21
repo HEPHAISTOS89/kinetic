@@ -298,12 +298,17 @@ CONTRAST_PAIRS = [
 
 
 def check_roles(roles: dict) -> list:
-    """Check every contrast pair for every theme; returns list of dicts."""
+    """Check every contrast pair for every theme (incl. custom `on-X`/`X` pairs); returns list of dicts."""
     results = []
     for theme, r in roles.items():
         if not isinstance(r, dict):
             continue
-        for fg, bg, minimum in CONTRAST_PAIRS:
+        pairs = list(CONTRAST_PAIRS)
+        known = {(a, b) for a, b, _ in pairs}
+        for key in r:
+            if key.startswith("on-") and key[3:] in r and (key, key[3:]) not in known:
+                pairs.append((key, key[3:], 4.5))
+        for fg, bg, minimum in pairs:
             if fg in r and bg in r and is_hex(r[fg]) and is_hex(r[bg]):
                 rep = contrast_report(r[fg], r[bg])
                 rep.update(theme=theme, pair=f"{fg}/{bg}", minimum=minimum, ok=rep["wcag"] >= minimum)

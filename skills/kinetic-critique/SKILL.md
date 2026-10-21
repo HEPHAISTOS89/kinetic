@@ -54,11 +54,16 @@ kinetic score --kdl .kinetic/design.kdl --code <paths> --judged .kinetic/critiqu
 Self-critique is biased; reduce the bias, never hide it:
 1. Critique from the **renders only**, before re-reading your KDL or code.
 2. Judge against the rubric anchors; for each dimension write what a stranger would see in the render.
+   Run the thesis test against `thesis.never` **row by row**: for each anti-thesis item, find the
+   element closest to it on each screen (a "who owes" column is a debt list even if styled calmly).
 3. Save `.kinetic/critique.json` with `"self_judged": true`. `kinetic score` then caps
    the verdict at `ship-pending` (an independent critic must confirm).
 4. List what renders can't show in `unjudged` with a reason (`"motion: no recording"`,
    `"typography: Dynamic Type not scaled by the renderer"`). A declared, reasoned
    `unjudged` dimension doesn't block the gates; it turns `ship` into `ship-pending`.
+
+After any iteration, the previous judgment is stale: `kinetic score` refuses to
+decide on a critique older than the current renders/code — re-run the critic.
 
 ## 5. Verdict and loop
 | Verdict | Meaning | Next |

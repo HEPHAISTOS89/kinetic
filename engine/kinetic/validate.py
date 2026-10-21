@@ -461,7 +461,16 @@ class Validator:
                 self.add("K08", "D", "minor", path, f"data color `{name}` must be a hex or {{fill, on}}",
                          "{fill: \"#2E7D4F\", on: \"#FFFFFF\"}", self.line(path))
                 continue
+            graphic = isinstance(v, dict) and (v.get("graphic") is True or v.get("label") is False)
             for fk, fill, on in entries:
+                if graphic:
+                    for theme, r in roles.items():
+                        bgv = r.get("bg") if isinstance(r, dict) else None
+                        if color.is_hex(str(bgv)) and (("dark" in fk) == (theme == "dark")) and color.wcag(fill, bgv) < 3.0:
+                            self.add("F03", "D", "major", path,
+                                     f"graphic data color `{name}` {fill} is {color.wcag(fill, bgv):.2f}:1 on {theme} bg (< 3:1)",
+                                     "meaningful graphics need 3:1 against their background", self.line(path))
+                    continue
                 if on:
                     ratio = color.wcag(on, fill)
                     if ratio < 4.5:

@@ -75,6 +75,11 @@ class TestKDL(unittest.TestCase):
 
 
 class TestColor(unittest.TestCase):
+    def test_custom_on_roles_are_checked(self):
+        bad = {"light": {"bg": "#FFFFFF", "action": "#6CC0BB", "on-action": "#FFFFFF"}}
+        pairs = {(c["pair"], c["ok"]) for c in color.check_roles(bad)}
+        self.assertIn(("on-action/action", False), pairs)
+
     def test_reference_values(self):
         self.assertAlmostEqual(color.wcag("#FFFFFF", "#000000"), 21.0, places=2)
         self.assertAlmostEqual(color.apca("#000000", "#FFFFFF"), 106.0, delta=0.1)
@@ -346,6 +351,18 @@ class TestScore(unittest.TestCase):
         self.assertEqual(score.run(LUNE, [clean], self._judged(4, product_fit=2))["verdict"], "rethink")
         self.assertEqual(score.run(LUNE, [clean], self._judged(4, motion=2))["verdict"], "iterate")
         self.assertEqual(score.run(None, [os.path.join(FIX, "flutter_slop")], self._judged(5))["verdict"], "blocked")
+
+    def test_stale_judgment_cannot_decide(self):
+        d = tempfile.mkdtemp()
+        try:
+            j = self._judged(5)
+            os.utime(j, (1, 1))  # judgment from 1970
+            shutil.copy(os.path.join(FIX, "flutter_clean", "lib", "tonight_screen.dart"), d)
+            r = score.run(LUNE, [d], j)
+            self.assertEqual(r["verdict"], "iterate")
+            self.assertTrue(any("older" in p for p in r["judged_problems"]))
+        finally:
+            shutil.rmtree(d)
 
     def test_scores_without_evidence_are_ignored(self):
         ok, problems = score.check_judged({"dimensions": {"hierarchy": {"score": 5, "evidence": []}}})

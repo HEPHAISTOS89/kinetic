@@ -9,6 +9,7 @@ A verdict is derived from explicit gates, not from an average."""
 from __future__ import annotations
 
 import json
+import os
 
 from . import dna as dna_mod
 from . import states as states_mod
@@ -76,6 +77,20 @@ def _measured(kdl_result, scan_result, dna_result, states_kdl, states_code):
     return m, formulas, blocks, to_confirm
 
 
+def _newest_mtime(paths, exts):
+    newest = 0.0
+    for root in paths:
+        for dp, dns, fns in os.walk(root) if os.path.isdir(root) else [(os.path.dirname(root), [], [os.path.basename(root)])]:
+            dns[:] = [d for d in dns if not d.startswith(".") and d not in ("build", "Pods", "node_modules")]
+            for f in fns:
+                if f.endswith(exts):
+                    try:
+                        newest = max(newest, os.path.getmtime(os.path.join(dp, f)))
+                    except OSError:
+                        pass
+    return newest
+
+
 def check_judged(judged: dict) -> tuple[dict, list]:
     """Validate critic JSON (docs/PROTOCOL.md §critic). Returns (scores, problems)."""
     ok, problems = {}, []
@@ -121,6 +136,8 @@ def verdict(measured, blocks, judged_scores, meta=None):
     if pf <= 2 or di <= 2 or mean < 3:
         return "rethink", [f"product_fit={pf}, distinctiveness={di}, judged mean={mean:.2f}: the direction, not the polish, is wrong"]
     weak = [k for k, v in judged_scores.items() if v["score"] < 3]
+    if (meta or {}).get("stale"):
+        return "iterate", ["the judgment predates the current renders/code — re-judge before deciding"]
     declared = _declared_unjudged(meta)
     covered = set(judged_scores) | declared
     if not low_measured and mean >= 4.0 and not weak and pf >= 4 and covered >= set(JUDGED_DIMENSIONS):
@@ -161,6 +178,10 @@ def run(kdl_path=None, code_paths=None, judged_path=None, platforms=("ios", "and
             raw = json.load(fh)
         judged_scores, problems = check_judged(raw)
         meta = {"self_judged": bool(raw.get("self_judged")), "unjudged": raw.get("unjudged") or []}
+        newest = _newest_mtime(code_paths or [], (".swift", ".dart", ".kt", ".tsx", ".jsx", ".css", ".png"))
+        if newest and newest > os.path.getmtime(judged_path) + 1:
+            problems.append("judgment is older than the current code/renders: re-run the critic on the new renders")
+            meta["stale"] = True
     v, reasons = verdict(measured, blocks, judged_scores, meta)
     # next actions: F first, then the weakest judged dimensions' fixes, then biggest D clusters
     nxt = []
