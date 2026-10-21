@@ -1,0 +1,7 @@
+{
+  "name": "kinetic-local",
+  "owner": { "name": "HEPHAISTOS89" },
+  "plugins": [
+    { "name": "kinetic", "source": "./", "description": "Kinetic — senior mobile product design system" }
+  ]
+}

@@ -35,7 +35,9 @@ def render(result: dict, limit: int = 60) -> str:
     tool = result.get("tool", "kinetic")
     head = f"kinetic {tool}"
     if "ok" in result:
-        head += " — " + ("OK" if result["ok"] else "BLOCKED (F findings)")
+        majors = sum(1 for f in result.get("findings", []) if f.get("tier") == "D" and f.get("severity") == "major")
+        head += " — " + ("BLOCKED (F findings)" if not result["ok"]
+                         else f"NEEDS WORK ({majors} major D findings)" if majors else "OK")
     lines.append(head)
     cov = result.get("coverage")
     if cov:
@@ -66,3 +68,8 @@ def render(result: dict, limit: int = 60) -> str:
     for lim in result.get("limitations", []):
         lines.append(f"limitation: {lim}")
     return "\n".join(lines)
+
+
+def read_text(path: str) -> str:
+    with open(path, encoding="utf-8", errors="replace") as fh:
+        return fh.read()

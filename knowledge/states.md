@@ -1,0 +1,90 @@
+# States and environments
+
+A screenshot shows one state. A product lives in all of them. Senior
+designers are recognisable by what they design *without being asked*: the
+first-run empty screen, the failed payment, the 40-character German label,
+the user at 200% text size, the subway with no signal.
+
+## 1. The screen state taxonomy
+| State | Question to answer | Design rule |
+|---|---|---|
+| **content** | the nominal case with *real* data | design with realistic lengths and volumes, not lorem ipsum |
+| **loading** | what does the user see while waiting, and for how long? | < 300ms: show nothing new (keep previous content); 0.3–2s: inline progress or skeleton *if layout is known*; > 2s: progress with expectation ("Fetching 3 accounts…"); never a blank screen with a centered spinner as the default |
+| **empty — first use** | why is it empty and what's the first step? | explain the value, one primary action; no fake data |
+| **empty — no results** | what was searched, how to widen it? | echo the query, suggest an alternative, offer to clear filters |
+| **empty — cleared** | did the user finish? | acknowledge (inbox zero) proportionally |
+| **error — recoverable** | what happened, what can I do? | plain cause + one recovery action (retry, edit, reconnect); keep user input |
+| **error — blocking** | what is unavailable and when will it be back? | say what still works; never a dead end without a way back |
+| **offline** | what still works, when does it sync? | cached content readable; actions queued and shown as pending; banner, not modal |
+| **partial** | some data loaded, some failed | show what you have, mark the gap |
+| **permission** | denied camera/location/notifications/health | explain value, offer the settings path; app still works where it can |
+| **first-run** | no history, no preferences | progressive: ask in context, not upfront |
+| **overflow** | longest strings, biggest numbers, largest text, smallest screen | wrap and reflow; never clip (F04) |
+| **stale** | data is old | timestamp ("Updated 2 h ago"), pull to refresh |
+
+KDL requires `content loading empty error` (+ `offline` when `network: true`)
+for every screen; other states as relevant. `n/a: reason` is allowed only with a reason.
+
+## 2. Component variants (interactive elements)
+| Variant | Must show | Notes |
+|---|---|---|
+| default | its affordance | buttons look pressable, rows look tappable |
+| pressed | immediate feedback (≤ 100ms) | scale 0.97 / opacity 0.7 / platform highlight |
+| disabled | why it's unavailable (nearby text) | 38–50% opacity *and* not focusable; prefer explaining over disabling |
+| loading | progress in place | keep width stable; block double submit |
+| selected | selection with more than color | fill, weight, checkmark |
+| focused | visible focus ring (keyboard, switch control) | ≥ 3:1 contrast |
+| error | what is wrong and how to fix it, next to the field | never only a red border |
+| success | proportional confirmation | inline check, haptic `success`; toasts rarely (D10) |
+
+## 3. The environment of each element
+"Think about the environment, not just the page": for every important
+component, write its `env` in KDL and check it.
+- **What it sits on** (`on`): bg, surface, accent, media/photo → determines contrast pair and elevation.
+- **What it sits next to** (`near`): neighbouring elements compete or support; spacing and weight must say which.
+- **Where it sits** (thumb zone, under the keyboard, under the notch, inside a scroll).
+- **What can change around it**: content length, dynamic type, dark mode, RTL, the keyboard appearing, a banner pushing it down.
+- **What it becomes on other platforms**: iOS vs Android variants (switch, date picker, back affordance).
+- **What happens before and after**: the state it comes from and the one it leads to (journey).
+
+Example:
+```yaml
+- id: pay-button
+  kind: button
+  fg: $color.on-accent
+  bg: $color.accent
+  target: 52
+  variants: [default, pressed, disabled, loading]
+  env: {on: $color.surface, near: [total, legal-note], zone: bottom thumb, keyboard: stays above, density: low}
+```
+
+## 4. Edge cases to design on purpose
+- **Text**: the longest name in the dataset, German/French (+30–40% length), Arabic/Hebrew (RTL mirroring), emoji in user names, 1-character names.
+- **Numbers**: 0, 1 (singular), 1,000,000+, negative, decimals, currencies with different symbol positions, missing values (show "—", not 0).
+- **Media**: missing image, portrait vs landscape, very dark/light photos under text.
+- **Time**: just now, yesterday, timezones, 24h vs 12h, very old items.
+- **Lists**: 0, 1, 2, 500 items; pagination end; pull-to-refresh while loading.
+- **System**: dark mode, increased contrast, bold text, reduce motion, reduce transparency, 200% text, VoiceOver/TalkBack order, small phone (SE), large phone, keyboard open, split view/foldable.
+- **Interruption**: phone call, app backgrounded mid-flow, process death (state restoration), double tap on submit.
+
+## 5. Copy per state
+See copy.md. Errors name the cause and the recovery ("Couldn't send — no
+connection. We'll retry when you're back online."), never "Oops!" or an error code alone.
+
+## 6. Tools
+```
+kinetic states matrix .kinetic/design.kdl   # screens × states, components × variants
+kinetic states code lib/                    # data screens whose code lacks loading/error/empty handling (inferred)
+kinetic states template checkout            # KDL skeleton for a new screen with every state
+```
+
+## 7. State slop
+| Slop | ID |
+|---|---|
+| Happy path only | F06 |
+| "Saved!" before the write resolves | F06 |
+| Disabled button with no explanation | F06/judge |
+| Centered spinner on a blank screen for every load | D20 |
+| Fake zero data on first use ("0 steps", empty chart axes) | F01/F06 |
+| Error = red toast that disappears | D10/F06 |
+| Truncating the longest real string | D28 |

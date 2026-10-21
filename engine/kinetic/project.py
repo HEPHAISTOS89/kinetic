@@ -47,7 +47,8 @@ def detect_stack(path: str) -> tuple[str, list]:
         return "flutter", plats
     if exists("package.json"):
         try:
-            pkg = open(os.path.join(path, "package.json"), encoding="utf-8").read()
+            with open(os.path.join(path, "package.json"), encoding="utf-8") as fh:
+                pkg = fh.read()
         except OSError:
             pkg = ""
         if re.search(r"\"(react-native|expo)\"", pkg):

@@ -11,7 +11,7 @@ import os
 import re
 import xml.etree.ElementTree as ET
 
-from .report import Finding
+from .report import Finding, read_text
 
 NS = "{http://www.w3.org/2000/svg}"
 ALLOWED = {"svg", "g", "path", "circle", "rect", "line", "polyline", "polygon", "ellipse", "title", "desc"}
@@ -175,7 +175,7 @@ def lint_file(path: str, grid: int = 24) -> dict:
                                 evidence=ev, file=path, line=0, message=msg, fix=fix))
 
     try:
-        raw = open(path, encoding="utf-8").read()
+        raw = read_text(path)
         if DTD.search(raw):
             add("SVG12", "error", "DOCTYPE/ENTITY declarations are refused (XXE / entity expansion risk)",
                 "icons never need a DTD; remove it")
@@ -305,7 +305,7 @@ def normalize(path: str) -> str:
     """Return a cleaned SVG: no ids/classes/styles, currentColor, 2-decimal precision.
     Transforms are NOT baked — they are reported so the author redraws."""
     ET.register_namespace("", "http://www.w3.org/2000/svg")
-    raw = open(path, encoding="utf-8").read()
+    raw = read_text(path)
     if DTD.search(raw):
         raise ValueError("refusing SVG with DOCTYPE/ENTITY declarations")
     root = ET.fromstring(raw)

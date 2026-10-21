@@ -1,0 +1,15 @@
+{
+  "name": "kinetic",
+  "version": "1.0.0",
+  "description": "Senior mobile product design system for Flutter, SwiftUI, Compose and React Native: designer reasoning, a design language (KDL), taste knowledge, a deterministic engine and an independent critic.",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Kinetic",
+    "shortDescription": "Think like a design lead, ship like an engineer — mobile.",
+    "developerName": "HEPHAISTOS89",
+    "category": "Productivity",
+    "defaultPrompt": [
+      "Use Kinetic to understand this mobile app, choose a distinctive direction, build the design system, implement it and prove the result."
+    ]
+  }
+}

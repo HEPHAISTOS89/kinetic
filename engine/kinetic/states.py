@@ -8,7 +8,7 @@ from __future__ import annotations
 import os
 import re
 
-from .report import Finding
+from .report import Finding, read_text
 from .scan import EXCLUDE_DIRS, LANG_BY_EXT, SKIP_FILE
 from .validate import INTERACTIVE, SCREEN_STATES
 
@@ -69,7 +69,7 @@ def code(paths) -> dict:
         if os.path.splitext(p)[1].lower() not in LANG_BY_EXT or SKIP_FILE.search(p):
             continue
         try:
-            text = open(p, encoding="utf-8", errors="replace").read()
+            text = read_text(p)
         except OSError:
             continue
         scanned += 1
