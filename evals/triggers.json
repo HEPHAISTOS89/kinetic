@@ -1,0 +1,23 @@
+{
+  "purpose": "Discoverability evaluation (REA practice): broad, direct and negative tasks. Run each prompt in a fresh session with the plugin installed and record which skill is selected, arguments, errors and outcome.",
+  "expect_kinetic": [
+    {"kind": "direct", "prompt": "Use Kinetic to redesign the onboarding of my Flutter app."},
+    {"kind": "direct", "prompt": "/kinetic:audit lib/"},
+    {"kind": "broad", "prompt": "My iOS app looks cheap and generic, can you make it feel premium?"},
+    {"kind": "broad", "prompt": "Design the home screen of a meditation app in SwiftUI."},
+    {"kind": "broad", "prompt": "Create a design system (colors, typography, spacing) for my React Native app."},
+    {"kind": "broad", "prompt": "The animations in my Compose app feel bouncy and cheap, fix them."},
+    {"kind": "broad", "prompt": "Draw me a consistent set of custom SVG icons for my mobile app's tab bar."},
+    {"kind": "broad", "prompt": "What's wrong with the UX of this checkout screen? (Dart file attached)"},
+    {"kind": "broad", "prompt": "Extract the design tokens my Flutter codebase actually uses."},
+    {"kind": "broad", "prompt": "Mon app mobile a des couleurs incohérentes et un mode sombre raté, refais le système de couleurs."},
+    {"kind": "broad", "prompt": "Ajoute des états vides et d'erreur dignes de ce nom à mes écrans SwiftUI."}
+  ],
+  "expect_not_kinetic": [
+    {"kind": "negative", "prompt": "Build a landing page for my SaaS.", "expected": "prismora or web design skill"},
+    {"kind": "negative", "prompt": "Fix this null pointer exception in my Flutter repository class."},
+    {"kind": "negative", "prompt": "Set up CI for my iOS app with GitHub Actions."},
+    {"kind": "negative", "prompt": "Write the Supabase schema for my app's users table."},
+    {"kind": "negative", "prompt": "Make a slide deck about our Q3 results."}
+  ]
+}

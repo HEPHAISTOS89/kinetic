@@ -258,7 +258,7 @@ SWIFT_HAPTIC = {"selection": ".selection", "light": ".impact(weight: .light)", "
 
 def to_swiftui(doc, src="design.kdl") -> str:
     names, light, dark = _roles(doc)
-    L = [f"// {HEADER.format(src=src)}", "import SwiftUI", "#if canImport(UIKit)", "import UIKit", "#endif", ""]
+    L = [f"// {HEADER.format(src=src)}", "import SwiftUI", "#if canImport(UIKit)", "import UIKit", "#elseif canImport(AppKit)", "import AppKit", "#endif", ""]
     L.append("extension Color {")
     for n in names:
         lh, dh = _hex(light.get(n, dark.get(n))), _hex(dark.get(n, light.get(n)))
@@ -267,6 +267,8 @@ def to_swiftui(doc, src="design.kdl") -> str:
     L.append("    init(kLight: UInt32, kDark: UInt32) {")
     L.append("        #if canImport(UIKit)")
     L.append("        self.init(uiColor: UIColor { $0.userInterfaceStyle == .dark ? UIColor(kRGB: kDark) : UIColor(kRGB: kLight) })")
+    L.append("        #elseif canImport(AppKit)")
+    L.append("        self.init(nsColor: NSColor(name: nil) { $0.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? NSColor(kRGB: kDark) : NSColor(kRGB: kLight) })")
     L.append("        #else")
     L.append("        self.init(red: Double((kLight >> 16) & 0xFF) / 255, green: Double((kLight >> 8) & 0xFF) / 255, blue: Double(kLight & 0xFF) / 255)")
     L.append("        #endif")
@@ -280,6 +282,13 @@ def to_swiftui(doc, src="design.kdl") -> str:
     L.append("private extension UIColor {")
     L.append("    convenience init(kRGB: UInt32) {")
     L.append("        self.init(red: CGFloat((kRGB >> 16) & 0xFF) / 255, green: CGFloat((kRGB >> 8) & 0xFF) / 255,")
+    L.append("                  blue: CGFloat(kRGB & 0xFF) / 255, alpha: 1)")
+    L.append("    }")
+    L.append("}")
+    L.append("#elseif canImport(AppKit)")
+    L.append("private extension NSColor {")
+    L.append("    convenience init(kRGB: UInt32) {")
+    L.append("        self.init(srgbRed: CGFloat((kRGB >> 16) & 0xFF) / 255, green: CGFloat((kRGB >> 8) & 0xFF) / 255,")
     L.append("                  blue: CGFloat(kRGB & 0xFF) / 255, alpha: 1)")
     L.append("    }")
     L.append("}")
