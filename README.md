@@ -94,7 +94,7 @@ Protocole d'évaluation (moteur, déclenchement, A/B à l'aveugle) : [docs/EVALU
 | 1 | Courant (transport) | SwiftUI | 3,67 / 3,78 | 3 majeurs / 0 |
 | 2 | Courant (transport) | SwiftUI | 3,78 / 3,56 | 3 majeurs / 0 |
 | 3 | Tally (dépenses partagées), les deux avec boucle critique | SwiftUI | 3,83 / 3,83 | 1 F + 6 D / 0 |
-| 4a | Prise (salle d'escalade), 3 critiques | Flutter | 4,26 / 4,22 | 5 F + 4 D / 1 mineur |
+| 4a | Prise (salle d'escalade), 3 critiques | Flutter | 4,26 / 4,22 | 5 F + 6 D / 1 mineur |
 | 4b | Petit Jour (crèche, interface en français), 3 critiques | React Native | 3,81 / 3,96 | 1 F + 8 D / 0 |
 
 - En qualité jugée à l'aveugle, Kinetic **égale** un modèle de pointe (3,91 contre 3,90 sur les 12 lectures) ; il ne le dépasse pas.

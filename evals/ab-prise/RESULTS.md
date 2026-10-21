@@ -20,7 +20,7 @@ Judged blind by three new critics (X = K, Y = A). Motion unjudged. Raw scores: `
 | verdict | A slight | K slight | tie |
 
 Pooled: A 4.26, K 4.22 — a tie.
-Measured (`kinetic scan`, v1.5 engine): A 1 F08 (7 animations, no reduce-motion) + 4 F02 (`onTap: () {}`) + 4 D
+Measured (`kinetic scan`, v1.5 engine): A 1 F08 (7 animations, no reduce-motion) + 4 F02 (`onTap: () {}`) + 6 D
 (10 radii, 53/134 spacings off-grid, …); K 1 minor (D09 FAB, deliberate on Android).
 
 All three critics agree:

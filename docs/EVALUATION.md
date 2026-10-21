@@ -40,7 +40,7 @@ model. Treat a result as evidence about this brief, not a universal ranking.
 | 1 | Courant (transit) | SwiftUI | model vs Kinetic v1.0 | 2 | 3.67 / 3.78 | 3 major / 0 |
 | 2 | Courant (transit) | SwiftUI | model vs Kinetic v1.1 | 2 | 3.78 / 3.56 | 3 major / 0 |
 | 3 | Tally (shared money) | SwiftUI | model + critic vs Kinetic v1.3 + Kinetic critic | 2 | 3.83 / 3.83 | 1 F + 6 D / 0 |
-| 4a | Prise (bouldering gym) | Flutter | model vs Kinetic v1.4 | 3 | 4.26 / 4.22 | 5 F (reduce-motion, 4 empty handlers) + 4 D / 1 minor |
+| 4a | Prise (bouldering gym) | Flutter | model vs Kinetic v1.4 | 3 | 4.26 / 4.22 | 5 F (reduce-motion, 4 empty handlers) + 6 D / 1 minor |
 | 4b | Petit Jour (daycare, French UI) | React Native | model vs Kinetic v1.4 | 3 | 3.81 / 3.96 | 1 F (reduce-motion) + 8 D / 0 |
 
 Round 4 verdicts: Prise — Kinetic slight, tie, baseline slight; Petit Jour — Kinetic slight, tie, tie.
