@@ -28,6 +28,7 @@ LANG_BY_EXT = {
     ".css": "css", ".scss": "css", ".vue": "tsx", ".svelte": "tsx", ".html": "css",
 }
 SKIP_FILE = re.compile(r"(\.g\.dart|\.freezed\.dart|\.mocks\.dart|\.min\.js|\.d\.ts|\.test\.|\.spec\.|_test\.dart|Tests?\.swift|Test\.kt)$")
+FIXTURE_PATH = re.compile(r"(fixture|mock|fake|preview|gallery|sample|demo|stub|storybook|golden)s?", re.I)
 THEME_PATH = re.compile(r"(theme|tokens?|colou?rs?|palette|design[_-]?system|styles?|appearance|brand)", re.I)
 
 MATERIAL_COLORS = {
@@ -79,6 +80,7 @@ class FileScan:
     facts: list = field(default_factory=list)
     findings: list = field(default_factory=list)
     flags: Counter = field(default_factory=Counter)
+    fixture: bool = False
 
 
 # ----------------------------------------------------------------- helpers
@@ -395,6 +397,7 @@ class Scanner:
 
     def scan_text(self, path: str, text: str, lang: str) -> FileScan:
         fs = FileScan(path=path, lang=lang, loc=text.count("\n") + 1)
+        fs.fixture = bool(FIXTURE_PATH.search(os.path.basename(path)))
         themed = self.is_theme(path)
         lines = list(_code_lines(text))
         for kind, rx, conv in EXTRACT.get(lang, []):
@@ -428,6 +431,8 @@ class Scanner:
         self._strings(fs, lines, lang)
         self._motion(fs, lines, lang, text)
         self._gradients(fs, text, lang)
+        if fs.fixture:  # previews/fixtures: keep integrity findings, drop system/layout ones
+            fs.findings = [f for f in fs.findings if f.tier == "F" and f.rule not in ("F01",)]
         return fs
 
     def _spacing_list(self, args: str, lang: str):
@@ -611,6 +616,8 @@ class Scanner:
     # ------------------------------------------------------------- walk
     def scan_paths(self, paths) -> dict:
         files, unknown, skipped = [], [], Counter()
+        absroots = [os.path.abspath(p if os.path.isdir(p) else os.path.dirname(p)) for p in paths]
+        self.root = os.path.commonpath(absroots) if absroots else None
         for root in paths:
             if os.path.isfile(root):
                 cand = [root]
@@ -623,6 +630,7 @@ class Scanner:
                     for fn in fns:
                         cand.append(os.path.join(dp, fn))
             for p in cand:
+                p = os.path.abspath(p)
                 ext = os.path.splitext(p)[1].lower()
                 if ext not in LANG_BY_EXT or SKIP_FILE.search(p):
                     if ext in LANG_BY_EXT:
@@ -646,7 +654,8 @@ class Scanner:
 
     # --------------------------------------------------------- project-level
     def aggregate(self, files, unknown, skipped) -> dict:
-        facts = [f for fs in files for f in fs.facts]
+        fixtures = [fs.path for fs in files if fs.fixture]
+        facts = [f for fs in files if not fs.fixture for f in fs.facts]
         findings = [f for fs in files for f in fs.findings]
         by_kind = defaultdict(list)
         for f in facts:
@@ -683,18 +692,21 @@ class Scanner:
         neutrals = [h for h in uniq if color.hex_to_oklch(h)[1] < 0.03]
         hues = Counter(color.hue_family(color.hex_to_oklch(h)[2], color.hex_to_oklch(h)[1])
                        for h in uniq if color.hex_to_oklch(h)[1] >= 0.06)
+        # light + dark themes each legitimately hold ~6 neutrals; status/data hues are legitimate roles
         if len(neutrals) > 6:
-            findings.append(Finding(rule="D13", tier="D", severity="major", evidence="derived", file="", line=0,
-                                    message=f"{len(neutrals)} distinct neutral greys: {', '.join(neutrals[:10])}",
-                                    fix="one neutral ramp tinted from the seed; roles, not values"))
+            findings.append(Finding(rule="D13", tier="D", severity="major" if len(neutrals) > 12 else "minor",
+                                    evidence="derived", file="", line=0,
+                                    message=f"{len(neutrals)} distinct neutrals across all themes: {', '.join(neutrals[:10])}",
+                                    fix="one neutral ramp per theme (≈6 roles each), tinted from the seed; roles, not values"))
         if len(hues) > 3:
-            findings.append(Finding(rule="D13", tier="D", severity="major", evidence="derived", file="", line=0,
+            findings.append(Finding(rule="D13", tier="D", severity="major" if len(hues) > 5 else "minor",
+                                    evidence="derived", file="", line=0,
                                     message=f"{len(hues)} saturated hue families: {', '.join(sorted(hues))}",
-                                    fix="one accent carries meaning; status colors are separate roles"))
+                                    fix="one accent carries meaning; status (danger/success/warning) and data colors must be separate, named roles"))
         hard = Counter(f.file for f in by_kind["color"] if not f.themed)
         heavy = [(p, n) for p, n in hard.most_common() if n >= 3]
         if heavy:
-            top = ", ".join(f"{os.path.relpath(p) if not p.startswith('..') else p} ({n})" for p, n in heavy[:6])
+            top = ", ".join(f"{self._rel(p)} ({n})" for p, n in heavy[:6])
             f0 = first("color", lambda f, p=heavy[0][0]: f.file == p and not f.themed)
             findings.append(Finding(rule="D13", tier="D", severity="minor" if len(heavy) < 10 else "major", evidence="inferred",
                                     file=heavy[0][0], line=f0.line if f0 else 0,
@@ -792,6 +804,7 @@ class Scanner:
             "tool": "scan",
             "ok": not any(f.tier == "F" and f.severity == "block" for f in findings),
             "coverage": {"files_scanned": len(files), "loc": loc, "by_language": dict(langs),
+                         "fixture_files": [self._rel(p) for p in fixtures],
                          "skipped": dict(skipped), "unknown": unknown},
             "summary": summary,
             "findings": [f.as_dict() for f in findings],
@@ -803,6 +816,10 @@ class Scanner:
                 "a file not listed in coverage was not scanned and is unknown, not clean",
             ],
         }
+
+    def _rel(self, path: str) -> str:
+        root = getattr(self, "root", None)
+        return os.path.relpath(path, root) if root and path.startswith(root) else path
 
     def _collapse(self, findings):
         """Info-level counters (D03, D10, D11, D16, D25…) become one finding per file with a count."""
