@@ -65,6 +65,8 @@ def render(result: dict, limit: int = 60) -> str:
             lines.append(f"      → {f['fix']}")
     if len(findings) > limit:
         lines.append(f"  … {len(findings) - limit} more (use --json for all)")
+    for w in result.get("waived", []):
+        lines.append(f"  waived {w['rule']:<4} {w.get('file', '')}  — {w.get('reason', '')}")
     for lim in result.get("limitations", []):
         lines.append(f"limitation: {lim}")
     return "\n".join(lines)

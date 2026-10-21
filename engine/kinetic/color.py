@@ -205,7 +205,7 @@ def _solve_l(hue: float, chroma: float, against: str, target: float, direction: 
 
 
 def derive_roles(seed: str, strategy: str = "neutral+accent", neutral_chroma: float | None = None,
-                 temperature: str = "auto") -> dict:
+                 temperature: str = "auto", neutral_hue: float | None = None) -> dict:
     """Derive complete light/dark role sets that pass Kinetic's contrast floor.
 
     strategy: neutral+accent | monochrome | brand-led
@@ -225,6 +225,8 @@ def derive_roles(seed: str, strategy: str = "neutral+accent", neutral_chroma: fl
         nh = 70.0
     elif temperature == "cool":
         nh = 250.0
+    if neutral_hue is not None:  # e.g. 80 for chalk/concrete under a rust accent instead of a pink cast
+        nh = float(neutral_hue) % 360
 
     def n(L, c=nc):
         return oklch_to_hex((L, c, nh))

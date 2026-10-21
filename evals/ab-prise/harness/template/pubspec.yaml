@@ -1,0 +1,25 @@
+name: app
+description: Design evaluation project.
+publish_to: none
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.2.3
+  intl: ^0.20.2
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+flutter:
+  uses-material-design: true
+  # Bundle fonts here if you want (copy .ttf/.otf files into fonts/ — e.g. from
+  # /System/Library/Fonts/Supplemental or /Library/Fonts). The render harness loads
+  # every family declared below.
+  # fonts:
+  #   - family: MyFamily
+  #     fonts:
+  #       - asset: fonts/MyFamily-Regular.ttf
+  #       - asset: fonts/MyFamily-Bold.ttf
+  #         weight: 700

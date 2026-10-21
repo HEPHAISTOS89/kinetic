@@ -129,6 +129,8 @@ def _scalar(raw: str, line: int):
     if s == "":
         return None
     if s[0] in "\"'":
+        if len(s) > 1 and s[-1] != s[0] and s.find(s[0], 1) > 0:
+            return s  # prose that opens with a quotation: «"Léa" dort encore…»
         return _unquote(s, line)
     if s[0] == "[":
         if not s.endswith("]"):

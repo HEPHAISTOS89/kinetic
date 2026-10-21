@@ -15,6 +15,21 @@ STACKS = ("flutter", "swiftui", "compose", "react-native", "css")
 SYSTEM_FONTS = re.compile(r"^(sf|san francisco|new york|system|roboto|-apple-system|system-ui)", re.I)
 
 
+def _family(st, fams, size, platform="ios"):
+    """A style's family: its own `family:` (a key of `families`, or a font name), else the
+    display family at ≥ 28pt, the numeric family for tabular styles, the text family otherwise.
+    A family may be per platform ({ios: …, android: …}); platform=None keeps the map."""
+    own = st.get("family")
+    if own is not None:
+        fam = fams.get(own, own) if isinstance(own, str) else own
+    else:
+        key = "display" if size >= 28 else "numeric" if st.get("numerals") == "tabular" and "numeric" in fams else "text"
+        fam = fams.get(key) or fams.get("text")
+    if isinstance(fam, dict) and platform:
+        fam = fam.get(platform) or fam.get("ios") or next(iter(fam.values()), None)
+    return fam
+
+
 # ------------------------------------------------------------------ utils
 def ident(name: str, style: str = "camel") -> str:
     """Token name -> identifier valid in Dart/Swift/Kotlin/TS."""
@@ -186,10 +201,12 @@ def to_flutter(doc, src="design.kdl") -> str:
             continue
         size = _num(st.get("size"), 16)
         line = _num(st.get("line"), size * 1.3)
-        fam_key = "display" if size >= 28 else "numeric" if st.get("numerals") == "tabular" and "numeric" in fams else "text"
-        fam = fams.get(fam_key) or fams.get("text")
+        fam = _family(st, fams, size, "android")
         fam_arg = f", fontFamily: '{fam}'" if fam and not SYSTEM_FONTS.match(str(fam)) else ""
         feats = ", fontFeatures: [FontFeature.tabularFigures()]" if st.get("numerals") == "tabular" else ""
+        wdth = {"condensed": 75, "compressed": 62.5, "expanded": 125}.get(str(st.get("width")))
+        if wdth:  # variable fonts honour it; a static condensed cut is named by `family`
+            feats += f", fontVariations: [FontVariation('wdth', {float(wdth)})]"
         L.append(f"  static const TextStyle {ident(name)} = TextStyle(fontSize: {size}, height: {round(line / size, 4)}, "
                  f"fontWeight: FontWeight.w{_weight(st.get('weight'))}, letterSpacing: {round(_num(st.get('track')) * size, 3)}"
                  f"{fam_arg}{feats});")
@@ -358,7 +375,7 @@ def to_swiftui(doc, src="design.kdl") -> str:
             continue
         size = _num(st.get("size"), 17)
         line = _num(st.get("line"), size * 1.3)
-        fam = fams.get("display" if size >= 28 else "numeric" if st.get("numerals") == "tabular" and "numeric" in fams else "text") or fams.get("text")
+        fam = _family(st, fams, size, "ios")
         design, custom = _swift_design(fam)
         fam_s = f'"{custom}"' if custom else "nil"
         width = str(st.get("width") or ("condensed" if "condensed" in str(fam).lower() else
@@ -529,7 +546,7 @@ def to_compose(doc, src="design.kdl", package="app.design") -> str:
 # ----------------------------------------------------------- react native
 def to_rn(doc, src="design.kdl") -> str:
     names, light, dark = _roles(doc)
-    L = [f"// {HEADER.format(src=src)}", "import { useColorScheme } from 'react-native';", ""]
+    L = [f"// {HEADER.format(src=src)}", "import { Platform, useColorScheme, type TextStyle } from 'react-native';", ""]
     for tname, r in (("light", light), ("dark", dark)):
         L.append(f"const {tname} = {{")
         for n in names:
@@ -543,6 +560,11 @@ def to_rn(doc, src="design.kdl") -> str:
         for n, f, o, fd, od in data:
             L.append(f"  {ident(n)}: {{ light: {{ fill: '{f}', on: '{o}' }}, dark: {{ fill: '{fd}', on: '{od}' }} }},")
         L.append("} as const;\n")
+        for tname, dk in (("dataLight", False), ("dataDark", True)):
+            L.append(f"const {tname} = {{")
+            for n, f, o, fd, od in data:
+                L.append(f"  {ident(n)}: {{ fill: '{fd if dk else f}', on: '{od if dk else o}' }},")
+            L.append("} as const;\n")
     L.append("export const space = {")
     for k, v in (_sys(doc, "space", "scale", default={}) or {}).items():
         L.append(f"  {ident(k)}: {v},")
@@ -557,12 +579,16 @@ def to_rn(doc, src="design.kdl") -> str:
         if not isinstance(st, dict):
             continue
         size = _num(st.get("size"), 16)
-        fam = fams.get("display" if size >= 28 else "text") or fams.get("text")
-        fam_s = f", fontFamily: '{fam}'" if fam and not SYSTEM_FONTS.match(str(fam)) else ""
-        num = ", fontVariant: ['tabular-nums'] as const" if st.get("numerals") == "tabular" else ""
+        fam = _family(st, fams, size, None)
+        if isinstance(fam, dict):
+            per = {k: v for k, v in fam.items() if k in ("ios", "android") and not SYSTEM_FONTS.match(str(v))}
+            fam_s = (", fontFamily: Platform.select({ " + ", ".join(f"{k}: '{v}'" for k, v in per.items()) + " })") if per else ""
+        else:
+            fam_s = f", fontFamily: '{fam}'" if fam and not SYSTEM_FONTS.match(str(fam)) else ""
+        num = ", fontVariant: ['tabular-nums']" if st.get("numerals") == "tabular" else ""
         L.append(f"  {ident(name)}: {{ fontSize: {size}, lineHeight: {_num(st.get('line'), size * 1.3)}, "
-                 f"fontWeight: '{_weight(st.get('weight'))}' as const, letterSpacing: {round(_num(st.get('track')) * size, 3)}{fam_s}{num} }},")
-    L.append("} as const;\n")
+                 f"fontWeight: '{_weight(st.get('weight'))}', letterSpacing: {round(_num(st.get('track')) * size, 3)}{fam_s}{num} }},")
+    L.append("} satisfies Record<string, TextStyle>;\n")
     mot = _sys(doc, "motion", default={}) or {}
     L.append("/** Reanimated withSpring configs (physics form; mass 1). */")
     L.append("export const springs = {")
@@ -579,7 +605,8 @@ def to_rn(doc, src="design.kdl") -> str:
     L.append(f"export const reduceMotion = '{mot.get('reduce', 'crossfade')}' as const;\n")
     L.append("export function useTokens() {")
     L.append("  const scheme = useColorScheme();")
-    L.append("  return { color: scheme === 'dark' ? dark : light, space, radius, type, springs, durations };")
+    data_s = ", data: scheme === 'dark' ? dataDark : dataLight" if data else ""
+    L.append(f"  return {{ color: scheme === 'dark' ? dark : light{data_s}, space, radius, type, springs, durations }};")
     L.append("}")
     return "\n".join(L) + "\n"
 
@@ -614,7 +641,7 @@ def to_css(doc, src="design.kdl") -> str:
         if not isinstance(st, dict):
             continue
         size = _num(st.get("size"), 16)
-        fam = fams.get("display" if size >= 28 else "text") or fams.get("text") or "system-ui"
+        fam = _family(st, fams, size, "web") or "system-ui"
         stack = "system-ui, -apple-system, sans-serif" if SYSTEM_FONTS.match(str(fam)) else f"'{fam}', system-ui, sans-serif"
         num = "\n  font-variant-numeric: tabular-nums;" if st.get("numerals") == "tabular" else ""
         if st.get("width") in ("condensed", "compressed", "expanded"):

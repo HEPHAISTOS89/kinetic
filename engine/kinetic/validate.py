@@ -45,6 +45,20 @@ KINDS = {"text", "numeral", "button", "icon-button", "link", "field", "toggle", 
          "segmented", "stepper", "map", "avatar", "banner", "menu", "search"}
 SCREEN_STATES = ["content", "loading", "empty", "error"]
 REQUIRED_ROLES = ["bg", "surface", "text", "text-2", "border", "accent", "on-accent"]
+SECTIONS = {"kdl", "mode", "product", "requirements", "thesis", "expression", "audit", "directions", "journeys",
+            "system", "screens", "signature", "premortem", "exceptions"}
+STYLE_KEYS = {"size", "line", "weight", "track", "numerals", "width", "family", "case", "use"}
+STATUS = ("danger", "success", "warning", "error", "info", "caution", "critical", "positive", "negative")
+MOTION_KINDS = ("feedback", "transition", "signature", "ambient")
+LONG_DURATION = re.compile(r"(ambient|loop|breath|pulse|idle|shimmer)", re.I)
+
+
+def _is_status_role(role: str) -> bool:
+    """`danger`, `on-danger`, `danger-wash`, `warning-text`: status roles and their partners are not accents."""
+    base = re.sub(r"^on-", "", role)
+    return any(base == st or base.startswith(st + "-") for st in STATUS)
+
+
 HAPTICS = {"selection", "light", "medium", "heavy", "soft", "rigid", "success", "warning",
            "error", "none"}
 
@@ -137,6 +151,10 @@ class Validator:
                 self.add("K01", "D", "major", section, f"mode `{mode}` requires `{section}`",
                          "list every must-have of the brief (id, need, priority) so the design can't silently drop one"
                          if section == "requirements" else f"write the `{section}` section (see docs/KDL.md)")
+        for key in doc:
+            if key not in SECTIONS:
+                self.add("K18", "I", "minor", str(key), f"unknown section `{key}` (ignored by every check)",
+                         f"sections: {', '.join(sorted(SECTIONS))}", self.line(str(key)))
         self.check_enums()
         self.check_product()
         self.check_thesis()
@@ -149,7 +167,32 @@ class Validator:
         self.check_refs()
         self.check_signature()
         self.check_premortem()
+        self.check_exceptions()
         return self
+
+    def check_exceptions(self):
+        """`exceptions`: findings accepted on purpose, each with a reason; `kinetic scan` reports them as waived."""
+        ex = self.doc.get("exceptions")
+        if ex is None:
+            return
+        if not isinstance(ex, list):
+            self.add("K08", "D", "major", "exceptions", "`exceptions` must be a list of {rule, where, reason}",
+                     "- {rule: D09, where: lib/app.dart, reason: why this is right here}", self.line("exceptions"))
+            return
+        for i, e in enumerate(ex):
+            ln = self.line(f"exceptions.{i}") or self.line("exceptions")
+            if not isinstance(e, dict) or not e.get("rule"):
+                self.add("K08", "D", "major", f"exceptions.{i}", "an exception needs a `rule`",
+                         "{rule: D09, where: lib/app.dart, reason: …}", ln)
+                continue
+            reason = str(e.get("reason") or "")
+            if len(reason.split()) < 4 and not re.search(r"\bTODO\b", reason):  # TODO is reported by K02 already
+                self.add("K02", "D", "major", f"exceptions.{i}.reason",
+                         f"exception to {e['rule']} has no real reason",
+                         "say why breaking the rule is right here, in a sentence a reviewer can check", ln)
+            if str(e["rule"]).upper().startswith("F"):
+                self.add("K08", "F", "block", f"exceptions.{i}.rule",
+                         f"{e['rule']} is an F rule: F findings cannot be waived", "fix it instead", ln)
 
     def check_enums(self):
         for path, allowed in ENUMS.items():
@@ -292,7 +335,13 @@ class Validator:
                      self.line("system"))
             return
         fams = t.get("families") or {}
-        distinct = {str(v).split(" ")[0].lower() for v in fams.values()} if isinstance(fams, dict) else set()
+        def _names(v):
+            return [str(x) for x in v.values()] if isinstance(v, dict) else [str(v)]
+        distinct = {n.split(" ")[0].lower() for v in fams.values() for n in _names(v)} if isinstance(fams, dict) else set()
+        for st in (t.get("scale") or {}).values() if isinstance(t.get("scale"), dict) else ():
+            own = st.get("family") if isinstance(st, dict) else None
+            if isinstance(own, str) and isinstance(fams, dict) and own not in fams:
+                distinct.add(own.split(" ")[0].lower())
         if len(distinct) > budget[1]:
             self.add("D12", "D", "minor", "system.type.families",
                      f"{len(distinct)} type families exceed the budget ({budget[1]}) for this expression level",
@@ -316,6 +365,11 @@ class Validator:
                 self.add("K07", "D", "major", f"system.type.scale.{name}", f"style `{name}` needs a numeric size",
                          "{size, line, weight, track}", ln)
                 continue
+            for key in st:
+                if key not in STYLE_KEYS:
+                    self.add("K18", "I", "minor", f"system.type.scale.{name}.{key}",
+                             f"unknown key `{key}` in style `{name}` (export ignores it)",
+                             f"style keys: {', '.join(sorted(STYLE_KEYS))}", ln)
             size, line_h = st["size"], st.get("line")
             sizes.append((size, name))
             if not isinstance(line_h, (int, float)):
@@ -395,7 +449,7 @@ class Validator:
                              self.line(f"system.color.roles.{theme}.{role}"))
             accents = set()
             for role, v in r.items():
-                if role in ("danger", "success", "warning", "error", "info") or not color.is_hex(str(v)):
+                if _is_status_role(role) or not color.is_hex(str(v)):
                     continue
                 L, C, H = color.hex_to_oklch(str(v))
                 if C >= 0.06:
@@ -567,9 +621,12 @@ class Validator:
         durs = m.get("durations") or {}
         if isinstance(durs, dict):
             for name, ms in durs.items():
-                if isinstance(ms, (int, float)) and (ms < 60 or ms > 1200):
+                hi = 8000 if LONG_DURATION.search(str(name)) else 1200  # ambient loops breathe slowly
+                if isinstance(ms, (int, float)) and (ms < 60 or ms > hi):
                     self.add("K14", "D", "minor", f"system.motion.durations.{name}",
-                             f"duration {ms}ms outside 60–1200", "durations are in ms", self.line("system.motion.durations"))
+                             f"duration {ms}ms outside 60–{hi}",
+                             "durations are in ms; name ambient loops `ambient-…`/`pulse-…` (≤ 8 s, still under reduce motion)",
+                             self.line("system.motion.durations"))
 
     def _check_haptics(self, h):
         if not isinstance(h, dict):
@@ -626,6 +683,12 @@ class Validator:
                              "see component kinds in docs/KDL.md", cln)
                 if kind in INTERACTIVE:
                     variants = cp.get("variants") or []
+                    # a map may waive one with a reason: {pressed: …, disabled: "n/a: logging is local, never blocked"}
+                    if isinstance(variants, dict):
+                        for v, why in variants.items():
+                            if str(why).lower().startswith("n/a") and len(str(why).split()) < 3:
+                                self.add("K02", "D", "minor", f"{cbase}.variants.{v}",
+                                         f"`{sid}/{cid}` waives `{v}` without a reason", "n/a: why it cannot happen", cln)
                     missing = [v for v in ("pressed", "disabled") if v not in variants]
                     if missing:
                         self.add("K12", "D", "major", f"{cbase}.variants",
@@ -663,9 +726,9 @@ class Validator:
                 if not isinstance(mv, dict):
                     continue
                 mkind = mv.get("kind", "transition")
-                if mkind not in ("feedback", "transition", "signature"):
+                if mkind not in MOTION_KINDS:
                     self.add("K18", "I", "minor", f"{base}.motion.{k}.kind", f"unknown motion kind {mkind!r}",
-                             "feedback | transition | signature", self.line(f"{base}.motion.{k}"))
+                             " | ".join(MOTION_KINDS), self.line(f"{base}.motion.{k}"))
                 if mkind == "signature":
                     motion_moments += 1
                 mbase = f"{base}.motion.{k}"
@@ -773,7 +836,18 @@ class Validator:
                 for sid, sc in served[rid]:
                     order = [str(x) for x in (sc.get("reading_order") or [])]
                     where = str(r.get("element", ""))
-                    if where and where in order and order.index(where) > 3:
+                    # a nested element takes the position of the block it sits `in:` (pickup-row in now-card)
+                    parents = {str(c.get("id")): str(c.get("in")) for c in (sc.get("components") or [])
+                               if isinstance(c, dict) and c.get("in")}
+                    seen = set()
+                    while where and where not in order and where in parents and where not in seen:
+                        seen.add(where)
+                        where = parents[where]
+                    if where and where not in order:
+                        self.add("K21", "I", "info", f"requirements.{j}",
+                                 f"`{rid}` must be above the fold, but `{where}` is not in `{sid}` reading_order: position unknown",
+                                 "list it in reading_order, or set `in: <block>` on its component", self.line(f"requirements.{j}"))
+                    elif where and order.index(where) > 3:
                         self.add("K21", "D", "minor", f"requirements.{j}",
                                  f"`{rid}` must be above the fold but `{where}` is #{order.index(where) + 1} in `{sid}` reading order",
                                  "move it up or make its first instance compact", self.line(f"requirements.{j}"))

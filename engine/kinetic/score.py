@@ -52,6 +52,11 @@ def _measured(kdl_result, scan_result, dna_result, states_kdl, states_code):
     if parts:
         m["system_coherence"] = round(sum(parts) / len(parts))
         formulas["system_coherence"] = "mean(code DNA coherence×100, 100/(1+system_penalty/10))"
+        weak = sorted(((k, v) for k, v in ((dna_result or {}).get("coherence") or {}).items()
+                       if v is not None and v < 0.95), key=lambda kv: kv[1])
+        if weak:  # say where the missing points are, so the number is actionable
+            formulas["system_coherence"] += "; lowest in code: " + ", ".join(f"{k} {v:.2f}" for k, v in weak[:3]) + \
+                " (`kinetic dna` shows the values)"
     d_pts = sum(SEV_POINTS[f["severity"]] * (0.5 if f.get("evidence") == "inferred" else 1)
                 for f in all_f if f["tier"] == "D")
     files = max(1, (scan_result or {}).get("coverage", {}).get("files_scanned", 1)) if scan_result else 1
@@ -167,8 +172,8 @@ def run(kdl_path=None, code_paths=None, judged_path=None, platforms=("ios", "and
         except Exception:  # syntax errors are already in kdl_result
             states_kdl = None
     if code_paths:
-        from .project import data_hexes
-        scan_result = scan(code_paths, platforms, grid, None, data_hexes(code_paths[0]))
+        from .project import data_hexes, exceptions
+        scan_result = scan(code_paths, platforms, grid, None, data_hexes(code_paths[0]), exceptions(code_paths[0]))
         dna_result = dna_mod.dna(scan_result, grid)
         states_code = states_mod.code(code_paths)
     measured, formulas, blocks, to_confirm = _measured(kdl_result, scan_result, dna_result, states_kdl, states_code)

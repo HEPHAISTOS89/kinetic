@@ -56,6 +56,19 @@ def data_hexes(start: str = ".") -> list:
     return out
 
 
+def exceptions(start: str = ".") -> list:
+    """`exceptions` declared in `.kinetic/design.kdl`: findings accepted on purpose, with a reason."""
+    root = find_root(start)
+    if not root:
+        return []
+    try:
+        from .kdl import parse_file
+        ex = parse_file(os.path.join(root, ".kinetic", "design.kdl")).get("exceptions") or []
+    except Exception:
+        return []
+    return [dict(e) for e in ex if isinstance(e, dict)] if isinstance(ex, list) else []
+
+
 def detect_stack(path: str) -> tuple[str, list]:
     def exists(*p):
         return os.path.exists(os.path.join(path, *p))
@@ -80,6 +93,28 @@ def detect_stack(path: str) -> tuple[str, list]:
             return "compose", ["android"]
         if dp.count(os.sep) - path.count(os.sep) > 2:
             dns[:] = []
+    # no manifest: infer from the source files themselves
+    counts = {"flutter": 0, "swiftui": 0, "compose": 0, "react-native": 0}
+    for dp, dns, fns in os.walk(path):
+        dns[:] = [d for d in dns if not d.startswith(".") and d not in ("node_modules", "build", "Pods", "shots")]
+        for f in fns:
+            ext = os.path.splitext(f)[1]
+            if ext == ".dart":
+                counts["flutter"] += 1
+            elif ext == ".swift":
+                counts["swiftui"] += 1
+            elif ext == ".kt":
+                counts["compose"] += 1
+            elif ext in (".tsx", ".jsx"):
+                try:
+                    with open(os.path.join(dp, f), encoding="utf-8", errors="replace") as fh:
+                        if re.search(r"from\s+['\"]react-native['\"]", fh.read(4000)):
+                            counts["react-native"] += 1
+                except OSError:
+                    pass
+    best = max(counts, key=counts.get)
+    if counts[best] and sum(1 for v in counts.values() if v) == 1:
+        return best, {"swiftui": ["ios"], "compose": ["android"]}.get(best, ["ios", "android"])
     return "mixed", ["ios", "android"]
 
 
