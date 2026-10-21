@@ -109,7 +109,9 @@ def cmd_dna(a):
         out.append(f"  radii: {p['radii']}")
         out.append(f"  motion: {p['motion']}")
         out.append(f"  icons: {p['icons']}  effects: {p['effects']}")
-        out.append("  proposed ramp: " + ", ".join(f"{k}={v['size']}" for k, v in d["proposal"]["type"]["scale"].items()))
+        scale = d["proposal"]["type"]["scale"]
+        out.append("  proposed ramp: " + ", ".join(f"{k}={v['size']}" for k, v in scale.items() if k != "_outliers")
+                   + (f"  (outliers: {scale['_outliers']})" if "_outliers" in scale else ""))
         out.append("  (use --kdl to get an editable KDL audit + system draft)")
         print("\n".join(out))
     return 0
