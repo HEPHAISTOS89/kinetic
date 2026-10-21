@@ -79,6 +79,7 @@ export const kSpring = (response: number, damping: number) => ({
 - Gestures: `react-native-gesture-handler` `Gesture.Pan()` → on end `withSpring(target, { ...kSpring(…), velocity: e.velocityX })` for interruptible settling.
 - Shared element transitions: Reanimated `sharedTransitionTag` is experimental — verify support for the installed version and navigator before relying on it.
 - Reduce motion: `useReducedMotion()` (Reanimated) or `AccessibilityInfo.isReduceMotionEnabled()` + `AccessibilityInfo.addEventListener('reduceMotionChanged', …)`; `reduceMotion: ReduceMotion.System` on individual animations.
+- **Core `Animated` only** (no Reanimated installed — brownfield apps, sandboxes): `Animated.spring(value, { stiffness, damping, mass: 1, useNativeDriver: true })` takes the same physics config as the export (`springs.*`); animate only `transform` and `opacity` with the native driver; gate every loop on `AccessibilityInfo.isReduceMotionEnabled()` read once in a hook (`useEffect` + `reduceMotionChanged` listener) and render the still end state when it is on. Ambient loops (a breathing "live" dot) use `Animated.loop` with ≥ 1.2 s per half-cycle and stop under reduce motion.
 
 ## 5. Haptics (`expo-haptics`)
 
@@ -89,7 +90,7 @@ export const kSpring = (response: number, damping: number) => ({
 | soft / rigid | `Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft / Rigid)` |
 | success / warning / error | `Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success / Warning / Error)` |
 
-Bare RN without Expo: `react-native-haptic-feedback` is the common alternative — check what is installed first.
+Bare RN without Expo: `react-native-haptic-feedback` is the common alternative — check what is installed first. With no haptics package at all, map every KDL haptic to `none` (validate accepts it) and keep the visual confirmation — never call `Vibration.vibrate()` as a stand-in for UI feedback.
 
 ## 6. Accessibility
 
@@ -127,5 +128,7 @@ npx expo start            # or: npx react-native run-ios / run-android
 xcrun simctl io booted screenshot shots/ios.png
 adb exec-out screencap -p > shots/android.png
 ```
+
+Static previews (react-native-web, Storybook) ignore the OS font scale: to show the XXL layout, render an entry inside a preview-only context that multiplies the type tokens (e.g. ×1.6 and ×2) — label it as a simulation and keep `allowFontScaling` on in the real components.
 
 E2E/screenshot flows: Maestro (`maestro test flow.yaml`, `takeScreenshot`) or Detox, if already present. Matrix: iPhone SE + Pro Max, small Android (360 dp), light/dark, font scale 1 and 2, Reduce Motion on.

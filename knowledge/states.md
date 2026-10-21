@@ -65,6 +65,27 @@ action is to pay ("Pay Priya", prominent); if they are owed, it is to record
 following/followed, sent/received, late/early: the state decides the verb and
 the weight.
 
+## 3c. High-stakes moments: precision over coverage
+Coverage wins "anticipation"; the moment that frightens the user decides trust.
+In round 4 the more complete design lost these points to the less complete one:
+- **An alert takes over the screen's meaning.** When an alert shows (fever,
+  failed payment, delay), every other block re-answers in relation to it: the
+  hero says how the child is *now* and who is with her, the pick-up row becomes
+  "Venir plus tôt", the routine fact ("woke up at 13:55") steps down. Two equal
+  masses (alert + unchanged hero) fail the squint test.
+- **An alert is an event, not a rule.** Name who, what, when, and the one action
+  with its means: "Inès a mesuré 38,4 °C à 14 h 05 · appel manqué à 14 h 07" +
+  "Appeler la crèche · 01 42 …". The rule ("above 38 °C the team must talk to
+  you") is secondary text at most.
+- **Unknown is not "didn't happen".** During a logging lag or offline, a
+  missing entry reads "pas encore notée" / "not logged yet", never "Pas encore"
+  or "0", which state a fact the app doesn't have.
+- **A switcher shows each item's live state**, not its category: "Léa · dort
+  depuis 13 h 05 | Noé · au jardin", not two identical "À la crèche".
+- **Every offered action is valid for the object's state** (no "Flash" on a
+  boulder with logged attempts, no "Pay" when settled): check the domain logic
+  per state, not only the visuals.
+
 ## 4. Edge cases to design on purpose
 - **Text**: the longest name in the dataset, German/French (+30–40% length), Arabic/Hebrew (RTL mirroring), emoji in user names, 1-character names.
 - **Numbers**: 0, 1 (singular), 1,000,000+, negative, decimals, currencies with different symbol positions, missing values (show "—", not 0).

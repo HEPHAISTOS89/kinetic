@@ -23,7 +23,10 @@ names. Review like a jeweller: one property at a time, across the whole screen.
 9. **Media** — consistent aspect ratios; focal point safe in every crop; scrims (≥ 4.5:1 for text) instead of text-shadow; placeholders the same size as the media.
 10. **Structure** — home/hub screens keep a reachable way forward (search, tabs, toolbar) in the bottom third; titles reflect the state (not "Nearby" when location is off).
 11. **Touch** — targets ≥ 44/48 with ≥ 8pt separation; pressed states visible within 100ms.
-12. **Both themes, both extremes** — check dark mode at low brightness and XXL text on the smallest phone before calling it done.
+12. **Both themes, both extremes** — check dark mode at low brightness and XXL text on the smallest phone before calling it done. At night the brightest object is content or a live signal, never a full-width button slab (deepen the CTA fill, keep light text).
+13. **Sticky and floating things** — a pinned CTA or FAB gets matching bottom padding (its height + a gap) so the last row scrolls clear; check the *last* row in the render, not the first. Sheets hug their content (no dead band between the picker and its actions).
+14. **The core moment in every mode** — the action of the product's fastest moment (log a climb, pay, reply) is thumb-reachable in the default state too, not only in a mode the app has to detect first.
+15. **Display numerals scale** — at XXL the hero numeral grows with the text (clamped), or the label-to-number contrast collapses.
 
 ## 2. Code-level detail review (pointilleux)
 Read the UI code like a reviewer who cares about pixels:

@@ -1,0 +1,342 @@
+# Kinetic design record — Prise, home screen (create, D2)
+kdl: 1
+mode: create
+
+product:
+  name: Prise
+  stack: flutter
+  platforms: [ios, android]
+  users: members of one independent, community-run bouldering gym (two walls, Le Hangar and La Cave), from first-month beginners to 7A regulars
+  moment: three moments — on the way (tram, walking, one hand, 3–5 s glance), at the wall between attempts (chalky fingers, phone on the mat, 30 s of rest), at home in the evening (seated, 1–2 min)
+  frequency: weekly
+  stakes: low
+  density: medium
+  brand:
+    status: loose
+    colors: []
+    fonts: []
+  facts:
+    - one gym, two walls (Le Hangar, La Cave); one sector is reset every week
+    - grades are colour circuits plus Font grades from 4 to 7C
+    - occupancy is a live counter (people inside, capacity) with a typical curve per weekday; it can be stale or unavailable
+    - logs made at the wall without signal are queued and synced later
+    - the gym can be closed (holiday, competition day)
+    - membership is monthly, a 10-entry card (entries left) or expired
+  unknowns:
+    - whether the desk check-in is visible to the app (assumed yes, so the home knows a session is in progress)
+    - whether members can buy entries in the app (assumed yes, top-up action)
+
+requirements:
+  - {id: R1, need: how full the gym is right now against today's typical curve, priority: must, above_fold: true, element: occupancy numeral}
+  - {id: R2, need: open or closed now and today's hours, priority: must, above_fold: true, element: status line}
+  - {id: R3, need: what is new on the wall (this week's reset sector and date, its boulders by colour and grade, setters), priority: must, above_fold: true, element: reset tape strip}
+  - {id: R4, need: which boulders come down soon, especially the member's own projects, priority: must, element: coming-down line}
+  - {id: R5, need: log a top or a flash in a few seconds with chalky fingers, priority: must, element: log a climb button}
+  - {id: R6, need: projects in progress with their attempts, priority: must, element: project rows}
+  - {id: R7, need: this week's sessions and sends, priority: must, element: week strip}
+  - {id: R8, need: membership state (monthly, entries left, expired) where it can be acted on, priority: must, element: membership chip}
+  - {id: R9, need: logs queued without signal are visibly pending and never lost, priority: must, element: pending marks}
+  - {id: R10, need: stale or unavailable occupancy is shown honestly, priority: must, element: occupancy numeral}
+  - {id: R11, need: closed days (holiday, competition) say why and when it reopens, priority: must, element: closed block}
+
+thesis:
+  statement: The gym's front desk and its tape-marked wall in your pocket — tells you on the tram how packed it is and what was just set, and takes a send from a chalky thumb in two taps between attempts.
+  feel: [warm, unfussy, communal]
+  never: [gamified fitness app, leaderboard or streak pressure, crush-your-goals hype, cold analytics dashboard]
+  spine: the tape under the start hold
+  spine_expressions:
+    layout: every boulder is shown as its tape tag (hold colour + Font grade lettered on it); sections read like the board at the entrance — right now, new on the wall, your week
+    color: the walls provide the colour — hold colours are the only saturated fields; the chrome is chalk-and-concrete neutrals with one brick accent that means act or yours
+    motion: logging a send stamps a tick on the tape; nothing else moves on its own
+
+expression:
+  level: 3
+  because: low stakes and weekly use allow a voice; a community gym with no strict brand wants character, but chalky-finger logging and glance reading cap it — the voice lives in the tape tags and the signage numerals, not in chrome
+  factors: {stakes: low, frequency: weekly, density: medium, brand_freedom: high}
+
+directions:
+  - id: A
+    name: Entrance board
+    axes: {structure: single column ordered like the board at the door — now, new on the wall, your week; visit-aware (session pins logging), density: balanced, color: chalk-and-concrete tinted neutrals + one brick accent + hold colours as data, type: system text + condensed signage numerals (DIN Condensed), motion: native calm with one stamp}
+    scores: {product_fit: 5, distinctiveness: 4, usability: 5, feasibility: 4, risk_of_slop: 2}
+    verdict: chosen
+    because: serves all three moments in one scroll, the tape tag makes it unmistakably a bouldering gym, and the visit-aware order puts logging under the thumb only when the member is actually inside
+  - id: B
+    name: One-line answer
+    axes: {structure: one sentence and one number per moment with everything else behind tabs, density: airy, color: monochrome warm paper with no accent, type: editorial serif display, motion: still}
+    scores: {product_fit: 3, distinctiveness: 3, usability: 3, feasibility: 5, risk_of_slop: 2}
+    verdict: rejected
+    because: answers "is it packed" beautifully but hides the reset, projects and week behind taps — fails completeness for the at-home and at-the-wall moments
+  - id: C
+    name: Chalkboard night
+    axes: {structure: feed of setter posts and community activity, density: dense, color: dark-first chalkboard green-black with chalk-white hand lettering, type: handwritten display (Chalkduster) + mono, motion: lively, chalk-drawn reveals}
+    scores: {product_fit: 3, distinctiveness: 5, usability: 2, feasibility: 3, risk_of_slop: 4}
+    verdict: rejected
+    because: raw and memorable, but hand lettering fails glance legibility and the feed structure drifts toward social engagement — a costume of the gym rather than its tool
+
+journeys:
+  - id: on-the-way
+    steps:
+      - {screen: home, intent: is it packed right now and will it fill up, risk: a stale count shown at full weight lies}
+      - {screen: home, intent: what was reset this week, risk: a list of 14 rows is too slow to scan on a tram}
+      - {screen: home, intent: is my project still up, risk: learning at the wall that it came down yesterday}
+  - id: at-the-wall
+    steps:
+      - {screen: home-session, intent: log the Rose 6B+ just flashed, risk: small targets with chalky fingers; no signal in La Cave}
+      - {screen: log-sheet, intent: pick the boulder by its tape and choose flash or top, risk: picking the wrong boulder; no undo}
+      - {screen: home-session, intent: see it counted and get back on the wall, risk: a modal confirmation steals the rest time}
+  - id: at-home
+    steps:
+      - {screen: home, intent: see my week, risk: dashboard rings and streak guilt}
+      - {screen: home, intent: check entries left before buying a card, risk: membership hidden in settings}
+
+system:
+  type:
+    families: {display: DIN Condensed, text: system (SF Pro / Roboto)}
+    scale:
+      display: {size: 48, line: 48, weight: 700, track: 0, numerals: tabular, width: condensed}
+      title:   {size: 22, line: 28, weight: 600, track: -0.01}
+      kicker:  {size: 17, line: 20, weight: 700, track: 0.06, width: condensed}
+      headline: {size: 17, line: 22, weight: 600, track: 0}
+      body:    {size: 17, line: 24, weight: 400, track: 0}
+      callout: {size: 15, line: 20, weight: 400, track: 0}
+      caption: {size: 13, line: 18, weight: 500, track: 0.01}
+      micro:   {size: 11, line: 13, weight: 600, track: 0.02}
+    dynamic: true
+    platform_note: body and headline drop to 16 on Android (Roboto reading size), 17 on iOS
+  color:
+    seed: "#B8471B"
+    strategy: neutral+accent
+    roles:
+      light:
+        bg: "#F3EFE8"
+        surface: "#FBFAF7"
+        surface-2: "#E9E4DB"
+        border: "#DDD6CA"
+        text: "#1D1B18"
+        text-2: "#5E5850"
+        text-3: "#8D867C"
+        accent: "#B8471B"
+        on-accent: "#FFFFFF"
+        accent-soft: "#F6E1D6"
+        danger: "#B3261E"
+      dark:
+        bg: "#151412"
+        surface: "#1E1C19"
+        surface-2: "#29261F"
+        border: "#34302A"
+        text: "#ECE7DF"
+        text-2: "#A9A298"
+        text-3: "#7E776D"
+        accent: "#F08A55"
+        on-accent: "#1C0B03"
+        accent-soft: "#3A2014"
+        danger: "#F2B8B5"
+    data:
+      jaune: {fill: "#F2C230", on: "#1D1B18", fill_dark: "#E5B523", on_dark: "#1D1B18"}
+      vert: {fill: "#2F7D4F", on: "#FFFFFF", fill_dark: "#2F7D4F", on_dark: "#FFFFFF"}
+      bleu: {fill: "#2C64B4", on: "#FFFFFF", fill_dark: "#2C64B4", on_dark: "#FFFFFF"}
+      rose: {fill: "#EC7FA9", on: "#1D1B18", fill_dark: "#EC7FA9", on_dark: "#1D1B18"}
+      violet: {fill: "#6D45A8", on: "#FFFFFF", fill_dark: "#7A52B5", on_dark: "#FFFFFF"}
+      noir: {fill: "#232120", on: "#FFFFFF", fill_dark: "#3A3734", on_dark: "#FFFFFF"}
+  space:
+    unit: 4
+    scale: {xs: 4, s: 8, m: 12, l: 16, xl: 24, 2xl: 32, 3xl: 48}
+    margins: {compact: 20, regular: 24}
+  shape:
+    corner: continuous
+    radius: {s: 4, m: 12, l: 20, full: 999}
+  elevation:
+    strategy: border
+  icon:
+    family: custom
+    style: outline
+    selected: fill
+    sizes: [20, 24]
+    weight: regular
+  motion:
+    personality: native calm, critically damped; one stamp
+    springs:
+      settle: {response: 0.4, damping: 0.9}
+      press: {response: 0.25, damping: 1.0}
+    durations: {quick: 150, standard: 250, stamp: 220}
+    reduce: crossfade
+  haptics:
+    select: selection
+    confirm: medium
+    error: warning
+
+screens:
+  - id: home
+    job: on the way and at home — say how full the gym is, what was just set and how my week went; at the wall — take a send in two taps
+    serves: [R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11]
+    thumb: [log a climb button (in session), project +1 go / sent buttons, tab bar]
+    network: true
+    primary: occupancy numeral with its word (Quiet, Busy, Packed) and today's typical curve; in session, the session line and the log button
+    secondary: the week's reset as a strip of tape tags
+    reading_order: [status line, occupancy numeral, curve, reset tape strip, coming-down line, projects, week strip]
+    components:
+      - id: occupancy-numeral
+        kind: numeral
+        type: $type.display
+        fg: $color.text
+        bg: $color.bg
+      - id: status-line
+        kind: text
+        type: $type.callout
+        fg: $color.text-2
+        bg: $color.bg
+      - id: membership-chip
+        kind: button
+        fg: $color.text
+        bg: $color.surface
+        target: 44
+        variants: [default, pressed, disabled]
+        env: {on: $color.bg, near: [status-line], zone: top trailing, density: low}
+      - id: tape-tag
+        kind: chip
+        target: 48
+        variants: [default, pressed, selected, disabled]
+        haptic: $haptic.select
+        env: {on: $color.surface, near: [other tags], zone: mid and bottom sheet, density: medium}
+      - id: log-button
+        kind: button
+        fg: $color.on-accent
+        bg: $color.accent
+        target: 56
+        variants: [default, pressed, disabled, loading]
+        haptic: $haptic.confirm
+        env: {on: $color.bg, near: [tab-bar], zone: bottom thumb, density: low}
+      - id: project-row
+        kind: row
+        fg: $color.text
+        bg: $color.surface
+        target: 48
+        variants: [default, pressed, disabled]
+      - id: attempt-button
+        kind: button
+        fg: $color.text
+        bg: $color.surface-2
+        target: 48
+        variants: [default, pressed, disabled, loading]
+      - id: topped-button
+        kind: button
+        fg: $color.text
+        bg: $color.accent-soft
+        target: 48
+        variants: [default, pressed, disabled, loading]
+        haptic: $haptic.confirm
+      - id: undo-link
+        kind: link
+        fg: $color.accent
+        bg: $color.surface
+        target: 44
+        variants: [default, pressed, disabled]
+      - id: tab-bar
+        kind: tab-bar
+        fg: $color.text
+        bg: $color.surface
+    states:
+      content: away — status line, occupancy numeral + word + curve, reset tape strip, coming-down line, projects, week strip; in session — session count + tapes + Undo, projects with +1 go / Topped, compact occupancy, pinned Log a climb (iOS) or extended FAB (Android)
+      loading: first launch without cache — header and section titles stay, skeleton bars shaped like the curve and tape tags (layout is known); with cache, the previous content stays and only the updated time changes
+      empty: new member — no projects and no sends; the week explains how sends get here and points at Log a climb; occupancy and reset still shown
+      error: server unreachable without cache — "Couldn't reach the gym" with the cause and Try again; logging still works and queues
+      offline: no signal at the wall — occupancy becomes an em dash with the last count and its time; one card under the session says how many logs wait for signal and that they are safe on the phone (said once, not in the header)
+      stale: counter older than 15 min — numeral prefixed "~" and set in text-2, "Last count 18:16" replaces the live time
+      closed: holiday or competition — the occupancy block becomes the reason and the reopening time; logging hidden; reset and projects stay
+      expired: membership ended — the membership chip turns into a one-line notice with Renew where the chip was; everything else stays readable
+      overflow: XXL text — occupancy row stacks, tags wrap to more lines, project buttons stack under the name; longest boulder names wrap to two lines
+      first-run: n/a: same as empty — no separate onboarding on the home
+    motion:
+      - id: send-stamp
+        kind: signature
+        trigger: a send is confirmed (Sent / Flash / Top)
+        change: a tick stroke draws across the tape tag (0 → 100% path) while the row settles into This session
+        duration: $duration.stamp
+        haptic: $haptic.confirm
+        reduce: tick appears without drawing
+        interruptible: true
+      - id: press
+        kind: feedback
+        trigger: finger down on any button, tag or row
+        change: scale 0.97 and opacity 0.85
+        spring: $spring.press
+        reduce: opacity only
+        interruptible: true
+      - id: session-insert
+        kind: transition
+        trigger: a log is added or undone
+        change: the session tape strip grows to take the new tape (AnimatedSize, ease-out cubic); the last-log line crossfades
+        duration: $duration.standard
+        reduce: crossfade
+        interruptible: true
+  - id: log-sheet
+    job: pick the boulder you just climbed by its tape and say flash or top
+    serves: [R5, R9]
+    thumb: [tape grid, Flash, Top]
+    network: false
+    primary: the tape grid of the sector you're in
+    secondary: Flash and Top buttons
+    reading_order: [sector switch, tape grid, selected boulder line, flash and top]
+    components:
+      - id: sector-tab
+        kind: tab
+        target: 44
+        variants: [default, pressed, selected, disabled]
+      - id: flash-button
+        kind: button
+        fg: $color.text
+        bg: $color.surface-2
+        target: 56
+        variants: [default, pressed, disabled, loading]
+      - id: top-button
+        kind: button
+        fg: $color.on-accent
+        bg: $color.accent
+        target: 56
+        variants: [default, pressed, disabled, loading]
+    states:
+      content: sector tabs, tape grid, selected boulder name, Flash / Top
+      loading: n/a: boulder list is cached with the home data
+      empty: no boulder selected — Flash and Top disabled with "Pick the tape first" next to them
+      error: n/a: logs are written locally first and synced later
+      offline: works the same; the confirmation says it will sync when the signal returns
+    motion:
+      - id: sheet
+        kind: transition
+        trigger: Log a climb
+        change: platform modal sheet rises from the bottom
+        duration: $duration.standard
+        reduce: crossfade
+        interruptible: true
+
+signature:
+  what: the tape tag — every boulder is drawn as the strip of tape under its start hold (hold colour + Font grade lettered in condensed caps, torn ends); the reset is a row of tapes, your week is the tapes you topped, and logging stamps a tick on the tape
+  where: [home, log-sheet]
+  because: it is the object members already read on the wall, so it needs no legend and makes the spine (the tape under the start hold) literal
+
+premortem:
+  - risk: six hold colours plus an accent turn the screen into confetti
+    rule: D13
+    fix: hold colours only inside tape tags; chrome stays neutral; the brick accent appears at most twice per viewport (log action, your own marks)
+  - risk: occupancy curve + week strip + counts read as a fitness dashboard
+    rule: D04
+    fix: one number with a word and a sentence; the week is tapes, not rings or percentages; no streaks, no goals
+  - risk: a stale occupancy count shown as live
+    rule: F01
+    fix: prefix the count with a tilde, set it in text-2, show the last-count time; an em dash when unavailable
+  - risk: logging targets too small for chalky fingers
+    rule: F05
+    fix: 48 pt minimum on tags, 56 pt for Flash / Top and Log a climb, 8 pt gaps
+  - risk: the same offline fact repeated in a banner, the header and each row
+    rule: D32
+    fix: say it once in the session line ("3 logs waiting for signal"); rows carry only a quiet pending mark with the same word
+  - risk: Material chrome on iOS
+    rule: D24
+    fix: no FAB, no ripple on iOS; iOS-style tab bar and sheet on iOS, Material NavigationBar on Android
+  - risk: an extended FAB reads as habit
+    rule: D09
+    fix: FAB only on Android and only in session, where logging is the creation-first job; iOS gets a pinned full-width bar above the tab bar instead
+  - risk: the scrolled half of the home (projects, week) is never seen in review
+    rule: F06
+    fix: gallery renders home-week and first-week scrolled to those sections

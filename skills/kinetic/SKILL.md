@@ -49,10 +49,13 @@ existing `.kinetic/design.kdl` → `kinetic validate` it and continue from it.
 |---|---|---|
 | D0 | `knowledge/anti-slop.md` (F + D tables) | the stack file `knowledge/stacks/<stack>.md` §slop |
 | D1 | + `knowledge/states.md` §2, the stack file | `typography.md` / `color.md` / `iconography-svg.md` for the component's concern |
-| D2 | + module skills think, direct, states, system, craft, code, critique (+ motion if anything moves); `states.md`; `copy.md`; `layout.md` §1–3; `platform-ios.md` or `platform-android.md`; docs/KDL.md (syntax + the sections you write) | `sectors.md` (your sector only), `directions.md` (skim the table, read 3 candidates), `motion.md` if anything moves |
+| D2 | + module skills think, direct, states, system, craft, code, critique (+ motion if anything moves); `states.md`; `copy.md`; `layout.md` §1–3; `platform-ios.md` or `platform-android.md`; `taste-rubric.md` (the anchors you will be judged on); docs/KDL.md (syntax + the sections you write) | `sectors.md` (your sector only), `directions.md` (skim the table, read 3 candidates), `typography.md` / `color.md` when kinetic-system reaches that step, `motion.md` if anything moves |
 | D3 | everything relevant above + `exemplars.md`, `taste-rubric.md`, docs/KDL.md | — |
 Don't read the whole library "to be safe": the router, the module you are in
 and the files it names are enough.
+**Without agents** (a sub-agent context, a sandbox): do the director and critic
+steps yourself as the modules describe; `kinetic score` then stops at
+`ship-pending` by design — say so in the report instead of chasing `ship`.
 
 ## 2. The operating loop (D2–D3)
 1. **Understand** (`kinetic-think`): product truth, user moment, thesis,

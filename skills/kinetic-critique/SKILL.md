@@ -56,6 +56,12 @@ Self-critique is biased; reduce the bias, never hide it:
 2. Judge against the rubric anchors; for each dimension write what a stranger would see in the render.
    Run the thesis test against `thesis.never` **row by row**: for each anti-thesis item, find the
    element closest to it on each screen (a "who owes" column is a debt list even if styled calmly).
+   **Identity inventory**: list every block of the first two viewports as ownable/generic
+   (kinetic-direct §4b). Self-judged `distinctiveness` cannot exceed 3 unless the hero is
+   ownable and the domain vocabulary appears in ≥ 4 places — across four blind rounds,
+   independent critics scored Kinetic's distinctiveness 0.5–1 point below its self-judgment.
+   **Fear test**: render the most frightening state (fever, failed payment, missed train) and
+   check knowledge/states.md §3c line by line; it decides trust more than coverage does.
 3. Save `.kinetic/critique.json` with `"self_judged": true`. `kinetic score` then caps
    the verdict at `ship-pending` (an independent critic must confirm).
 4. List what renders can't show in `unjudged` with a reason (`"motion: no recording"`,
@@ -78,6 +84,10 @@ Findings with `evidence: inferred` never gate: `kinetic score` lists them under
 **Stop rule**: at most 3 iterate loops; if two consecutive loops don't raise
 the judged mean, stop and report the remaining gap honestly, with the
 critic's `biggest_lever`.
+Without an independent critic, once the self-judged mean is ≥ 4 and the gates
+pass, do one last loop aimed only at what critics most often find that authors
+miss — identity inventory, the fear test, sticky CTAs covering content — then
+stop at `ship-pending` and say what an independent critic should check.
 
 ## 6. Audit mode (no code changes)
 Forensics (kinetic-code / kinetic-forensics agent) → states code → renders →

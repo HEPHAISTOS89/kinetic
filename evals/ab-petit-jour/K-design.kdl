@@ -1,0 +1,298 @@
+# Kinetic design record — Petit Jour, parent app, home screen "Aujourd'hui".
+kdl: 1
+mode: create
+
+product:
+  name: Petit Jour
+  stack: react-native
+  platforms: [ios, android]
+  users: parents of children aged 3 months to 3 years in a small network of French crèches; often anxious, especially in the first months; carers are professionals who log the day on a shared tablet
+  moment: at work between two meetings, phone in one hand, 3 to 10 seconds ("is she napping? did she eat?"); again at pick-up time on the pavement; and when a notification says something needs them
+  frequency: daily
+  stakes: medium
+  density: medium
+  brand:
+    status: none
+    colors: []
+    fonts: []
+  facts:
+    - interface language is French
+    - carers log arrival, meals with quantity (all, half, a little, refused), naps (start and end), nappies, moments with an occasional photo, temperature and health notes, with author and time
+    - pending things exist - unread carer message, document to sign, item to bring, planned absence, pick-up time and person
+    - logs can lag by up to an hour; network can be offline
+    - a fever of 38 °C or more means the parent must call the crèche
+    - some families have two children in the same crèche
+  unknowns:
+    - whether carers can mark a note as urgent themselves (assumed - the fever rule is computed, other notes are not escalated)
+    - whether the parent can edit the pick-up person from the app or only notify (assumed - notify, carers confirm)
+
+requirements:
+  - {id: R1, need: know what the child is doing right now and when it was logged, priority: must, above_fold: true, element: now-card}
+  - {id: R2, need: see whether she ate and slept today without reading the whole day, priority: must, above_fold: true, element: day-brief}
+  - {id: R3, need: see everything the crèche is waiting for from me (message, signature, item to bring), priority: must, above_fold: true, element: for-you}
+  - {id: R4, need: read the day as logged by carers - arrival, meals with quantity, naps, nappies, moments with photo, health notes, author and time, priority: must, element: day-thread}
+  - {id: R5, need: know pick-up time and who picks up, change it, priority: must, above_fold: true, element: pickup-row}
+  - {id: R6, need: an important health note (fever 38 °C or more) is impossible to miss and leads to a call, priority: must, above_fold: true, element: health-alert}
+  - {id: R7, need: switch between two children in the same crèche, priority: must, element: child-switch}
+  - {id: R8, need: day states - not arrived yet, absent today, day over, crèche closed, priority: must, element: now-card}
+  - {id: R9, need: honest about lag and offline - say when the last note was written and when data was received, priority: must, element: freshness}
+  - {id: R10, need: declare an absence or a delay, priority: should, element: absence-link}
+  - {id: R11, need: reach the crèche by phone at any time, priority: should, element: call-button}
+
+thesis:
+  statement: The glance a parent takes between two meetings to know what their child is doing right now and what the crèche needs from them, told the way a carer would tell it at the door.
+  feel: [reassured, informed, held]
+  never: [a metrics dashboard of a toddler, a social feed to scroll, a hospital alarm for ordinary notes, a to-do list that makes parents feel guilty]
+  spine: her day as one thread of light, from arrival to now
+  spine_expressions:
+    layout: one vertical thread with the present at its head (a sentence, not a number) and the arrival at its foot; everything else hangs off it or sits above it as "pour vous"
+    color: the head of the thread takes the light of her moment - warm daylight when she is awake, dusk blue while she naps, neutral when she is home or the crèche is closed; red exists only for the fever rule
+    motion: only what is happening now moves (the live node breathes slowly during an ongoing nap); logged moments stay still
+  because: parents asked for presence and reassurance, not performance; a carer at the door speaks in sentences and in order
+
+expression:
+  level: 2
+  because: health-adjacent and anxious users cap expression; daily glance use favours precision; identity lives in one serif sentence and in the light of the now-card
+  factors: {stakes: medium, frequency: daily, density: medium, brand_freedom: high}
+
+directions:
+  - id: A
+    name: Cahier de liaison
+    axes: {structure: single column narrative - a now sentence then requests then a bounded thread, density: balanced, color: warm paper neutrals with one ink-green accent and a state-driven light on the now card, type: serif sentence for the present and SF text for everything else, motion: still and native calm with one live breath}
+    scores: {product_fit: 5, distinctiveness: 4, usability: 5, feasibility: 5, risk_of_slop: 2}
+    verdict: chosen
+    because: mirrors the paper liaison notebook French crèches already use; answers the glance in a sentence; the bounded thread (arrival to now) cannot become an endless feed
+  - id: B
+    name: Tableau de bord du jour
+    axes: {structure: hub of status tiles with a horizontal day ribbon 7 h 30 to 18 h 30, density: dense, color: neutral grey with one signal colour per category, type: grotesk tabular numerals, motion: precise ticks on update}
+    scores: {product_fit: 2, distinctiveness: 3, usability: 4, feasibility: 4, risk_of_slop: 4}
+    verdict: rejected
+    because: turns a toddler's day into tiles and counters - exactly thesis.never (metrics dashboard, D04); the ribbon needs a legend (D31)
+  - id: C
+    name: Fil de la section
+    axes: {structure: chat-like feed of carer posts and photos newest first, density: airy, color: dominant brand surface with photo-led cards, type: rounded friendly display, motion: lively entrances on new posts}
+    scores: {product_fit: 2, distinctiveness: 3, usability: 3, feasibility: 3, risk_of_slop: 4}
+    verdict: rejected
+    because: a social network to scroll (thesis.never); photo-first ranking rewards the occasional photo over the meal and the nap that parents actually check
+
+journeys:
+  - id: midday-glance
+    steps:
+      - {screen: today, intent: between meetings - is she napping, did she eat, risk: answer below the fold or buried in a feed}
+      - {screen: today, intent: see a message from Inès is waiting, risk: message lost among day entries}
+  - id: fever-call
+    steps:
+      - {screen: today, intent: notification - temperature logged at 38.4 °C, risk: alert reads as an ordinary note or panics with alarm styling everywhere}
+      - {screen: today, intent: call the crèche in one tap, risk: phone number hidden in a profile screen}
+  - id: pick-up
+    steps:
+      - {screen: today, intent: on the pavement - when and who picks up, change it to the grandmother, risk: pick-up info only in a settings screen}
+      - {screen: today, intent: after pick-up read the end-of-day word, risk: day over looks like an error or empty screen}
+
+system:
+  type:
+    families: {display: New York (ui-serif) / Noto Serif on Android, text: SF Pro / Roboto (system)}
+    scale:
+      display: {size: 28, line: 34, weight: 400, track: -0.01}
+      title: {size: 20, line: 25, weight: 600, track: -0.01}
+      headline: {size: 17, line: 22, weight: 600, track: 0}
+      body: {size: 17, line: 24, weight: 400, track: 0}
+      callout: {size: 15, line: 20, weight: 400, track: 0}
+      footnote: {size: 13, line: 18, weight: 400, track: 0, numerals: tabular}
+      tab: {size: 11, line: 13, weight: 500, track: 0.01}
+    dynamic: true
+  color:
+    seed: "#2B6555"
+    strategy: neutral+accent
+    roles:
+      light:
+        bg: "#F6F2EB"
+        surface: "#FFFDF9"
+        surface-2: "#EEE8DE"
+        border: "#E3DBCF"
+        text: "#22201C"
+        text-2: "#5F5A52"
+        text-3: "#8A847A"
+        accent: "#2B6555"
+        on-accent: "#FFFFFF"
+        danger: "#B3261E"
+        on-danger: "#FFFFFF"
+      dark:
+        bg: "#13120F"
+        surface: "#1D1B18"
+        surface-2: "#27241F"
+        border: "#35312B"
+        text: "#EEE9E1"
+        text-2: "#ABA398"
+        text-3: "#7D776E"
+        accent: "#8CC2B0"
+        on-accent: "#0B2019"
+        danger: "#F2A59C"
+        on-danger: "#1F1210"
+    data:
+      daylight: {light: "#F8E9D6", dark: "#2A2219", on: "#22201C", on_dark: "#EEE9E1"}
+      dusk: {light: "#E6E8F2", dark: "#1E2130", on: "#22201C", on_dark: "#EEE9E1"}
+      alert: {light: "#FBE4E0", dark: "#3A1A16", on: "#22201C", on_dark: "#EEE9E1"}
+  space:
+    unit: 4
+    scale: {xs: 4, s: 8, m: 12, l: 16, xl: 24, 2xl: 32, 3xl: 48}
+    margins: {compact: 20, regular: 24}
+  shape:
+    corner: continuous
+    radius: {s: 8, m: 12, l: 20, full: 999}
+  elevation:
+    strategy: tonal
+  icon:
+    family: custom
+    style: outline
+    selected: fill
+    sizes: [20, 24]
+    weight: 1.75 stroke on a 24 grid, round caps and joins
+  motion:
+    personality: native calm - critically damped, short, nothing bounces; only the live node breathes
+    springs:
+      settle: {response: 0.4, damping: 1.0}
+      press: {response: 0.25, damping: 1.0}
+    durations: {quick: 150, standard: 220, breath: 1200}
+    reduce: crossfade
+  haptics:
+    select: selection
+    confirm: soft
+    alert: warning
+
+screens:
+  - id: today
+    job: tell a parent in one glance what their child is doing now, whether she ate and slept, and what the crèche needs from them
+    serves: [R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11]
+    thumb: [tab bar, for-you rows, pickup change, absence link]
+    network: true
+    primary: the now sentence in serif on the lit now card (e.g. "Léa fait la sieste depuis 13 h 05")
+    secondary: the day brief under it (meal, sleep, nappies in words) and the pick-up row
+    reading_order: [health-alert, now-card, day-brief, for-you, day-thread, absence-link]   # pickup-row sits inside the now card, under the brief
+    components:
+      - id: child-switch
+        kind: tab
+        role: two children - name plus their current state in words, one selected
+        fg: $color.text
+        bg: $color.surface
+        target: 44
+        variants: [default, pressed, selected, disabled]
+        haptic: $haptic.select
+        env: {on: $color.bg, near: [now-card], zone: top - acceptable because it is a rare switch, density: low}
+      - id: call-button
+        kind: icon-button
+        role: call the crèche from anywhere
+        fg: $color.accent
+        bg: $color.bg
+        target: 44
+        variants: [default, pressed, disabled]
+      - id: now-card
+        kind: card
+        role: the head of the thread - one serif sentence, time logged, author
+        fg: $color.text
+        bg: $color.surface
+        env: {on: $color.bg, near: [day-brief, pickup-row], density: low}
+      - id: now-sentence
+        kind: text
+        type: $type.display
+        fg: $color.text
+        bg: $color.surface
+      - id: pickup-row
+        kind: row
+        role: pick-up time and person, Modifier action
+        fg: $color.text
+        bg: $color.surface
+        target: 44
+        variants: [default, pressed, disabled]
+      - id: health-alert
+        kind: card
+        role: fever 38 °C or more - one sentence, who measured it and when, call action
+        fg: $color.text
+        bg: $color.surface
+      - id: call-crèche-button
+        kind: button
+        fg: $color.on-danger
+        bg: $color.danger
+        target: 48
+        variants: [default, pressed, disabled]
+        haptic: $haptic.alert
+      - id: for-you-row
+        kind: row
+        role: one thing the crèche waits for - message, signature, item, with due date
+        fg: $color.text
+        bg: $color.surface
+        target: 56
+        variants: [default, pressed, disabled, loading]
+      - id: day-thread
+        kind: list
+        role: the day as logged - newest at the top, arrival at the foot; time, what, detail, author
+        env: {on: $color.bg, near: [for-you], density: medium}
+      - id: thread-time
+        kind: text
+        type: $type.footnote
+        fg: $color.text-2
+        bg: $color.bg
+      - id: absence-link
+        kind: link
+        fg: $color.accent
+        bg: $color.bg
+        target: 44
+        variants: [default, pressed, disabled]
+      - id: tab-bar
+        kind: tab-bar
+        fg: $color.text-2
+        bg: $color.surface
+    states:
+      content: nap in progress at 14 h 20 - dusk-lit now card, brief (déjeuner la moitié, 2 changes), pick-up 17 h 30 with Marc, three things for you, thread from sieste back to arrival
+      loading: first open without cache - header with the child name (known locally), now card and thread in quiet skeletons with "Chargement de la journée de Léa…"; with cache the previous day content stays and only the freshness line updates
+      empty: arrived but nothing logged yet - "Arrivée à 8 h 40" then "Les notes de l'équipe apparaîtront ici au fil de la journée"; not-arrived, absent and closed are designed day states, never empty screens
+      error: day could not be loaded - plain cause, Réessayer, and the phone number of the crèche as the fallback that always works
+      offline: cached day stays readable; banner "Hors ligne" (no time); the time is said once, in the now-card kicker "reçu à 14 h 02"; live durations and the breathing dot stop, the sentence switches to past tense ("faisait la sieste"); a signature done offline shows "Envoi en attente du réseau"
+      stale: logs lag - "Dernière note à 11 h 45" stated on the now card, the sentence is written as the last known fact with its time, and a one-line explanation that carers often write after meals and naps
+      partial: photo failed to load - frame keeps its size with "Photo indisponible", text of the moment stays
+      overflow: long French strings and relations ("grand-mère, personne autorisée") wrap; times are glued with no-break spaces ("depuis 13 h 05" never splits); two naps stack one per line; from about XXXL text the pick-up "Modifier" moves under the text (gallery texte-tres-grand renders ×1.35); only the message preview is clamped to 2 lines (full text one tap away)
+      first-run: n/a: onboarding and account linking are a separate flow; the home starts with a linked child
+    motion:
+      - id: live-breath
+        kind: signature
+        trigger: an ongoing nap is shown on the now card and at the head of the thread
+        change: the live dot fades 1.0 to 0.35 and back, 1.2 s each way, nothing else moves
+        duration: $duration.breath
+        reduce: static dot, no animation, the word "en cours" carries the state
+        interruptible: true
+      - id: child-switch-crossfade
+        kind: transition
+        trigger: parent selects the other child
+        change: content below the switch crossfades (opacity 0 to 1, 4 pt rise) in 220 ms
+        duration: $duration.standard
+        reduce: crossfade without the rise
+        interruptible: true
+      - id: press
+        kind: feedback
+        trigger: press on any row, link or button
+        change: opacity 0.6 within 100 ms, back on release
+        duration: $duration.quick
+        reduce: same, opacity is not motion
+        interruptible: true
+
+signature:
+  what: the now card is the lit head of the day thread - one serif sentence about her present moment, lit in warm daylight when she is awake and dusk blue while she naps, with a slowly breathing live dot only while something is in progress; the thread nodes below carry the same two lights (dusk for naps, daylight for waking moments)
+  where: [today]
+  because: makes the spine (her day as one thread of light) literal; the parent reads the state from the words and feels it from the light, without a number or a legend
+
+premortem:
+  - risk: warm paper plus serif reads as a lifestyle or wedding app rather than a trustworthy crèche tool
+    rule: D14
+    fix: serif only for the one present-tense sentence; everything else system sans, tabular times, plain labels
+  - risk: the day brief becomes a row of counters (2 changes, 45 min) - a dashboard costume
+    rule: D04
+    fix: brief in words ("a mangé la moitié", "sieste en cours"), no rings, no totals beyond nappies
+  - risk: fever alert, unread message, signature and item all styled urgent - everything shouts
+    rule: D32
+    fix: red only for the fever rule; for-you rows share one quiet style with due dates in words; unread is a dot plus the word "non lu" for screen readers
+  - risk: the thread turns into a feed that parents scroll anxiously for updates
+    rule: D18
+    fix: bounded thread (arrival at the foot, no infinite load), no entrance animations, freshness stated once on the now card
+  - risk: lag is hidden - "fait la sieste" stated in present tense when the last note is an hour old
+    rule: F01
+    fix: sentence tense follows freshness; stale and offline states write the last known fact with its time

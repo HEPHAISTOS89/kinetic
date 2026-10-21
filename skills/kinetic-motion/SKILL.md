@@ -19,8 +19,10 @@ Read `knowledge/motion.md`. Implementation details per stack: `knowledge/stacks/
    springs + durations in KDL. One personality per product.
 4. **Spec every animation in KDL** (`screens[].motion`) with its `kind`:
    `feedback` (press, toggle, symbol swap), `transition` (state/screen change) or
-   `signature` (the spine made visible). Only `signature` counts against the
-   expression budget. Then: `trigger`, `change`
+   `signature` (the spine made visible) or `ambient` (a slow loop that says
+   "live": a breathing dot on an ongoing nap or a live count — one per screen,
+   ≥ 1.2 s per half-cycle, name its duration `ambient-…`/`pulse-…`, still under
+   reduce motion). Only `signature` counts against the expression budget. Then: `trigger`, `change`
    (what moves, from where to where, amplitude), `spring` or `duration`,
    `haptic` if any, `reduce`, `interruptible`. The validator rejects incomplete specs.
 5. **Choreograph**: the meaningful element leads; others follow by 20–40ms or

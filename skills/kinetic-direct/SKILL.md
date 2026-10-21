@@ -21,7 +21,7 @@ For D3 work, prefer delegating the divergence to the **kinetic-director**
 agent (fresh context = less anchoring), then evaluate its proposals here.
 
 ## 2. Diverge: three directions that differ on ≥ 3 axes
-Axes (write all five for each direction):
+Axes (write all six for each direction):
 | Axis | Examples of genuinely different answers |
 |---|---|
 | structure | single-column narrative · hub of tools · feed · canvas/map-first · one-question-at-a-time |
@@ -29,6 +29,7 @@ Axes (write all five for each direction):
 | color | tinted monochrome · neutral + one accent · dominant brand surface · data-driven color · dark-first |
 | type | system native · editorial serif display · grotesk tabular · rounded friendly · mono technical |
 | motion | still and precise · native calm · unhurried · lively · playful physical |
+| material | the domain object drawn as a vocabulary (holds, tape, notebook, ticket) · one hero illustration per state · data drawn as the object · pure type (only with a voiced display) |
 
 Recipe that reliably produces divergence:
 - **A — the faithful one**: the strongest expression of the thesis in the
@@ -57,14 +58,36 @@ rejected direction (it is evidence of judgment and helps the user disagree).
 
 Hybrid is allowed only as "A with B's structure" etc., stated explicitly.
 
-## 4b. Identity floor (all expression levels)
-The expression level sets the **volume** of identity, never its presence. Every
-product needs at least one ownable element in the first viewport of its main
-screen: a voiced display or numeral treatment, a motif tied to the name or the
-spine, or a signature component. Run the swap test on the chosen direction
-before building — if renaming the app breaks nothing, add the voice now. (A/B
-evidence: quiet level-2 Kinetic designs lost "distinctiveness" to bolder
-baselines in rounds 2 and 3.)
+## 4b. Identity: a domain vocabulary, not a detail (all expression levels)
+The expression level sets the **volume** of identity, never its presence. One
+signature detail is not enough: in four blind A/B rounds the designs judged more
+distinctive (5 vs 4, 4 vs 3) did the same three things, and Kinetic's did not.
+
+1. **Find the domain's material.** What do users touch, see or say in the real
+   world of this product? Climbing: holds, tape under the start hold, chalk
+   tallies, the pegboard. Daycare: the paper liaison notebook, the nap (moon),
+   the garden (sun), the doudou. Transit: the platform sign, the ticket.
+   Write 3–6 of them before drawing anything.
+2. **Draw them as a small vocabulary and let it replace generic parts**:
+   icons, dots, counters, progress, empty and offline states, data marks.
+   A send is a hold, not a check-circle; attempts are tally marks, not "3×";
+   a queued log is an *outlined* hold; each child state has its own mark
+   (moon while napping, sun outdoors, the house when home). Carry it into at
+   least four places: the hero, list items, one data encoding, one degraded
+   state. Expression level sets the rendering (level 2: monochrome line marks
+   on the 24 grid; level 4–5: illustrated colour), not whether it exists.
+3. **Make the hero the vocabulary's home.** The first viewport holds the
+   answer *and* the identity: a display-size verdict sentence when the glance
+   question is qualitative ("Busy, not packed." beat "34 inside"; layout.md
+   §glance headers), with the drawn hero beside or under it. A loud grid of
+   identity chips that competes with the answer is not a hero — quiet it.
+
+Gate before building: list every block of the first two viewports and mark it
+**ownable** (only this product could have it) or **generic** (swap test). At
+expression ≥ 3, at least half are ownable; at ≤ 2, the hero and one more. A
+generic inset list is fine *below* an ownable hero; a generic hero is not.
+Identity never costs legibility: the vocabulary carries words or grades with it
+(D31), and `kinetic svg lint` + the 24px render check every glyph.
 
 ## 5. The signature detail
 One memorable decision derived from the spine that improves understanding or

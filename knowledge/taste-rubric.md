@@ -31,10 +31,13 @@ Most first drafts are 2–3. Don't grade on effort; grade the artefact.
 - Otherwise **iterate**, fixing the lowest dimensions first.
 
 ## Known critic variance
-Independent blind critics disagree: across three A/B rounds the two critics
-picked different winners in two rounds, with means within ±0.25. Treat a
-difference under ~0.3 between two designs as a tie, use at least two critics for
-decisions, and act on what they *agree* on rather than on either verdict.
+Independent blind critics disagree: across four A/B rounds (12 critic reads)
+critics of the same pair picked different winners in three rounds, with means
+within ±0.25. Treat a difference under ~0.3 between two designs as a tie, use at
+least two (better three) critics for decisions, and act on what they *agree* on
+rather than on either verdict. Agreement is strong per dimension even when the
+verdict splits: in round 4 all six critics put the same design ahead on
+distinctiveness and the other ahead on anticipation.
 
 ## How to judge (critic procedure)
 1. Read the thesis, expression level and chosen direction in KDL first; judge

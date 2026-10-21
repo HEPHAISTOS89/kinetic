@@ -148,7 +148,7 @@ Fire haptics on the confirmed outcome, not on tap-down of an async action.
 - Material 3 is the default (`useMaterial3: true`). On iOS, Material chrome reads foreign (D24). Options per element:
   - `Switch.adaptive`, `Slider.adaptive`, `CircularProgressIndicator.adaptive`, `Checkbox.adaptive`, `AlertDialog.adaptive` + `showAdaptiveDialog`.
   - `CupertinoPageRoute`/Cupertino transitions on iOS; `CupertinoSliverNavigationBar` for large titles when the brand is iOS-first.
-  - Bottom sheets: `showModalBottomSheet(useSafeArea: true, showDragHandle: true)`; on iOS consider `showCupertinoModalPopup`.
+  - Bottom sheets: `showModalBottomSheet(useSafeArea: true, showDragHandle: true)` on Android; on iOS the native page sheet is `CupertinoSheetRoute` / `showCupertinoSheet` (Flutter ≥ 3.29) — `showCupertinoModalPopup` is for action sheets and pickers.
 - Share identity (color, type, shape, motion), adapt chrome (navigation, controls, feedback). Branch on `Theme.of(context).platform`, not `Platform.isIOS` scattered in widgets.
 - Ripple on iOS: set `splashFactory: NoSplash.splashFactory` in the iOS theme if the design wants iOS-style highlight; supply a pressed state (opacity/scale 0.97) instead.
 
@@ -183,5 +183,10 @@ flutter screenshot -o shots/home.png          # from a running app on a device/s
 xcrun simctl io booted screenshot shots/ios_home.png
 adb exec-out screencap -p > shots/android_home.png
 ```
+
+Golden/gallery gotchas:
+- A golden that pumps once renders a route pushed in a post-frame callback at its *start* position (an invisible sheet). Render sheets and dialogs as initial routes (`onGenerateInitialRoutes`) or pump until settled.
+- `Ink`/`InkWell` decorations are painted on the nearest `Material`; inside a coloured `DecoratedBox`/`Container` the fill hides them and a filled button looks disabled — put the colour on a `Material`/`Ink`, not on the box behind it.
+- Display numerals built with a fixed `fontSize` ignore `textScaler`; scale them with `MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.6)` so the hero still leads at XXL.
 
 Golden matrix (one test, parameterised): sizes 320×568, 390×844, 430×932; `textScaler` 1.0 and 2.0; light and dark. Wrap with `MediaQuery(data: MediaQueryData(size:, textScaler: TextScaler.linear(2), platformBrightness: Brightness.dark))`. Device checks: iOS Settings → Accessibility → Larger Text; Android `adb shell settings put system font_scale 2.0`; dark via `xcrun simctl ui booted appearance dark` / `adb shell cmd uimode night yes`.

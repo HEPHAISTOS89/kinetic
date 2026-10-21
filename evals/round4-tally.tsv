@@ -1,0 +1,13 @@
+brief	critic	label	product_fit	hierarchy	distinctiveness	typography	color	layout_craft	native_fidelity	anticipation	copy	winner	margin
+rn	c2	X	4	4	4	4	4	3	3	3	4	Y	slight
+rn	c2	Y	4	4	3	4	4	4	4	4	4	Y	slight
+rn	c1	X	4	4	4	4	4	4	3	4	4	tie	none
+rn	c1	Y	4	4	3	4	4	4	4	5	4	tie	none
+rn	c3	X	4	4	4	4	4	4	3	4	4	tie	none
+rn	c3	Y	4	4	3	4	4	4	4	5	4	tie	none
+flutter	c2	X	5	4	4	4	4	3	4	5	5	X	slight
+flutter	c2	Y	4	4	5	4	4	4	3	4	5	X	slight
+flutter	c3	X	5	4	4	4	4	3	4	5	5	tie	none
+flutter	c3	Y	4	5	5	4	4	4	3	4	5	tie	none
+flutter	c1	X	5	4	4	4	4	3	4	5	5	Y	slight
+flutter	c1	Y	4	5	5	5	5	4	3	4	5	Y	slight

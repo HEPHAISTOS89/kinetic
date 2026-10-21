@@ -39,8 +39,8 @@ kinetic/
 ├── engine/ + bin/kinetic   moteur déterministe, Python 3 sans dépendance
 ├── hooks/                  lint design continu après chaque modification UI (seulement dans les projets avec .kinetic/)
 ├── examples/lune/          un enregistrement KDL complet de référence
-├── evals/                  3 rounds A/B à l'aveugle : briefs, harness, résultats, retours d'usage
-└── tests/                  43 tests, dont la compilation réelle des exports Swift (iOS + macOS), TypeScript, Flutter et Kotlin (stubs)
+├── evals/                  4 rounds A/B à l'aveugle : briefs, harness (SwiftUI, Flutter, React Native), résultats, retours
+└── tests/                  52 tests, dont la compilation réelle des exports Swift (iOS + macOS), TypeScript, Flutter et Kotlin (stubs)
 ```
 
 ### Le langage : KDL
@@ -88,17 +88,19 @@ python3 -m unittest discover -s tests -v
 ```
 Protocole d'évaluation (moteur, déclenchement, A/B à l'aveugle) : [docs/EVALUATION.md](docs/EVALUATION.md).
 
-## Ce que l'évaluation montre (3 rounds A/B à l'aveugle, 6 critiques indépendants)
-| Round | Brief | Moyenne jugée (modèle seul / Kinetic) | Findings mesurés (modèle seul / Kinetic) |
-|---|---|---|---|
-| 1 | Courant (transport) | 3,67 / 3,78 | 3 majeurs / 0 |
-| 2 | Courant (transport) | 3,78 / 3,56 | 3 majeurs / 0 |
-| 3 | Tally (dépenses partagées), les deux avec boucle critique | 3,83 / 3,83 | 1 F + 6 D / 0 |
+## Ce que l'évaluation montre (4 rounds A/B à l'aveugle, 12 lectures de critiques indépendants)
+| Round | Brief | Stack | Moyenne jugée (modèle seul / Kinetic) | Findings mesurés (modèle seul / Kinetic) |
+|---|---|---|---|---|
+| 1 | Courant (transport) | SwiftUI | 3,67 / 3,78 | 3 majeurs / 0 |
+| 2 | Courant (transport) | SwiftUI | 3,78 / 3,56 | 3 majeurs / 0 |
+| 3 | Tally (dépenses partagées), les deux avec boucle critique | SwiftUI | 3,83 / 3,83 | 1 F + 6 D / 0 |
+| 4a | Prise (salle d'escalade), 3 critiques | Flutter | 4,26 / 4,22 | 5 F + 4 D / 1 mineur |
+| 4b | Petit Jour (crèche, interface en français), 3 critiques | React Native | 3,81 / 3,96 | 1 F + 8 D / 0 |
 
-- En qualité jugée à l'aveugle, Kinetic **égale** un modèle de pointe ; il ne le dépasse pas encore (écarts dans le bruit des critiques).
-- Kinetic gagne nettement sur la **rigueur mesurée** (système, grille, contraste, reduce-motion, états), sur le **copy** et la fidélité au ton du brief.
-- Faiblesse récurrente : l'**identité** — causée par nos propres consignes (« typo système d'abord », « niveau 2 = discret »). Corrigée en v1.4 (« plancher d'identité », « texte système, voix propre »), **pas encore re-mesurée**.
-- L'auto-critique est toujours plus indulgente que la critique indépendante : `ship` exige un critique indépendant.
+- En qualité jugée à l'aveugle, Kinetic **égale** un modèle de pointe (3,91 contre 3,90 sur les 12 lectures) ; il ne le dépasse pas.
+- Le compromis est stable sur 4 briefs et 3 stacks : Kinetic gagne en **anticipation** (états, hors-ligne, XXL, mode « en séance »), en **fidélité native** et en **rigueur mesurée** ; le modèle seul gagne en **identité** (6 critiques sur 6 au round 4).
+- Le plancher d'identité v1.4 n'a pas suffi. Le round 4 montre pourquoi : les designs gagnants dessinent un **vocabulaire tiré du domaine** (prises, scotch, bâtons de comptage, lune/soleil/maison) et le substituent aux éléments génériques. La v1.5 réécrit la règle en ce sens (kinetic-direct §4b), ajoute le héros « verdict d'abord » et les règles des moments à fort enjeu — **pas encore re-mesurée**.
+- L'auto-critique s'est calibrée (±0,1 au round 4) mais surestime encore l'identité : `ship` exige un critique indépendant.
 Détails et rapports : [docs/EVALUATION.md](docs/EVALUATION.md), `evals/`.
 
 ## Limites assumées

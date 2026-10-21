@@ -8,7 +8,7 @@ alternative and how it is verified (tests/).
 | Command | Shape | Boundary — what it answers | Evidence | Effects |
 |---|---|---|---|---|
 | `validate <kdl>` | validate | Is this decision record complete and coherent? (sections per mode, thesis genericity, divergence, type ramp, contrast, grid, radii, motion, states, variants, targets, references, slop phrases, TODOs) | derived | read-only |
-| `palette <seed>` | compute | Light + dark role sets from one seed, contrast-checked (WCAG 2 + APCA), plus an 11-step OKLCH ramp | derived | read-only |
+| `palette <seed>` | compute | Light + dark role sets from one seed, contrast-checked (WCAG 2 + APCA), plus an 11-step OKLCH ramp; `--temperature warm|cool`, `--neutral-hue H`, `--neutral-chroma C` steer the tinted neutrals | derived | read-only |
 | `contrast <fg> <bg>` | compute | WCAG ratio and APCA Lc with pass flags | derived | read-only |
 | `scan <paths>` | inspect | Design facts in UI source (colors, sizes, spacing, radii, durations, curves, springs, icons, effects) and the catalog rules they trigger, per file:line | observed / derived / inferred per finding | read-only |
 | `dna <paths>` | derive | The de-facto design system in code, coherence per dimension, a consolidated proposal (`--kdl` for an editable draft) | derived | read-only |
@@ -27,6 +27,13 @@ alternative and how it is verified (tests/).
   binary assets are not seen; unscanned or oversized files are listed as
   `unknown`. Generated files (`*.g.dart`, `*.freezed.dart`), tests and build
   folders are skipped and counted.
+- What `scan` does not count as UI drift: files named or placed in a fixture /
+  mock / preview / gallery folder (integrity rules still apply), files generated
+  by `kinetic export` (they define the tokens), colors keyed by an enum value or
+  named as data (`Circuit.red: Color(…)`, `lineColors`), lines marked
+  `// optical: …` for spacing, and KDL `exceptions` (listed as `waived`; F rules
+  are never waived). Text styles reached through a theme accessor (`t.body`,
+  `context.type.title`, `textTheme.bodyLarge`) count as semantic uses.
 - `inferred` findings require a look at the code context or the render before
   being reported as facts.
 - `score` never outputs a single taste number: it shows measured and judged

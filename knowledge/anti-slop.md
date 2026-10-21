@@ -90,7 +90,7 @@ render/critic can decide; **kdl** = `kinetic validate` checks the decision recor
 
 ## The deeper tests (judge)
 Run these before shipping anything substantial:
-1. **Swap test** — replace the logo and name with a competitor's. Does anything break? If not, it's interchangeable.
+1. **Swap test** — replace the logo and name with a competitor's. Does anything break? If not, it's interchangeable. Run it per block too: mark each block of the first two viewports ownable or generic — a generic list under an ownable hero is fine, a generic hero is not.
 2. **Squint test** — blur the screen. Is there exactly one primary thing, then a clear second?
 3. **Silence test** — remove every icon, shadow and color but one accent. Does the hierarchy survive? If it collapses, decoration was doing the work typography should do.
 4. **Thumb test** — one hand, walking. Can the primary action be reached and hit?

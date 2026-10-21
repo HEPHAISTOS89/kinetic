@@ -47,6 +47,9 @@ Design goals, in priority order:
 | `screens` | Per-screen hierarchy, components, states, motion | create, redesign, improve, design-to-code |
 | `signature` | The one memorable detail | create, redesign |
 | `premortem` | Where this could fail or read as slop, and the fix | create, redesign, improve, system |
+| `exceptions` | Findings accepted on purpose, each with a reason (`kinetic scan` reports them as waived) | optional |
+
+Any other top-level key is reported (K18) because no check reads it.
 
 ### `product`
 ```yaml
@@ -160,8 +163,11 @@ journeys:
 system:
   type:
     families: {display: New York, text: SF Pro Text, numeric: SF Pro Rounded}
+    # a family may differ per platform: display: {ios: New York, android: Noto Serif}
     scale:                           # size/line in pt (dp/sp), track in em
       display: {size: 40, line: 44, weight: 300, track: -0.02, numerals: tabular}   # optional width: condensed | compressed | expanded
+      # optional family: <key of families> or a font name (default: display ≥ 28pt, numeric if tabular, else text)
+      # other keys: case, use. Unknown keys are reported (K18): the export would ignore them.
       title:   {size: 22, line: 28, weight: 600, track: -0.01}
       body:    {size: 17, line: 24, weight: 400, track: 0}
       caption: {size: 13, line: 18, weight: 500, track: 0.01}
@@ -265,7 +271,7 @@ screens:
       first-run: n/a: covered by onboarding
     motion:
       - id: numeral-enter
-        kind: signature               # feedback | transition | signature (only signature counts against the budget)
+        kind: signature               # feedback | transition | signature | ambient (only signature counts against the budget)
         trigger: screen appears
         change: numeral settles 8pt upward and fades in
         spring: $spring.gentle
@@ -276,11 +282,17 @@ Component kinds: `text numeral button icon-button link field toggle chip tab
 row list card sheet dialog chart media badge progress nav-bar tab-bar toolbar`.
 Interactive kinds (`button icon-button link field toggle chip tab row`) must
 declare `variants` including `pressed` and `disabled`, and `target ≥ 44`.
+`variants` may be a map to waive one with a reason:
+`{default: …, pressed: …, disabled: "n/a: logging is local and never blocked"}`.
+A component nested inside another block declares `in: <component id>`; an
+`above_fold` requirement on it is checked at its parent's reading position.
 Any component with both `fg` and `bg` color references gets a contrast check.
 Required screen states: `content loading empty error` (+ `offline` when
 `network: true`). Each is either described or `n/a: reason`.
 Each motion entry needs `trigger`, `change`, `spring` or `duration`, `reduce`.
 `kind` defaults to `transition`; the expression budget limits only `signature` moments.
+`ambient` is a slow loop that signals "live" (one per screen); its duration is named
+`ambient-…`/`pulse-…` in `system.motion.durations` and may run up to 8 s.
 New screens: `kinetic states template <id> --block` prints a paste-ready block.
 
 ### `signature`
@@ -298,6 +310,18 @@ premortem:
     rule: D14
     fix: keep chroma low, let the numeral carry identity, no gold
 ```
+
+### `exceptions`
+```yaml
+exceptions:
+  - rule: D09
+    where: lib/app.dart              # substring of the file path; omit for project-wide
+    reason: extended FAB only on Android in session mode, where logging is the primary action
+```
+D and C findings only — F rules cannot be waived (K08 blocks). A reason under four
+words is rejected. Waived findings stay visible in `kinetic scan` output as `waived`.
+For one deliberate off-grid value, a code comment containing `optical` on that line
+(`// optical: DIN sits 2pt low next to Roboto`) exempts it from D17 instead.
 
 ## Validation output
 `kinetic validate .kinetic/design.kdl --json` returns
