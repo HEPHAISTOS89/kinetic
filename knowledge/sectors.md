@@ -47,7 +47,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 - **Expr** 3–5 · **Density** medium · **Dir** 13, 5, 11.
 - **Legitimate trust:** accurate sensor data with source, honest PRs. **Fabricated:** inflated calorie claims, fake leaderboards.
 - **Sector slop:** D04 ring clones, D27 streak shaming, small numbers mid-workout (F04 at a glance), D26 neon glow.
-- **Tendencies:** dark-first, huge tabular live metrics, strong haptics. **Break it** for rehab and senior fitness, where calm and clinical clarity beat energy — and for a **local venue's own app** (a climbing gym, a pool, a club): use "Community venue" below, not this costume.
+- **Tendencies:** dark-first, huge tabular live metrics, strong haptics. **Break it** for rehab and senior fitness, where calm and clinical clarity beat energy — and for a **local venue's own app** (a gym, a pool, a club): use "Community venue" below, not this costume.
 - **Critical states:** GPS lost; sensor disconnected mid-workout; auto-pause; workout recovered after a crash; bright-sun legibility.
 
 ### Nutrition / food tracking
@@ -177,17 +177,17 @@ and keep the system shared.
 - **Trust in every number**: stale and offline times must *look* different on the number itself (dimmed, "~", "sched."), and be recomputed from the timestamp — never show a 9-minute-old "2 min" at full weight.
 
 ## Community venue (a gym, club, pool, studio run by its people)
-- **Need**: "is it busy now?", "what's new since last time?", and a 30-second action in place (log a climb, book a lane), with wet or chalky hands. The venue is a place with people, not a performance tracker.
+- **Need**: "is it busy now?", "what's new since last time?", and a 30-second action in place (log a session, book a slot), often with wet or dirty hands. The venue is a place with people, not a performance tracker.
 - **Expression**: 3–4. Density medium. **Dir**: borrow structure from Quiet Native (#4), voice from the venue's own materials — not Kinetic Sport (#13), whose volt-on-black reads as a gamified fitness app.
-- **Identity source**: the venue's physical vocabulary (holds and tape, lane ropes, the chalkboard, the membership punch card) drawn as UI parts; the busy verdict in the venue's voice ("Busy, not packed.").
-- **Legitimate trust**: a live count with its time and a typical-day curve; stale counts *look* stale ("~34", "Was busy at 18:52"); setters and staff named. **Fabricated**: streaks, badges, leaderboards nobody asked for.
+- **Identity source**: the venue's own physical objects and paper (equipment, the noticeboard, the membership card), found per kinetic-direct §4b and drawn as UI parts; the busy verdict in the venue's voice.
+- **Legitimate trust**: a live count with its time and a typical-day curve; stale counts *look* stale (approximate, past tense); staff named. **Fabricated**: streaks, badges, leaderboards nobody asked for.
 - **Sector slop**: D27 streaks and "crush your goals", fitness ring clones (D04), a numeral-only hero when the question is "is it packed?".
 - **Critical states**: closed (holiday, competition) with when it reopens; counter down (show the usual curve, say so); logs queued without signal; membership expired or entries running out (logging keeps working); first visit; an in-session mode once checked in.
 
 ## Childcare / family logistics (daycare, school, after-school)
 - **Need**: a parent glancing during the work day — "is she OK, is she napping, did she eat?" — then acting on what needs them (sign, bring, pick up). Carers are professionals; the app is their notebook, not a social feed.
-- **Expression**: 2–3. Density low–medium. **Dir**: Editorial Serif voice (#2) on Clinical Calm structure (#12) is a good start; the identity comes from the liaison notebook (cahier de liaison) and a mark per state of the child (moon napping, sun outside, house at home).
-- **Legitimate trust**: who logged what and when ("Notée par Inès à 13 h 10"); lag said plainly ("the team often notes after meals"); quantities in words ("en a mangé la moitié"). **Fabricated**: metrics and scores about a toddler, "likes", fake real-time.
+- **Expression**: 2–3. Density low–medium. **Dir**: Editorial Serif voice (#2) on Clinical Calm structure (#12) is a good start; the identity comes from the carers' own tools and the child's day, drawn (kinetic-direct §4b) — not from a feed or a dashboard.
+- **Legitimate trust**: who logged what and when; lag said plainly; quantities in words, not percentages. **Fabricated**: metrics and scores about a toddler, "likes", fake real-time.
 - **Sector slop**: dashboards of naps/meals as charts (D04/D27), feed scrolling, alarm red for anything below the medical threshold, cute mascots (D07).
-- **Critical states**: health alert above the threshold (an event with who/when, a missed call, the call button with the number, the rest of the screen re-answering — states.md §3c); logging lag; not arrived / absent / day over / closed; two children (switcher with each child's live state); authorised person picking up (ID at the door); offline (past tense, last received time).
+- **Critical states**: health alert (states.md §3c); logging lag; not arrived / absent / day over / closed; several children; someone else picking up; offline.
 

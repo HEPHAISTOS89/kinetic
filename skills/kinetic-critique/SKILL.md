@@ -60,7 +60,7 @@ Self-critique is biased; reduce the bias, never hide it:
    (kinetic-direct §4b). Self-judged `distinctiveness` cannot exceed 3 unless the hero is
    ownable and the domain vocabulary appears in ≥ 4 places — across four blind rounds,
    independent critics scored Kinetic's distinctiveness 0.5–1 point below its self-judgment.
-   **Fear test**: render the most frightening state (fever, failed payment, missed train) and
+   **Fear test**: render the most frightening state (health alert, failed payment, missed train) and
    check knowledge/states.md §3c line by line; it decides trust more than coverage does.
 3. Save `.kinetic/critique.json` with `"self_judged": true`. `kinetic score` then caps
    the verdict at `ship-pending` (an independent critic must confirm).

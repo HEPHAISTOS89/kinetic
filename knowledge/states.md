@@ -67,23 +67,24 @@ the weight.
 
 ## 3c. High-stakes moments: precision over coverage
 Coverage wins "anticipation"; the moment that frightens the user decides trust.
-In round 4 the more complete design lost these points to the less complete one:
-- **An alert takes over the screen's meaning.** When an alert shows (fever,
-  failed payment, delay), every other block re-answers in relation to it: the
-  hero says how the child is *now* and who is with her, the pick-up row becomes
-  "Venir plus tôt", the routine fact ("woke up at 13:55") steps down. Two equal
-  masses (alert + unchanged hero) fail the squint test.
+In blind rounds the more complete design has lost these points to the less complete one:
+- **An alert takes over the screen's meaning.** When an alert shows (failed
+  payment, cancelled connection, missed medication), every other block
+  re-answers in relation to it: the hero says what holds *now* and who can fix
+  it, the routine row becomes the recovery ("Payer par carte avant 18 h"), the
+  routine fact ("last paid on the 3rd") steps down. Two equal masses (alert +
+  unchanged hero) fail the squint test.
 - **An alert is an event, not a rule.** Name who, what, when, and the one action
-  with its means: "Inès a mesuré 38,4 °C à 14 h 05 · appel manqué à 14 h 07" +
-  "Appeler la crèche · 01 42 …". The rule ("above 38 °C the team must talk to
-  you") is secondary text at most.
+  with its means: "Votre virement de 840 € a été refusé à 9 h 12 · la banque a
+  appelé à 9 h 15" + "Appeler l'agence · 01 42 …". The rule ("rent is late
+  after the 5th") is secondary text at most.
 - **Unknown is not "didn't happen".** During a logging lag or offline, a
   missing entry reads "pas encore notée" / "not logged yet", never "Pas encore"
   or "0", which state a fact the app doesn't have.
-- **A switcher shows each item's live state**, not its category: "Léa · dort
-  depuis 13 h 05 | Noé · au jardin", not two identical "À la crèche".
-- **Every offered action is valid for the object's state** (no "Flash" on a
-  boulder with logged attempts, no "Pay" when settled): check the domain logic
+- **A switcher shows each item's live state**, not its category: "Compte
+  joint · 1 240 € | Livret · virement en attente", not two identical "Actif".
+- **Every offered action is valid for the object's state** (no "Cancel" on a
+  shipped order, no "Pay" when settled): check the domain logic
   per state, not only the visuals.
 
 ## 4. Edge cases to design on purpose

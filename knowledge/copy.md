@@ -106,12 +106,12 @@ on first launch.
 - Don't concatenate translated fragments; translate whole sentences with placeholders.
 - French typography: no-break space before `: ; ! ?` and inside « guillemets »;
   capitalize only the first word of titles (« Paramètres du compte », not « Paramètres Du Compte »).
-  Times « 13 h 05 » (or the house style « 13h05 », but one style everywhere), durations
-  « 1 h 15 », decimals « 38,4 °C », ordinals « 2ᵉ ». Mixed time formats on one screen were
-  flagged by every round-4 critic.
-- **Write from the user's side of the verb.** The institution's vocabulary ("Départ prévu",
-  "ticket closed", "dossier en cours d'instruction") becomes the user's action or outcome
-  ("Récupération à 17 h 30 · Marc", "Solved", "We're reviewing your file").
+  Times « 9 h 40 » (or the house style « 9h40 », but one style everywhere), durations
+  « 1 h 15 », decimals « 12,5 km », ordinals « 2ᵉ ». Mixed time formats on one screen were
+  flagged by every critic in a blind round.
+- **Write from the user's side of the verb.** The institution's vocabulary ("Colis en cours
+  d'acheminement", "ticket closed", "dossier en cours d'instruction") becomes the user's
+  action or outcome ("Arrive jeudi chez vous", "Solved", "We're reviewing your file").
 - English UI: sentence case for buttons and titles in most modern apps; Title Case only
   if it's a deliberate system decision applied everywhere.
 

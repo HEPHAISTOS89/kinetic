@@ -25,11 +25,11 @@ browse/list hubs; use a compact contextual header for glance screens.
 **Answer a qualitative question with a verdict, then the number.** When the
 user's glance question is a judgement ("is it packed?", "is she OK?", "can I
 afford it?"), the display-size element is a short verdict sentence in the
-product's voice ("Busy, not packed.", "Léa dort depuis 13 h 05."), and the
-number supports it underneath ("34 inside · usually 60 by 19:00"). The
-sentence also carries data age by grammar ("Was busy at 18:52."). In round 4
-all three blind critics ranked the verdict-sentence hero above a numeral hero
-for the same data. Keep the numeral as the hero only when the number *is* the
+product's voice ("Plenty left until two.", "Your fern can wait until
+Thursday."), and the number supports it underneath ("62 loaves · usually gone
+by 15:00"). The sentence also carries data age by grammar ("Was plenty at
+11:40."). Blind critics have ranked the verdict-sentence hero above a numeral
+hero for the same data. Keep the numeral as the hero only when the number *is* the
 answer (a balance, a departure in 3 min, a temperature).
 
 **One loud mass per viewport.** A multicolour grid of chips (grade tapes,

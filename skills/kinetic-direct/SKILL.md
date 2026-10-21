@@ -64,21 +64,22 @@ signature detail is not enough: in four blind A/B rounds the designs judged more
 distinctive (5 vs 4, 4 vs 3) did the same three things, and Kinetic's did not.
 
 1. **Find the domain's material.** What do users touch, see or say in the real
-   world of this product? Climbing: holds, tape under the start hold, chalk
-   tallies, the pegboard. Daycare: the paper liaison notebook, the nap (moon),
-   the garden (sun), the doudou. Transit: the platform sign, the ticket.
+   world of this product? A library: the date stamp, the spine label, the
+   returns slot. A bakery: the oven schedule, the paper bag, the chalk price
+   board. Transit: the platform sign, the ticket. A vineyard: the row, the
+   harvest crate, the cellar tag.
    Write 3–6 of them before drawing anything.
 2. **Draw them as a small vocabulary and let it replace generic parts**:
    icons, dots, counters, progress, empty and offline states, data marks.
-   A send is a hold, not a check-circle; attempts are tally marks, not "3×";
-   a queued log is an *outlined* hold; each child state has its own mark
-   (moon while napping, sun outdoors, the house when home). Carry it into at
+   A loan is a spine label, not a list bullet; days left are date stamps, not a
+   progress bar; a renewal waiting for signal is an *outlined* stamp; each
+   loan state has its own mark (on the shelf, in your bag, in the returns slot). Carry it into at
    least four places: the hero, list items, one data encoding, one degraded
    state. Expression level sets the rendering (level 2: monochrome line marks
    on the 24 grid; level 4–5: illustrated colour), not whether it exists.
 3. **Make the hero the vocabulary's home.** The first viewport holds the
    answer *and* the identity: a display-size verdict sentence when the glance
-   question is qualitative ("Busy, not packed." beat "34 inside"; layout.md
+   question is qualitative ("Plenty left until two." beat "62 loaves"; layout.md
    §glance headers), with the drawn hero beside or under it. A loud grid of
    identity chips that competes with the answer is not a hero — quiet it.
 

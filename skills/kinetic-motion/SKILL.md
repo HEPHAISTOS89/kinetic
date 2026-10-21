@@ -20,7 +20,7 @@ Read `knowledge/motion.md`. Implementation details per stack: `knowledge/stacks/
 4. **Spec every animation in KDL** (`screens[].motion`) with its `kind`:
    `feedback` (press, toggle, symbol swap), `transition` (state/screen change) or
    `signature` (the spine made visible) or `ambient` (a slow loop that says
-   "live": a breathing dot on an ongoing nap or a live count — one per screen,
+   "live": a breathing dot on an ongoing session or a live count — one per screen,
    ≥ 1.2 s per half-cycle, name its duration `ambient-…`/`pulse-…`, still under
    reduce motion). Only `signature` counts against the expression budget. Then: `trigger`, `change`
    (what moves, from where to where, amplitude), `spring` or `duration`,
