@@ -87,6 +87,11 @@ In blind rounds the more complete design has lost these points to the less compl
   shipped order, no "Pay" when settled): check the domain logic
   per state, not only the visuals.
 
+- **Severity has its own colour.** A safety alert (gale, recall, fever,
+  failed payment) owns a severity tint in *both* themes, distinct from the
+  tint of routine notices; a gale in the same pale sage as "fuel dock open"
+  read as no alert at all to blind critics.
+
 ## 4. Edge cases to design on purpose
 - **Text**: the longest name in the dataset, German/French (+30–40% length), Arabic/Hebrew (RTL mirroring), emoji in user names, 1-character names.
 - **Numbers**: 0, 1 (singular), 1,000,000+, negative, decimals, currencies with different symbol positions, missing values (show "—", not 0).

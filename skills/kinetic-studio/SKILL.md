@@ -25,6 +25,7 @@ removal and judgment.
 
 Launch parallel agents **in one message** (several Agent calls at once).
 Give each agent file paths, not your opinions: the value is the fresh context.
+Agents return their work as text; you save it to the files named below (some roles are read-only).
 
 ## Protocol
 1. **Brief** (you): kinetic-think → `product`, `requirements`, `thesis`,
@@ -50,12 +51,17 @@ Give each agent file paths, not your opinions: the value is the fresh context.
    - lens **product**: product_fit, hierarchy, anticipation, copy first;
    - lens **identity**: distinctiveness, typography, color, cover-the-logo vs the rival;
    - lens **clarity & craft**: layout_craft, native_fidelity, clarity budgets, squint/silence.
-   Every critic still scores all dimensions. Save `.kinetic/studio/critic-{product,identity,clarity}.json`, then
-   `kinetic panel .kinetic/studio/critic-*.json --out .kinetic/critique.json`.
+   Every critic still scores all dimensions. Save `.kinetic/studio/loopN/critic-{product,identity,clarity}.json` (one folder per loop), then
+   `kinetic panel .kinetic/studio/loopN/critic-*.json --out .kinetic/critique.json`.
+   Render **both platforms**: at least the default state as an Android
+   variant (Material navigation, sheets, buttons) beside iOS — native
+   fidelity was 3/5 for every arm that rendered only one platform.
 7. **Iterate** (you): fix the panel's consensus fixes and every dimension
    with a median < 4 or a split (disagreement ≥ 2) — splits mean the render
    is ambiguous, not that one critic is wrong. Re-render → editor → panel.
-   Max 3 loops; stop when two loops don't raise the median mean.
+   Max 3 loops; stop when two loops don't raise the median mean. The **last
+   loop ends with a panel** on the final renders (fix → render → panel → stop):
+   never ship fixes nobody judged.
 8. **Prove**: `kinetic score --kdl .kinetic/design.kdl --code <src> --renders <shots> --judged .kinetic/critique.json`.
    An independent panel can reach `ship`; clarity < 70 blocks it.
 

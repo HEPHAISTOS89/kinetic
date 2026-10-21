@@ -21,7 +21,7 @@
     "civic",
     "logistics"
    ],
-   "rule": "expanded only at >= 22pt; body never expanded"
+   "rule": "expanded only at >= 22pt; body never expanded; React Native cannot select SF width/optical variants through fontFamily — on RN bundle the Android face for both platforms"
   },
   {
    "id": "condensed-numerals",
@@ -43,7 +43,7 @@
     "counts",
     "scores"
    ],
-   "rule": "condensed for numerals and short labels only; sentences stay in the text face"
+   "rule": "condensed for numerals and short labels only; sentences stay in the text face; React Native cannot select SF width/optical variants through fontFamily — on RN bundle the Android face for both platforms"
   },
   {
    "id": "rounded-system",
@@ -397,7 +397,7 @@
     "finance",
     "anything that must feel native"
    ],
-   "rule": "the voice is the weight contrast (900 vs 400) and size jumps (>= 1.8x)"
+   "rule": "the voice is the weight contrast (900 vs 400) and size jumps (>= 1.8x); React Native cannot select SF width/optical variants through fontFamily — on RN bundle the Android face for both platforms"
   },
   {
    "id": "mono-data",

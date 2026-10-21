@@ -135,3 +135,6 @@ E2E/screenshot flows: Maestro (`maestro test flow.yaml`, `takeScreenshot`) or De
 
 ## Bundling dealt faces
 macOS ships most native display faces as `.ttc` collections (Charter, Avenir Next, Didot, Copperplate…), which neither Flutter nor React Native can load. Run `kinetic font split /System/Library/Fonts/Supplemental/<Face>.ttc --out fonts/` and declare the faces you use (one file per weight).
+
+## Bundled faces with several weights
+On Android, React Native selects a bundled font by family name per file: declare one family per weight (`Charter-Bold`, `Charter-Roman`) in a small map in your theme (`fontFamily: weights[700]`) rather than `fontWeight` on one family, which falls back to faux bold on Android and web.

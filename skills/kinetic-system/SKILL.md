@@ -16,6 +16,12 @@ them. The display face carries the voice; text stays the platform face. The
 palette's **field** and **proportion** are part of the decision (the field goes
 in `system.color.roles.<theme>.field` with its `on-field`).
 
+**Dark is designed, not derived.** The dark ground's hue follows the
+thesis temperature, not the accent: a warm brief gets a warm near-black
+(umber, clay), never the accent's navy; tape, paper and photo surfaces get
+their own dark values so they don't turn to mud. In round 7 every Kinetic
+design lost colour points (3 vs 4) on an untinted or cold dark theme.
+
 ## Order (write each into KDL `system`, then `kinetic validate`)
 1. **Type** (`knowledge/typography.md`): families (system first on iOS), a
    5–8 step ramp anchored on body 17 (iOS) / 16 (Android), ratio from the

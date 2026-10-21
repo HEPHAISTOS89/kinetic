@@ -1,0 +1,17 @@
+== flutter
+  A: mean 3.89 [3.89, 3.89, 3.89]  clean 4.00  ranks [2, 1, 1]
+     produ 4.00  hiera 4.00  disti 3.00  typog 4.00  color 4.00  layou 4.00  nativ 3.00  antic 4.00  copy 5.00
+  U: mean 3.52 [3.56, 3.56, 3.44]  clean 3.00  ranks [3, 3, 3]
+     produ 4.00  hiera 3.33  disti 3.00  typog 3.00  color 3.67  layou 4.00  nativ 3.33  antic 3.33  copy 4.00
+  K: mean 3.93 [4, 3.89, 3.89]  clean 3.00  ranks [1, 2, 2]
+     produ 4.33  hiera 4.00  disti 5.00  typog 4.00  color 3.00  layou 3.00  nativ 3.00  antic 5.00  copy 4.00
+== rn
+  A: mean 3.59 [3.78, 3.44, 3.56]  clean 3.00  ranks [2, 3, 3]
+     produ 3.67  hiera 3.67  disti 3.00  typog 4.00  color 3.33  layou 4.00  nativ 3.00  antic 3.67  copy 4.00
+  U: mean 3.81 [3.78, 3.89, 3.78]  clean 2.67  ranks [3, 1, 2]
+     produ 4.00  hiera 3.67  disti 3.00  typog 3.67  color 4.00  layou 4.00  nativ 3.00  antic 4.00  copy 5.00
+  K: mean 3.85 [4, 3.78, 3.78]  clean 4.67  ranks [1, 2, 1]
+     produ 4.33  hiera 4.33  disti 4.00  typog 4.00  color 3.00  layou 3.33  nativ 3.00  antic 4.67  copy 4.00
+pooled A: 3.74
+pooled U: 3.67
+pooled K: 3.89

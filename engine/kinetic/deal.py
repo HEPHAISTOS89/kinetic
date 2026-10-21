@@ -86,7 +86,9 @@ def _pick(rng, pool, words, taken, slot, engine=None):
         if slot == "palette":
             tn = tone(words)
             if "warm" in tn and p.get("temperature") == "cool":
-                w *= 0.1
+                w *= 0.05
+            if "warm" in tn and p.get("temperature") == "bold":
+                w *= 0.3
             if "calm" in tn and p.get("temperature") == "bold":
                 w *= 0.2
         if engine is not None:
@@ -99,9 +101,12 @@ def _pick(rng, pool, words, taken, slot, engine=None):
     return _weighted(rng, cand, weights)
 
 
-def _roles(pal: dict) -> dict:
+def _roles(pal: dict, tn=frozenset()) -> dict:
+    nh = pal.get("neutral_hue")
+    if "warm" in tn and pal.get("temperature") != "warm":
+        nh = 70  # a warm brief keeps warm grounds (light and dark) whatever the accent: a cobalt studio at night is not navy
     roles = color.derive_roles(pal["seed"], pal.get("strategy", "neutral+accent"),
-                               neutral_chroma=pal.get("neutral_chroma"), neutral_hue=pal.get("neutral_hue"))
+                               neutral_chroma=pal.get("neutral_chroma"), neutral_hue=nh)
     fields = {"field": pal.get("field", {})}
     fields.update({f"state-{k}": v for k, v in (pal.get("states") or {}).items()})
     for name, f in fields.items():
@@ -136,14 +141,14 @@ def _option(rng, lib, words, taken, families, engine=None):
     return opt
 
 
-def _summary(opt: dict) -> dict:
+def _summary(opt: dict, tn=frozenset()) -> dict:
     e, t, p, m = opt["engine"], opt["type"], opt["palette"], opt["motion"]
     return {
         "engine": {k: e[k] for k in ("id", "name", "family", "device", "shell", "first_viewport",
                                       "vocabulary_slots", "signature_move", "live_thing", "risks") if k in e},
         "type": {k: t[k] for k in ("id", "name", "voice", "display", "text", "ramp", "rule") if k in t},
         "palette": {"id": p["id"], "name": p["name"], "proportion": p.get("proportion"), "rule": p.get("rule"),
-                    "roles": _roles(p)},
+                    "roles": _roles(p, tn)},
         "motion": {k: m[k] for k in ("id", "name", "springs", "durations", "haptics", "reduce") if k in m},
     }
 
@@ -158,7 +163,7 @@ def deal(brief: str = "", seed: int | None = None, options: int = 3, exclude=(),
     families: set = set()
     opts = []
     for _ in range(max(1, min(options, 5))):
-        opts.append(_summary(_option(rng, lib, words, taken, families)))
+        opts.append(_summary(_option(rng, lib, words, taken, families), frozenset(tone(words))))
     return {"tool": "deal", "seed": seed, "brief_words": sorted(words)[:40], "options": opts,
             "standing_exit": "The category standard (what a competent template would ship) is always available "
                              "as an exit if the user asks for it — never recommend it.",
@@ -191,7 +196,7 @@ def redraw(state: dict, option: int, slot: str, reason: str, lib_dir: str = LIB)
             "motion": next(m for m in lib["motion"] if m["id"] == cur["motion"]["id"])}
     old = full[slot]["id"]
     full[slot] = new
-    state["options"][option - 1] = _summary(full)
+    state["options"][option - 1] = _summary(full, frozenset(tone(words)))
     state["history"].append({"option": option, "slot": slot, "from": old, "to": new["id"], "reason": reason.strip(),
                              "at": time.strftime("%Y-%m-%dT%H:%M:%S")})
     return state

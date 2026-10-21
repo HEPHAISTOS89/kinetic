@@ -50,6 +50,18 @@ that blocks `ship` like a judged dimension below 3.
 12. **Remove one accessory.** Before shipping each screen, name the element
     whose removal costs least — and remove it. If nothing can go, say why.
 
+## Calm ≠ cryptic
+Cutting words must never cost comprehension. Blind critics punished "read
+21:04", "1,184°", "26 paid", "Board from 18:05" and unlabelled ring styles.
+- Units always (°C, m, kn); no abbreviations a newcomer can't read.
+- Every visual encoding is self-evident (filled = taken, open = free, taped =
+  out of order) or carries its word; a legend is a failure (D31), a missing
+  legend on an ambiguous mark is worse.
+- Captions ≥ 13pt at text-2 contrast; nothing that matters at 10–11pt grey.
+- **Cut words, not warmth.** The editor removes repetition, boxes and meta; it
+  keeps the one human sentence in the product's voice (a signed note, the
+  verdict). The baseline won copy 5 vs 4 when Kinetic's editor trimmed voice.
+
 ## Calm ≠ bland
 Clean is the setting for the identity, not its replacement: the vocabulary
 mark, the display voice and the field colour stay — what goes is the

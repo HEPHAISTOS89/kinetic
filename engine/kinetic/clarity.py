@@ -123,6 +123,8 @@ def _sub(v, good, bad):
 
 def grade(m: dict) -> dict:
     parts = {k: round(_sub(m[k], *BUDGET[k]) * 100) for k in BUDGET}
+    if m["loud_things"] <= 1:
+        parts["loud_share"] = 100  # one deliberate colour field (a state field, a hot kiln) is the one loud thing, not clutter
     score = round(0.25 * parts["words"] + 0.12 * parts["lines"] + 0.10 * parts["text_sizes"]
                   + 0.15 * parts["quiet_share"] + 0.08 * parts["edge_density"]
                   + 0.15 * parts["loud_share"] + 0.15 * parts["loud_things"])

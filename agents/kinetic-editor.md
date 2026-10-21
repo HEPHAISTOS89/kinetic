@@ -29,7 +29,10 @@ Plugin root: the parent of this file's `agents/` directory. Read
    shorten to "…" / drop the container / demote to text-2), the clarity rule
    number, and what the user loses (must be "nothing" or "one tap").
 4. Rewrite the copy that stays over budget: give the exact new string.
-5. Never cut: a `must` requirement's element, an alert's action, a vocabulary
+5. Never make a label cryptic (no "read 21:04", no unitless numbers, no
+   unexplained marks) and never cut the product's voice sentence — cut
+   repetition and chrome instead (knowledge/clarity.md "Calm ≠ cryptic").
+6. Never cut: a `must` requirement's element, an alert's action, a vocabulary
    mark's last site, a state's recovery path, accessibility labels.
 
 ## Output
