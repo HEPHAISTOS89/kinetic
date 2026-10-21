@@ -182,7 +182,7 @@ and keep the system shared.
 - **Identity source**: the venue's own physical objects and paper (equipment, the noticeboard, the membership card), found per kinetic-direct §4b and drawn as UI parts; the busy verdict in the venue's voice.
 - **Legitimate trust**: a live count with its time and a typical-day curve; stale counts *look* stale (approximate, past tense); staff named. **Fabricated**: streaks, badges, leaderboards nobody asked for.
 - **Sector slop**: D27 streaks and "crush your goals", fitness ring clones (D04), a numeral-only hero when the question is "is it packed?".
-- **Critical states**: closed (holiday, competition) with when it reopens; counter down (show the usual curve, say so); logs queued without signal; membership expired or entries running out (logging keeps working); first visit; an in-session mode once checked in.
+- **Critical states**: closed (holiday, competition) with when it reopens; counter down (show the usual curve, say so); actions queued without signal; membership expired (the core action keeps working); first visit.
 
 ## Childcare / family logistics (daycare, school, after-school)
 - **Need**: a parent glancing during the work day — "is she OK, is she napping, did she eat?" — then acting on what needs them (sign, bring, pick up). Carers are professionals; the app is their notebook, not a social feed.

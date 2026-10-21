@@ -496,6 +496,8 @@ class Validator:
             else:
                 ratio = line_h / size
                 lo, hi = (1.0, 1.3) if size >= 28 else (1.15, 1.6)
+                if str(st.get("case", "")).lower() == "upper" or "numeral" in str(st.get("use", "")).lower():
+                    lo = 0.95  # caps and figures have no descenders: tight leading is correct
                 if not lo <= ratio <= hi:
                     self.add("K07", "D", "minor", f"system.type.scale.{name}",
                              f"`{name}` line/size = {ratio:.2f} (expected {lo}–{hi} at {size}pt)",
@@ -961,6 +963,10 @@ class Validator:
                     while where and where not in order and where in parents and where not in seen:
                         seen.add(where)
                         where = parents[where]
+                    pinned = {str(c.get("id")) for c in (sc.get("components") or [])
+                              if isinstance(c, dict) and c.get("pinned")}
+                    if where in pinned:  # a pinned bar/CTA is in every viewport whatever its reading position
+                        continue
                     if where and where not in order:
                         self.add("K21", "I", "info", f"requirements.{j}",
                                  f"`{rid}` must be above the fold, but `{where}` is not in `{sid}` reading_order: position unknown",

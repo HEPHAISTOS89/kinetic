@@ -292,6 +292,8 @@ GENERIC_PARTS = {
     "tsx": {"progress_bar": r"<ProgressBar\b|<Progress\.\w+|ProgressViewIOS"},
 }
 
+AMBIENT = re.compile(r"(ambient|loop|breath|pulse|idle|live|shimmer)", re.I)
+
 # direct signals: (rule, tier, severity, evidence, regex, message, fix)
 SIG = {
     "flutter": [
@@ -517,7 +519,8 @@ class Scanner:
                                                file=fs.path, line=_line_at(text, m.start()),
                                                message="icon-only IconButton without tooltip/semantic label",
                                                fix="add `tooltip:` (also used as the accessibility label)"))
-            tabs = len(re.findall(r"\b(?:BottomNavigationBarItem|NavigationDestination)\(", text))
+            # platform-adaptive shells declare one tab set per platform: count the larger, not the sum
+            tabs = max(len(re.findall(r"\bBottomNavigationBarItem\(", text)), len(re.findall(r"\bNavigationDestination\(", text)))
             if tabs >= 5:
                 fs.findings.append(Finding(rule="D08", tier="D", severity="minor", evidence="observed", file=fs.path,
                                            line=_line_at(text, text.find("Navigation")),
@@ -840,7 +843,13 @@ class Scanner:
         fams = Counter(str(f.value).split(":")[0] for f in by_kind["icon"])
         material_styles = {str(f.value).split(":")[1] for f in by_kind["icon"] if str(f.value).startswith("material:")}
         real_fams = [k for k in fams if k not in ("custom-svg", "custom-drawable")]
-        if len(real_fams) > 1:
+        adaptive = any(fs.flags["adaptive"] for fs in files)
+        if set(real_fams) == {"cupertino", "material"} and adaptive:
+            f0 = by_kind["icon"][0]
+            findings.append(Finding(rule="D06", tier="D", severity="info", evidence="inferred", file=f0.file, line=f0.line,
+                                    message="Cupertino and Material icon families in a platform-adaptive app",
+                                    fix="fine when each platform gets its own family; never both on one screen"))
+        elif len(real_fams) > 1:
             f0 = by_kind["icon"][0]
             findings.append(Finding(rule="D06", tier="D", severity="major", evidence="observed", file=f0.file, line=f0.line,
                                     message=f"{len(real_fams)} icon families mixed: {', '.join(sorted(real_fams))}",
@@ -858,7 +867,8 @@ class Scanner:
                                     file=f0.file if f0 else "", line=f0.line if f0 else 0,
                                     message=f"{animated} animation sites and no reduce-motion handling anywhere",
                                     fix="branch on the platform's reduce-motion setting (see knowledge/motion.md)"))
-        long_d = [f for f in by_kind["duration"] if isinstance(f.value, int) and f.value > 600]
+        long_d = [f for f in by_kind["duration"] if isinstance(f.value, int) and f.value > 600
+                  and not AMBIENT.search((f.context or "") + " " + (f.raw or ""))]
         if long_d:
             findings.append(Finding(rule="D19", tier="D", severity="minor", evidence="inferred", file=long_d[0].file,
                                     line=long_d[0].line,

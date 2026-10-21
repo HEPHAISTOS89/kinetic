@@ -185,7 +185,8 @@ adb exec-out screencap -p > shots/android_home.png
 ```
 
 Golden/gallery gotchas:
-- A golden that pumps once renders a route pushed in a post-frame callback at its *start* position (an invisible sheet). Render sheets and dialogs as initial routes (`onGenerateInitialRoutes`) or pump until settled.
+- A golden that pumps once renders a route pushed in a post-frame callback at its *start* position (an invisible sheet). Render sheets and dialogs as initial routes (`onGenerateInitialRoutes`), pump until settled, or open them with `sheetAnimationStyle: AnimationStyle.noAnimation` in gallery-only code.
+- Text styles with no `fontFamily` (the platform face) render as Ahem boxes in goldens wherever they don't merge with the ambient `DefaultTextStyle` (`ButtonStyle.textStyle`, `TextPainter` in a `CustomPainter`): give those styles the platform family explicitly (`.SF Pro Text` on iOS builds, `Roboto` on Android) or merge with `DefaultTextStyle.of(context).style`.
 - `Ink`/`InkWell` decorations are painted on the nearest `Material`; inside a coloured `DecoratedBox`/`Container` the fill hides them and a filled button looks disabled — put the colour on a `Material`/`Ink`, not on the box behind it.
 - Display numerals built with a fixed `fontSize` ignore `textScaler`; scale them with `MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.6)` so the hero still leads at XXL.
 

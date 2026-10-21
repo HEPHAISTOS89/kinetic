@@ -151,7 +151,9 @@ def dna(scan_result: dict, grid: int = 4) -> dict:
     coherence = {
         "type": round(max(0.0, 1 - max(0, n_sizes - 7) / 8), 2) if n_sizes else None,
         "spacing": s.get("spacing_on_grid_ratio"),
-        "color": round(max(0.0, 1 - max(0, len(neutrals) - 6) / 8 - max(0, hues - 2) / 4), 2) if cols else None,
+        # neutrals are counted per theme (a designed dark theme doubles the set) and data/status hues are excluded
+        "color": round(max(0.0, 1 - max(0, max((s.get("neutrals_per_theme") or {}).values() or [len(neutrals)]) - 6) / 8
+                           - max(0, hues - 2) / 4), 2) if cols else None,
         "radius": round(max(0.0, 1 - max(0, n_radii - 4) / 6), 2) if n_radii else None,
         "icons": round(1 / len(fams), 2) if fams else None,
         "motion": round(0.5 * (1.0 if s.get("reduce_motion_sites") else 0.0)

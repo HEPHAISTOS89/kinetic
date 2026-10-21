@@ -32,9 +32,9 @@ by 15:00"). The sentence also carries data age by grammar ("Was plenty at
 hero for the same data. Keep the numeral as the hero only when the number *is* the
 answer (a balance, a departure in 3 min, a temperature).
 
-**One loud mass per viewport.** A multicolour grid of chips (grade tapes,
-categories) is visually the heaviest thing on a screen. Below the hero, show
-only what is new or yours at full colour (untopped, this week) and the rest
+**One loud mass per viewport.** A multicolour grid of chips (categories,
+tags, status pills) is visually the heaviest thing on a screen. Below the hero,
+show only what is new or yours at full colour and the rest
 behind "All …" or at reduced chroma, so the squint test still finds the answer.
 
 **Secondary blocks stay compact.** A chart or list that supports the primary

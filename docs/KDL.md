@@ -181,6 +181,9 @@ validator rejects a chosen engine that wasn't dealt (K29), a rejected viable
 direction more distinctive than the chosen one (K30), and a logged redraw
 without a reason (K33).
 
+Components may set `pinned: true` (a docked CTA or bar): K21 then treats them
+as present in every viewport whatever their reading position.
+
 ### `journeys`
 ```yaml
 journeys:
