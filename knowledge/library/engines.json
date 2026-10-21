@@ -93,7 +93,7 @@
    "first_viewport": [
     "59-171 the running position: 40-56pt tabular figure + one line of meaning",
     "171-187 double rule (hairline + 2pt) = the ledger's identity",
-    "187-675 rows: date column 44pt wide, description, right-aligned tabular amount; 52-60pt rows, ruled",
+    "187-675 rows: date column, description, right-aligned tabular amount; 52-60pt rows, a hairline between rows only — never under each line of a row",
     "675-818 add bar docked, or the closing total line"
    ],
    "vocabulary_slots": [
@@ -459,7 +459,7 @@
    "shell": "native",
    "first_viewport": [
     "59-131 the page's date as the notebook writes it, 22/28",
-    "131-818 ruled lines every 28-32pt; entries sit on the baseline; a 44pt margin column holds times and marks"
+    "131-818 entries sit on a quiet ruled ground: a rule BETWEEN entries (not under every line), a 44-76pt margin column for times and marks, paragraphs with natural leading inside one entry"
    ],
    "vocabulary_slots": [
     "divider",
@@ -470,8 +470,8 @@
    "signature_move": "margin marks (tick, star, arrow) are the vocabulary; edits strike through and keep history",
    "live_thing": "swipe right on an entry to add a margin mark",
    "risks": [
-    "handwriting faces for body text (only for marks/annotations)",
-    "ruling must follow the text ramp"
+    "ruling every line turns the page into stripes (clutter): rule between entries only",
+    "handwriting faces only for marks/annotations"
    ]
   },
   {
