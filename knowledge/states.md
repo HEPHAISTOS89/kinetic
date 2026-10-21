@@ -20,7 +20,7 @@ the user at 200% text size, the subway with no signal.
 | **permission** | denied camera/location/notifications/health | explain value, offer the settings path; app still works where it can |
 | **first-run** | no history, no preferences | progressive: ask in context, not upfront |
 | **overflow** | longest strings, biggest numbers, largest text, smallest screen | wrap and reflow; never clip (F04) |
-| **stale** | data is old | timestamp ("Updated 2 h ago"), pull to refresh |
+| **stale** | data is old | change the *data's* appearance, not only a pill: dim or mark values ("~", "sched."), recompute time-relative values from the timestamp, timestamp + pull to refresh. A stale number at full weight is a lie of emphasis |
 
 KDL requires `content loading empty error` (+ `offline` when `network: true`)
 for every screen; other states as relevant. `n/a: reason` is allowed only with a reason.

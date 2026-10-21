@@ -63,6 +63,11 @@ feeling — a hero numeral, a time-aware tint, a gesture that matches the
 mental model, a progress form that is the brand. Budget by expression level
 (1: one quiet detail; 5: several). Write KDL `signature: {what, where, because}`.
 A signature that doesn't trace to the spine is decoration — drop it.
+**Legibility test**: a stranger understands the signature in one glance with no
+legend, tooltip or coach mark. If it needs explaining, encode the meaning in the
+element itself (a word, icon + word, a visible boundary) — D31. In the A/B
+evaluation, two clever-but-cryptic signatures (a "run chip", size-coded
+reachability with a legend) lost to plain words like "Too soon".
 
 ## 6. Then
 Run `kinetic validate` (directions block), report the choice in 3–5 lines

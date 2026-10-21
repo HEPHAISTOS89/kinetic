@@ -16,6 +16,12 @@ Decide, per screen, before styling (KDL `screens[].primary/secondary/reading_ord
 The squint test: blur the screen; the primary element should still be the
 darkest/largest/most contrasted mass.
 
+**Glance screens spend the top on answers.** On screens used in 1–3 seconds
+(departures, weather, balance, sleep), the first 150pt carry the answer and its
+trust state, not a page label. A 34pt large title there costs the primary
+element its place (blind critics penalised exactly this). Use large titles for
+browse/list hubs; use a compact contextual header for glance screens.
+
 ## 2. Spacing scale (4pt grid)
 Use a named scale and nothing else (D17):
 

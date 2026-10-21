@@ -170,4 +170,8 @@ and keep the system shared.
 - **Signature opportunities**: walk-aware minutes (only departures you can reach), condensed tabular numerals, mode shapes for line badges (shape + color, not color alone).
 - **Sector slop**: map-first home for a departures app; disruption banners for the whole network (filter to lines on screen); red line colors confused with closures; centered spinners on every refresh (keep the board, update in place).
 - **Critical states**: no realtime (timetable only), last departure / end of service, closure with alternative, stop moved, location denied (saved stops first), offline underground, stale data, first run with no saved stops, very long stop names.
-- **Colors**: line colors are data (color.md §8b); chrome neutral; status hues chosen to stay distinguishable from the network palette.
+- **Colors**: line colors are data (color.md §8b). The chrome is *quiet*, not colorless: tinted neutrals (warm or cool, decided by the thesis) plus **one chromatic accent with one meaning** (interactive, or live). A black-and-grey chrome with black buttons was judged generic by blind critics twice — don't. Status hues stay distinguishable from the network palette.
+- **Header**: a glance screen spends its top on *answers*, not a page label: location + live status + a one-line summary of disruptions that affect the user. No large "Departures" title.
+- **Disruptions**: a summary scoped to the user at the top ("Affects your trip to Work", "At your closest stop") with the alternative; delays shown inline on the affected rows (amber minutes, "6 min late"); network-wide noise collapsed to one line.
+- **Order**: rows ordered by the first catchable departure, not by line number.
+- **Trust in every number**: stale and offline times must *look* different on the number itself (dimmed, "~", "sched."), and be recomputed from the timestamp — never show a 9-minute-old "2 min" at full weight.

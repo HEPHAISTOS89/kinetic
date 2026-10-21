@@ -12,7 +12,7 @@ Facts that change with OS releases are marked **(verify against current HIG)**.
 | Pattern | Use | Never |
 |---|---|---|
 | `NavigationStack` push | Drill-down into a hierarchy (list → detail) | Pushing for a modal task the user must finish or cancel |
-| Large title → inline on scroll | Top-level screens of each tab; the title is the place name | Detail screens (use inline titles), titles that are sentences |
+| Large title → inline on scroll | Top-level browse/list screens of each tab; the title is the place name | Detail screens (inline titles), sentence titles, and **glance screens** whose top must carry the answer (departures, balance, weather): use a compact contextual header there (layout.md) |
 | Interactive back swipe from the left edge | Always available on pushed screens | Disabling it, or placing horizontal gestures that start at the left edge |
 | Tab bar | 2–5 parallel, top-level areas the user switches between | Actions ("+", "Scan") as tabs; more than 5; hiding it on push without reason |
 | Sheet (`.sheet` + `presentationDetents([.medium, .large])`) | Self-contained task, creation, filters, quick detail | Navigating deep inside a sheet; stacking sheets more than one deep |

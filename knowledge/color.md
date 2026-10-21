@@ -51,7 +51,13 @@ One neutral ramp, used through roles. More than ~6 ad-hoc greys in code is D13.
 | 4 | a dominant brand color as a surface | color blocks carry sections; text stays on high-contrast pairs |
 | 5 | multiple saturated hues, deliberate | still role-based; every hue has a job |
 
-Status colors are not accents: they appear only for status. A screen where
+Status colors are not accents: they appear only for status.
+
+**Monochrome is a thesis, not a default.** An ink-only chrome (black buttons,
+grey everything, color only from data) reads as generic to users and critics
+unless the brand is genuinely typographic (editorial, luxury restraint). Most
+products are better served by tinted neutrals + one chromatic accent with a
+single meaning. `kinetic validate` flags an achromatic accent (K24). A screen where
 the accent, red badges, a green chart and a purple header compete has no accent.
 
 ## 5. Dark mode is a second design, not an inversion
