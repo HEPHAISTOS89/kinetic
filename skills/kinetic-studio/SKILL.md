@@ -45,7 +45,11 @@ Agents return their work as text; you save it to the files named below (some rol
    `knowledge/clarity.md` budgets from the first screen. Render every state.
 5. **Edit** (agent): kinetic-editor on the renders → apply the cut list
    unless a cut would lose a `must`, an alert action or the last vocabulary
-   site. Re-render. `kinetic clarity` ≥ 85 on key states.
+   site. Re-render. `kinetic clarity` ≥ 85 on key states, no `void_pt` > 130.
+   Then the **craft floor** (kinetic-craft items 17–20): colour, type and
+   layout floors and the render audit — the points blind critics docked
+   Kinetic for in rounds 7–9 (colour 3.4, layout 3.6). The panel should never
+   be the first to see them.
 6. **Judge** (parallel): 3 × kinetic-critic, each with one **lens** stated in
    its prompt, all with the same renders, `kinetic sheet` contact sheet and
    the rival sketch:

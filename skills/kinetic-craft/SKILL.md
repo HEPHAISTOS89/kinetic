@@ -28,6 +28,10 @@ names. Review like a jeweller: one property at a time, across the whole screen.
 14. **The core moment in every mode** — the action of the product's fastest moment (log a set, pay, reply) is thumb-reachable in the default state too, not only in a mode the app has to detect first.
 15. **Display numerals scale** — at XXL the hero numeral grows with the text (clamped), or the label-to-number contrast collapses.
 16. **Clarity budgets** — per first viewport: ≤ 45 words, ≤ 12 lines, ≤ 4 text sizes, ≥ 60% quiet rows, no card in a card, one meta line per item (knowledge/clarity.md; `kinetic clarity`). Remove one accessory per screen before calling it done.
+17. **Colour floor** (knowledge/color.md §3b–3c, §5, §8): warm brief → warm ground in both themes (never grey, never navy at night); the accent is a material from the inventory, not link blue or a black button; the primary stays filled at night; every field/state surface has a deep night variant; good news never in the danger hue; severity has distinct steps. `kinetic validate` flags K34–K36.
+18. **Type floor** (knowledge/typography.md §10b): the headline sentence wears the voice face; nothing read under 13pt (drawing labels included); one heavy thing; hero size constant across states; one section-label style; people's words in the voice italic.
+19. **Layout floor** (knowledge/layout.md §3b): no void > 130pt in a short state (`kinetic clarity` `void_pt`); last row clear of every sticky bar; drawn data on fixed slots with no overlaps; header elements on the same baseline in every state; the signature labelled in its calm state.
+20. **Render audit, last** — open every render once more and, for each, name the single worst pixel-level fault (a clipped row, a wandering badge, a 10pt label, a pale slab at night). Fix it or write why not. Critics find these first.
 
 ## 2. Code-level detail review (pointilleux)
 Read the UI code like a reviewer who cares about pixels:

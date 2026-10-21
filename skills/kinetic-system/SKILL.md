@@ -21,6 +21,12 @@ thesis temperature, not the accent: a warm brief gets a warm near-black
 (umber, clay), never the accent's navy; tape, paper and photo surfaces get
 their own dark values so they don't turn to mud. In round 7 every Kinetic
 design lost colour points (3 vs 4) on an untinted or cold dark theme.
+Rounds 8–9 repeated it in light mode: near-grey grounds, a link-blue or black
+action. Colour is the dimension Kinetic loses most (3.4 vs 3.8–4.0). Before
+writing roles, write one line in the KDL `system.color.because`: *the ground
+is [this product's material], the accent is [a material from the inventory],
+the night is [warm/cool] black, the warm lift is [tone] for [moments]*. Then
+`kinetic validate` must show no K34–K36 (knowledge/color.md §3b–3c, §5).
 
 ## Order (write each into KDL `system`, then `kinetic validate`)
 1. **Type** (`knowledge/typography.md`): families (system first on iOS), a

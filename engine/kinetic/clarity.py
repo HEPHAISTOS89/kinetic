@@ -95,6 +95,7 @@ def measure(path: str) -> dict:
         loud_px += n
         loud_rows.append(n >= 0.08 * (w / 2))
     loud_bands = [b for b in _bands(loud_rows, gap=8) if b[1] - b[0] >= 10]
+    void = _void(px, w, h, edges)
     return {
         "file": path,
         "lines": len(lines),
@@ -107,12 +108,40 @@ def measure(path: str) -> dict:
         "edge_density": round(sum(edges) / (VIEW_W * h), 3),
         "loud_share": round(loud_px / (h * w / 2), 3),
         "loud_things": len(loud_bands),
+        "void_pt": void,
     }
 
 
+def _void(px, w, h, edges) -> int:
+    """The tallest empty band of page ground with content both above and below it.
+
+    Generous space around a hero is calm; a short state that leaves the middle of
+    the screen empty above a pinned bar reads as unfinished (blind critics, round 9:
+    "accidental voids"). Ground = the most common colour of the left margin."""
+    margin = Counter(tuple(px[y][3 * 2: 3 * 2 + 3]) for y in range(h))
+    ground = margin.most_common(1)[0][0]
+
+    def empty(y):
+        if edges[y] >= 2:
+            return False
+        row = px[y]
+        for x in range(0, w, 8):
+            if sum(abs(row[3 * x + i] - ground[i]) for i in range(3)) > 18:
+                return False
+        return True
+
+    flags = [empty(y) for y in range(h)]
+    best = 0
+    for a, b in _bands(flags, gap=0):
+        if a > 0 and b < h - 8:  # content above and below (a pinned bar or tab bar counts as below)
+            best = max(best, b - a)
+    return best
+
+
 # per-viewport budgets: (good, bad) — linear between
-BUDGET = {"words": (45, 120), "lines": (12, 28), "text_sizes": (4, 7), "quiet_share": (0.60, 0.35),
-          "edge_density": (0.030, 0.07), "loud_share": (0.02, 0.08), "loud_things": (1, 3)}
+BUDGET = {"words": (45, 120), "lines": (12, 28), "text_sizes": (4, 8), "quiet_share": (0.60, 0.35),
+          "edge_density": (0.030, 0.07), "loud_share": (0.02, 0.08), "loud_things": (1, 3),
+          "void_pt": (110, 240)}
 
 
 def _sub(v, good, bad):
@@ -125,9 +154,9 @@ def grade(m: dict) -> dict:
     parts = {k: round(_sub(m[k], *BUDGET[k]) * 100) for k in BUDGET}
     if m["loud_things"] <= 1:
         parts["loud_share"] = 100  # one deliberate colour field (a state field, a hot kiln) is the one loud thing, not clutter
-    score = round(0.25 * parts["words"] + 0.12 * parts["lines"] + 0.10 * parts["text_sizes"]
-                  + 0.15 * parts["quiet_share"] + 0.08 * parts["edge_density"]
-                  + 0.15 * parts["loud_share"] + 0.15 * parts["loud_things"])
+    score = round(0.25 * parts["words"] + 0.10 * parts["lines"] + 0.10 * parts["text_sizes"]
+                  + 0.13 * parts["quiet_share"] + 0.05 * parts["edge_density"]
+                  + 0.15 * parts["loud_share"] + 0.15 * parts["loud_things"] + 0.07 * parts["void_pt"])
     notes = []
     if m["words"] > BUDGET["words"][1] * 0.8:
         notes.append(f"~{m['words']} words in the first viewport: cut to the answer, its proof and one action")
@@ -137,6 +166,9 @@ def grade(m: dict) -> dict:
         notes.append(f"only {int(m['quiet_share'] * 100)}% quiet rows: remove containers or a block, let space group")
     if m["loud_things"] > 1:
         notes.append(f"{m['loud_things']} loud colour areas compete: keep one (the answer or the act), quiet the rest")
+    if m["void_pt"] > 130:
+        notes.append(f"a {m['void_pt']}pt empty band inside the screen: compose the short state (answer at the optical "
+                     "centre, or the next useful block), don't leave a hole above the action (layout.md §3b)")
     if m["largest_gap_pt"] < 24:
         notes.append("no breathing gap ≥ 24pt anywhere: give the hero room")
     return {"clarity": score, "parts": parts, "notes": notes}

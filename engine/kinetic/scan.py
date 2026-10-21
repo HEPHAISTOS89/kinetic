@@ -673,7 +673,7 @@ class Scanner:
             if ground and 0.93 <= L <= 0.99 and 0.007 <= C <= 0.05 and 55 <= H <= 100:
                 fs.findings.append(Finding(rule="D34", tier="D", severity="info", evidence="inferred", file=fs.path,
                                            line=f.line, message=f"cream/parchment ground {hx} (the most common generated look — fine when the brief asks for warmth, then make it this product's paper)",
-                                           fix="a dealt palette's ground; warmth belongs in a field or the accent, not the paper",
+                                           fix="when the brief is warm, keep the warmth but make it this product's material (oat, sand, kraft, putty, driftwood) at C 0.012–0.02; when it isn't, use the dealt ground",
                                            snippet=(f.context or f.raw or "")[:120]))
             elif color.delta_e_ok(hx, "#D97757") < 0.04 and not re.search(r"danger|error|alert|warning|destructive", ctx):
                 fs.findings.append(Finding(rule="D34", tier="D", severity="minor", evidence="inferred", file=fs.path,
@@ -777,6 +777,15 @@ class Scanner:
             findings.append(Finding(rule="D12", tier="D", severity="major", evidence="derived", file=f0.file, line=f0.line,
                                     message=f"{len(sizes)} distinct font sizes: {', '.join(str(s) for s, _ in sorted(sizes.items()))}",
                                     fix="consolidate into a 5–8 step ramp (`kinetic dna --kdl` proposes one)"))
+        tiny = [f for f in by_kind["font_size"] if isinstance(f.value, (int, float)) and 0 < f.value < 12]
+        if tiny:
+            f0 = tiny[0]
+            findings.append(Finding(rule="D23", tier="D", severity="minor" if len(tiny) < 4 else "major", evidence="observed",
+                                    file=f0.file, line=f0.line,
+                                    message=f"{len(tiny)} text size(s) under 12pt ({', '.join(sorted({str(f.value) for f in tiny}))}): "
+                                            "map labels, captions and tab labels the user must read",
+                                    fix="13pt floor for anything read (11pt only for platform tab labels); a drawing's labels "
+                                        "scale with Dynamic Type (typography.md §10b)"))
         raw_sizes = len([f for f in by_kind["font_size"] if not f.themed])  # a theme file defining sizes is the point
         styled = len(by_kind["text_style"])
         if raw_sizes >= 10 and styled < raw_sizes / 3:

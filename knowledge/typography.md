@@ -140,6 +140,36 @@ and CSS `font-stretch`; Flutter/Compose need a variable font with a `wdth` axis
 - Truncation only for secondary, user-generated content in lists — never for
   titles, prices, CTAs or legal text (D28).
 
+## 10b. The craft floor (what blind critics docked, rounds 7–9)
+Kinetic's typography already scores 4.06 (best of every arm); these are the
+points it still loses, in the order critics named them.
+1. **The headline sentence has a voice.** The sentence the product says to
+   the user ("Your count is tomorrow.") is the voice role — the dealt display
+   face, New York, a humanist or a rounded face — never default system bold
+   ("clear but generic next to the numerals"). If the hero is a numeral, the
+   sentence still gets the voice; the numeral gets the width axis.
+2. **A 13pt floor for anything read.** Map labels, chart axes, section codes,
+   captions, meta: ≥ 13pt at `text-2`. Platform tab labels follow the platform
+   (iOS 10–11pt, Android 12sp) at regular weight under regular-weight icons.
+   Labels *inside a drawing* scale with Dynamic Type like any text (`scan`
+   flags literal sizes under 12, D23).
+3. **One heavy thing.** Only the active/hero element is heavy. Collapsed
+   headings, inactive sections, tertiary titles step down a weight *and* a
+   size — three stacked heavy weights read "blobby".
+4. **Secondary steps down clearly**: at least 2pt smaller than body *or*
+   `text-2`, ideally both. A grey line at body size makes a soft ramp.
+5. **The hero size is constant across states.** An alert never shrinks the
+   headline; the alert takes the headline's words, not its size.
+6. **Section labels have one style** used everywhere (small caps tracked
+   +0.06em, or serif italic, or a hairline + label), at ≥ 13pt and `text-2`
+   contrast. Plain small grey sans section titles read as template.
+7. **Tabular figures in every column** (quantities, times, counts) and one
+   family inside a chart (axis and legend in the same face).
+8. **People and their words in the voice face.** A signed note, a member's
+   name, a coordinator's instruction in the display face's italic (or the
+   text face's italic) is the cheapest warmth a type system has; critics named
+   it as a strength every time it appeared.
+
 ## 11. Typography slop (map to the catalog)
 | Slop | ID |
 |---|---|
@@ -150,6 +180,9 @@ and CSS `font-stretch`; Flutter/Compose need a variable font with a `wdth` axis
 | Mono caps labels as fake technicality | C12 |
 | Light 300 body text on dark | F03 |
 | Body under 15pt on a consumer app | F03 (validate) |
+| Map, chart or tab labels at 9–11pt | D23 (scan) + judge |
+| Default system-bold headline sentence with no voice | judge |
+| Hero headline shrinking in alert states | judge |
 | ALL CAPS paragraphs or buttons everywhere | D12 |
 
 ## 12. In KDL

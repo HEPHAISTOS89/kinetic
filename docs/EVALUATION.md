@@ -54,7 +54,7 @@ Rounds 7–9 are three-arm head-to-heads on fresh briefs (Kinetic studio vs othe
 | 7b | Mooring (marina) | React Native | **Kinetic 3.85 · 4.67**, ui-ux-pro-max 3.81 · 2.67, model 3.59 · 3.0 | K 1st ×2, U 1st ×1 |
 | 8a | Furrow (veg box co-op) | Flutter | **Kinetic v1.8 4.19 · 5.0**, taste-skill 4.15 · 4.0, impeccable 3.30 · 2.33 | K 1st ×2, T 1st ×1 |
 | 8b | Chorus (community choir) | React Native | **Kinetic 4.44 · 4.33**, taste-skill 3.81 · 3.0, impeccable 3.52 · 2.33 | K 1st ×3 |
-| 9a | Plot 42 (allotments) | Flutter | **Kinetic v1.9 4.41 · 4.33**, native-polish 3.81 · 3.0, frontend-design 3.74 · 3.0 | K 1st ×3 |
+| 9a | Plot 42 (allotments) | Flutter | **Kinetic v1.8 4.41 · 4.33**, native-polish 3.81 · 3.0, frontend-design 3.74 · 3.0 | K 1st ×3 |
 | 9b | Tern (bird survey) | React Native | **Kinetic 4.41 · 4.67**, frontend-design 3.63 · 4.0, model 3.48 · 2.67 | K 1st ×3, margin large/clear |
 
 Honest reading, round by round:
@@ -83,7 +83,7 @@ Honest reading, round by round:
   ui-ux-pro-max 3.67), first in 3 of 6 reads. The studio fixed round 6's regression but the margin was thin.
 - **Round 8 (v1.8)**: vs taste-skill and impeccable. Kinetic 4.31, taste-skill 3.98, impeccable 3.41; first
   in 5 of 6 reads, cleanness 4.67 vs 3.5 vs 2.33.
-- **Round 9 (v1.9)**: vs native-polish, frontend-design and the bare model. Kinetic 4.41 on both briefs,
+- **Round 9 (v1.8, second brief pair)**: vs native-polish, frontend-design and the bare model. Kinetic 4.41 on both briefs,
   **first in 6 of 6 reads**, margins 0.6–0.9 over the second arm; product fit 5.0, distinctiveness 5.0 and
   anticipation ≥ 4.67 on both. Recurring weaknesses still named by the critics: colour (cool, near-grey
   neutrals; the primary turning outline-only in dark mode), layout craft (accidental voids below a short

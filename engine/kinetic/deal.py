@@ -59,7 +59,9 @@ def _weighted(rng: random.Random, items: list, weights: list):
 
 
 WARM = {"warm", "warmth", "cosy", "cozy", "homely", "local", "friendly", "human", "family", "hands", "handmade",
-        "counter", "shop", "kitchen", "craft", "community", "trusted", "cold", "clinical", "sterile", "hospital", "portal"}
+        "counter", "shop", "kitchen", "craft", "community", "trusted", "cold", "clinical", "sterile", "hospital", "portal",
+        "patient", "kind", "kindly", "neighbourly", "neighborly", "welcoming", "encouraging", "generous", "volunteer",
+        "volunteers", "retired", "together", "belonging", "grandparents", "parents", "members", "regulars"}
 CALM = {"calm", "quiet", "seasoned", "practical", "unfussy", "anxious", "worried", "tired", "reassure", "reassuring",
         "gentle", "restful", "older", "elderly", "care"}
 
@@ -103,10 +105,13 @@ def _pick(rng, pool, words, taken, slot, engine=None):
 
 def _roles(pal: dict, tn=frozenset()) -> dict:
     nh = pal.get("neutral_hue")
-    if "warm" in tn and pal.get("temperature") != "warm":
-        nh = 70  # a warm brief keeps warm grounds (light and dark) whatever the accent: a cobalt studio at night is not navy
+    nc = pal.get("neutral_chroma")
+    if "warm" in tn:
+        if pal.get("temperature") != "warm":
+            nh = 70  # a warm brief keeps warm grounds (light and dark) whatever the accent: a cobalt studio at night is not navy
+        nc = max(nc or 0, 0.016)  # round 9: near-grey neutrals read "cold and austere" for a friendly brief
     roles = color.derive_roles(pal["seed"], pal.get("strategy", "neutral+accent"),
-                               neutral_chroma=pal.get("neutral_chroma"), neutral_hue=nh)
+                               neutral_chroma=nc, neutral_hue=nh)
     fields = {"field": pal.get("field", {})}
     fields.update({f"state-{k}": v for k, v in (pal.get("states") or {}).items()})
     for name, f in fields.items():

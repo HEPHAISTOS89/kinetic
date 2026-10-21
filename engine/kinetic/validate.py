@@ -46,6 +46,8 @@ KINDS = {"text", "numeral", "button", "icon-button", "link", "field", "toggle", 
          "nav-bar", "tab-bar", "toolbar", "image", "icon", "divider", "slider", "picker",
          "segmented", "stepper", "map", "avatar", "banner", "menu", "search"}
 SCREEN_STATES = ["content", "loading", "empty", "error"]
+BLUE_WORLD = {"water", "sea", "sky", "river", "lake", "pool", "swim", "swimming", "ice", "frost",
+              "transit", "metro", "rail", "navy", "harbour", "harbor", "tide", "tides", "rain"}
 REQUIRED_ROLES = ["bg", "surface", "text", "text-2", "border", "accent", "on-accent"]
 SECTIONS = {"kdl", "mode", "product", "requirements", "thesis", "expression", "audit", "directions", "journeys",
             "system", "screens", "signature", "premortem", "exceptions",
@@ -546,6 +548,10 @@ class Validator:
                              "merge them or separate by ≥2pt and weight", self.line("system.type.scale"))
 
     def _check_color(self, c, budget):
+        world = set(_words(" ".join(json.dumps(_get(self.doc, k) or "", default=str)
+                                    for k in ("product", "thesis", "inventory", "idea", "expression"))))
+        from .deal import tone
+        warm = "warm" in tone(world)
         if not isinstance(c, dict):
             self.add("K08", "D", "major", "system.color", "no color system", "define roles for light and dark",
                      self.line("system"))
@@ -587,12 +593,45 @@ class Validator:
                          "one accent carries meaning; the rest are tinted neutrals",
                          self.line(f"system.color.roles.{theme}"))
             neutrals = [str(r[k]) for k in ("bg", "surface", "text-2", "border") if color.is_hex(str(r.get(k)))]
-            if neutrals and all(color.hex_to_oklch(v)[1] < 0.004 for v in neutrals):
+            if neutrals and warm and theme == "light" and not any(
+                    color.hex_to_oklch(v)[1] >= 0.008 and (30 <= color.hex_to_oklch(v)[2] <= 120) for v in neutrals):
+                self.add("K34", "C", "minor", f"system.color.roles.{theme}",
+                         "the thesis asks for warmth but the neutrals are grey or cool",
+                         "tint the ground and text-2 toward H 50–95 at C 0.012–0.02 (sand, oat, putty, driftwood); "
+                         "blind critics read near-grey as 'cold and austere' (color.md §3b)",
+                         self.line(f"system.color.roles.{theme}"))
+            elif neutrals and all(color.hex_to_oklch(v)[1] < 0.004 for v in neutrals):
                 self.add("K23", "C", "minor", f"system.color.roles.{theme}",
                          f"{theme} neutrals are untinted greys",
                          "tint neutrals toward the seed (OKLCH C ≈ 0.005–0.02): the cheapest way to stop looking default (color.md §3)",
                          self.line(f"system.color.roles.{theme}"))
             acc, txt = str(r.get("accent", "")), str(r.get("text", ""))
+            if theme == "light" and color.is_hex(acc):
+                aL, aC, aH = color.hex_to_oklch(acc)
+                if 245 <= aH <= 272 and aC >= 0.13 and not (world & BLUE_WORLD):
+                    self.add("K36", "C", "minor", f"system.color.roles.{theme}.accent",
+                             f"the accent {acc} is a UI link blue the product's world doesn't name",
+                             "take the accent from the inventory's materials (glaze, soil, stamp ink, buoy paint, heather); "
+                             "blind critics called it 'default link blue' in rounds 7–8 (color.md §3c)",
+                             self.line(f"system.color.roles.{theme}.accent"))
+            if theme == "dark":
+                lacc = str((roles.get("light") or {}).get("accent", ""))
+                if color.is_hex(acc) and color.is_hex(lacc) and color.hex_to_oklch(lacc)[1] >= 0.03 \
+                        and color.hex_to_oklch(acc)[1] < 0.03:
+                    self.add("K35", "C", "minor", "system.color.roles.dark.accent",
+                             "the accent loses its colour at night",
+                             "lift the light accent (L 0.72–0.80, C × 0.85) and keep the primary filled with dark ink on it; "
+                             "an outline-only primary fades at 20% brightness (color.md §5)",
+                             self.line("system.color.roles.dark.accent"))
+                for role, v in r.items():
+                    if re.match(r"^(field|state-[\w-]+)$", role) and color.is_hex(str(v)) and color.hex_to_oklch(str(v))[0] > 0.62:
+                        lf = str((roles.get("light") or {}).get(role, ""))
+                        if color.is_hex(lf) and color.hex_to_oklch(lf)[0] > 0.62 and color.hex_to_oklch(lf)[1] < 0.08:
+                            self.add("K35", "C", "minor", f"system.color.roles.dark.{role}",
+                                     f"`{role}` stays a pale slab at night ({v})",
+                                     "give the field a deep tinted night variant (L 0.25–0.35, same hue); a light slab on a dark "
+                                     "screen glares (round 9: 'the winter hero glares in the night test')",
+                                     self.line(f"system.color.roles.dark.{role}"))
             if theme == "light" and color.is_hex(acc) and (acc.upper() == txt.upper() or color.hex_to_oklch(acc)[1] < 0.03) \
                     and "monochrome" not in str(_get(self.doc, "system.color.strategy") or ""):
                 self.add("K24", "C", "minor", f"system.color.roles.{theme}.accent",

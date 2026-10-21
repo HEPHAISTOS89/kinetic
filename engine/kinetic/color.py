@@ -266,10 +266,11 @@ def derive_roles(seed: str, strategy: str = "neutral+accent", neutral_chroma: fl
         "focus": accent,
     }
     # ---- dark (designed, not inverted: lifted surfaces, desaturated accent)
-    dbg = n(0.165, nc * 1.2)
-    dsurface = n(0.205, nc * 1.2)
-    dsurface2 = n(0.250, nc * 1.2)
-    dborder = n(0.315, nc * 1.2)
+    dnc = min(nc * 1.2, 0.012)  # a tinted night, not a brown or navy one: chroma reads stronger at low lightness
+    dbg = n(0.175, dnc)
+    dsurface = n(0.215, dnc)
+    dsurface2 = n(0.260, dnc)
+    dborder = n(0.325, dnc)
     dtext = _solve_l(nh, nc, dbg, 13.0, 1, 0.90)
     dtext2 = _solve_l(nh, nc * 1.4, dsurface, 5.2, 1, 0.70)
     dtext3 = _solve_l(nh, nc * 1.2, dbg, 3.2, 1, 0.55)

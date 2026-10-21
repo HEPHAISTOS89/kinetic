@@ -72,6 +72,38 @@ Use a named scale and nothing else (D17):
 - Glanceability: the primary information should be legible at arm's length,
   in sunlight, in 1 second — size and contrast over decoration.
 
+## 3b. Layout craft floor (what blind critics docked, rounds 7–9)
+Kinetic's layout craft averaged 3.6 vs 4.0 for the best competitors; every
+point lost came from the list below. Check each on every render before the panel.
+1. **Short states are composed, not abandoned.** A state with less content
+   (done, a single prompt, an empty day) must not leave a hole between the
+   content and the pinned bar ("accidental voids", "top-heavy"). Either set
+   the answer at the optical centre (~40% of the height) with the action at
+   the thumb, or bring up the next useful block (what's next, the summary,
+   the season). `kinetic clarity` reports `void_pt`; > 130pt is a finding.
+   Space around a hero is calm; space *below everything* is unfinished.
+2. **Sticky bars reserve their space.** Scroll content ends with bottom
+   padding = bar height + tab bar + 24pt; the last row never sits half under
+   a pinned action or a fade ("'Keep tomorrow' cut off by the tab bar" cost
+   points in 4 of 6 reads).
+3. **Drawn data snaps to a grid.** Columns in a drawing are fixed slots (a
+   row of 3 events aligns with a row of 4 by time, with explicit empty cells);
+   labels are centred on their node or all aligned the same way; nothing
+   overlaps a numeral (check the threshold mark vs the axis label); brackets
+   and ranges snap to the column edges they span.
+4. **Header elements don't move between states.** Badges, avatars and dates
+   sit on the same baseline in every state; an added status line goes below,
+   never shifts them. On scroll, a compact header (or the platform's large
+   title collapse) keeps content from sliding under the status bar.
+5. **One alignment for a list's trailing values**: right-aligned numbers in
+   tabular figures; checkmarks and chevrons on the same column.
+6. **Encodings without legends** (D31): filled = taken, open = free, taped =
+   broken; if a mark needs a key, label it in place.
+7. **Explain the signature in its calm state.** A vocabulary mark that encodes
+   a threshold (a flood line, a limit, a capacity) is labelled once in the
+   default state ("S4 path floods above 6.0 m"), so it reads before it becomes
+   an alert (round 9, all three critics).
+
 ## 4. Grids and alignment
 - Single column is the default on phones. Two columns only for equivalent,
   scannable items (media grids, products); never for forms or reading.

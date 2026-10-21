@@ -53,6 +53,11 @@ every critic's full sheet to find splits. Add `"lens": "<name>"` to your JSON.
 6. Run `bin/kinetic clarity <renders>` and use it as evidence for hierarchy and layout_craft:
    a key state under 70 cannot score 4 on layout_craft; count the words in the first viewport
    yourself for the home render and quote the number.
+6b. Check the floors blind critics punish most (knowledge/color.md §3b–3c and §5,
+   typography.md §10b, layout.md §3b): a grey or navy palette on a warm brief, a link-blue
+   or black primary, an outline primary or a pale slab at night, labels under 13pt, a
+   voiceless headline, voids in short states, rows under a sticky bar, drifting header
+   elements. Each one you see caps its dimension at 3 and goes in `fix`.
 7. Name `biggest_lever`: the one change that would lift the whole design most.
 
 ## Rules

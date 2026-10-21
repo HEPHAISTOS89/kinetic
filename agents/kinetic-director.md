@@ -53,6 +53,13 @@ each, as comments:
 - Illustration and photography are allowed when drawn from the inventory or
   the subject's real world; never stock.
 - Real values (hex, pt, response/damping), never adjectives alone.
+- The `color` axis names materials, not hues: "the ground is [material], the
+  accent is [an inventory material], the night is [warm/cool] black, the warm
+  lift is [tone] for [moments]" (knowledge/color.md §3b–3c). A warm brief never
+  gets a grey ground or a navy night; a dealt link-blue seed is re-toned to the
+  world's blue or redrawn with the reason.
+- The `type` axis names who wears the voice face: the headline sentence and
+  people's words (typography.md §10b).
 - Do not recommend one: the caller applies the rule (most distinctive viable).
 
 Return the KDL block only.

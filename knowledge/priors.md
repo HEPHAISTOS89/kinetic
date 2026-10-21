@@ -18,6 +18,11 @@ The Kinetic arms converged, brief after brief, on:
 - **Identity as one quiet detail** (a numeral, a tint) rather than a world.
 Your first palette, first face and first layout are these. Deal instead.
 
+**And the over-correction (rounds 7–9).** Running from that habit, Kinetic
+arms went cold: near-grey grounds, a link-blue or black action, a navy or
+neutral night. Critics scored colour 3.4 vs 3.8–4.0 for every competitor.
+Leaving a prior means *more specific*, not *less warm* (color.md §3b–3c).
+
 ## Generated-app clusters (all models)
 - **Cream and clay**: a cream/parchment ground (`#F4F1EA`, `#FAF7F0`), a
   high-contrast serif display, a terracotta or clay accent (`#D97757`).

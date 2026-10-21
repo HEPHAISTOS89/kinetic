@@ -42,6 +42,38 @@ Borrow the seed hue at very low chroma (OKLCH C ≈ 0.005–0.02):
 - Brand-led: toward the brand hue.
 One neutral ramp, used through roles. More than ~6 ad-hoc greys in code is D13.
 
+## 3b. Warmth is a dial the brief sets (K34)
+Blind critics scored Kinetic's colour lowest of every arm for three rounds
+(3.4 vs 3.8–4.0) for one reason: **near-grey neutrals on friendly briefs**
+("cold and austere", "clinical", "reads like a code editor at night"). The
+competitors that won colour all did the same thing: warm tinted neutrals in
+*both* themes, an accent from the product's world, a designed warm night.
+- Read the brief's people and tone words (friendly, patient, community,
+  volunteers, retired, encouraging, local). Any of them → **warm ground**:
+  light neutrals at H 50–95, C 0.012–0.02 (oat, sand, putty, kraft,
+  driftwood); text-2 carries the same hue. `kinetic deal` raises the chroma
+  floor for warm briefs; `validate` flags grey neutrals under a warm thesis.
+- Avoiding the cream-and-clay cluster (priors.md) is about **specificity, not
+  temperature**. Generic parchment + terracotta is spent; this co-op's kraft,
+  this coast's sand, this studio's oat are not. Never fix a cliché by going grey.
+- Greyscale is a thesis ("an instrument, nothing else"), never the default for
+  people-facing products. Even an instrument for volunteers is warm.
+
+## 3c. The accent comes from the product's world (K36)
+Name the accent after a material in the inventory before picking a hex:
+glaze, soil, beet, stamp ink, buoy paint, heather, pine, saffron, brick.
+- **UI link blue** (OKLCH H 245–272, C ≥ 0.13 — #1E4FD8, #2F6BFF, royal,
+  cobalt) reads "default" to every critic, even with a story ("member's blue
+  biro" lost the colour point in round 8). If the world is truly blue (water,
+  sky, transit), use the world's blue: petrol, slate, sea-glass, Prussian —
+  lower chroma, never the system link colour.
+- A black filled button is not an accent: it reads as "no decision" on a warm
+  brief. The primary action wears the accent.
+- **One warm lift for encouraging moments**: a second, quiet warm tone
+  (candlelight, ochre wash, sage) used only for done, thanks, a first time.
+  A palette of ink + red has no way to say "well done" (round 8: "a little
+  sombre for warm and encouraging").
+
 ## 4. Accent strategy by expression level
 | Level | Strategy | Accent usage |
 |---|---|---|
@@ -69,6 +101,17 @@ the accent, red badges, a green chart and a purple header compete has no accent.
   avoids halation; pure #FFF on #000 at full size vibrates (C02 for OLED/media exceptions).
 - Images and illustrations may need a dimmed variant.
 - Test at 20% screen brightness (the night test).
+- **The night has the brief's temperature.** A warm product's dark ground is a
+  warm black (umber, olive or wet-sand black, L 0.17–0.20, C ≤ 0.012), never a
+  blue-black or a neutral #1A1A1A ("an inversion, not a design"); a coastal or
+  cool product may go blue-black.
+- **The primary stays filled at night (K35).** Lift the accent (L 0.72–0.80,
+  C × 0.85) and put dark ink on it. An outline or ghost primary in dark mode
+  "fades at 20% brightness" (round 9, all three critics).
+- **Every field and state surface has a night variant.** A pale hero, state
+  band or coupon kept light in dark mode is the brightest slab on a black
+  screen and glares; give it the same hue at L 0.25–0.35 (K35). Order of
+  brightness is preserved: in dark, the primary button is the only light mass.
 
 ## 6. Light theme details
 - bg slightly off-white (L 0.97–0.99) lets white `surface` cards lift without shadows.
@@ -89,6 +132,14 @@ The violet→pink "AI gradient" with no product meaning is D01.
 - Never encode information by color alone (F07): pair with icon, text or shape.
 - Red/green pairs: add a second channel (arrow, sign, label) for color-blind users.
 - Semantic consistency: if accent = "yours / actionable", don't use it for decoration.
+- **Severity is a ladder with distinct steps**: routine notice (neutral or
+  accent-soft), attention (ochre), danger (brick/red + icon + word). A gale
+  warning in the same tint as a fee reminder has no urgency (round 7).
+- **Good news is never alarm-coloured.** A rare bird, a new piece, a free slot
+  are welcome: accent or the warm lift, never the danger hue (round 9: "a
+  welcome rare bird reads as an error").
+- **Soft alerts on warm products**: terracotta/brick reads as a neighbourly
+  nudge, rose-red as a bank warning. Reserve true red for safety.
 - Data color: sequential ramps from one hue for magnitude; diverging (two hues
   through neutral) for above/below; categorical ≤ 6 hues with similar L.
 
@@ -127,4 +178,7 @@ come from the domain (a network's official line colors) or encode categories.
 | Neon accent on pure black for a calm product | D14 |
 | Accent used for decoration, status and actions at once | D13 |
 | Dark mode by inversion; same saturated accent in both themes | K09 + judge |
+| Grey neutrals on a warm brief; blue-black night for a warm product | K34 + judge |
+| UI link blue as the accent of a product whose world isn't blue | K36 |
+| Outline-only primary in dark mode; pale state slab kept light at night | K35 + judge |
 | Gray text on colored backgrounds | F03 |

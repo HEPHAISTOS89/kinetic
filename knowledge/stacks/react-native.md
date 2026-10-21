@@ -138,3 +138,11 @@ macOS ships most native display faces as `.ttc` collections (Charter, Avenir Nex
 
 ## Bundled faces with several weights
 On Android, React Native selects a bundled font by family name per file: declare one family per weight (`Charter-Bold`, `Charter-Roman`) in a small map in your theme (`fontFamily: weights[700]`) rather than `fontWeight` on one family, which falls back to faux bold on Android and web.
+
+## Font family names (round 9)
+React Native on Android resolves `fontFamily` to **one family name per font
+file**: the file name without extension (`assets/fonts/DINAlternate-Bold.ttf` →
+`fontFamily: 'DINAlternate-Bold'`), not the family string in the KDL. Name each
+bundled file after the PostScript name (`kinetic font split` does) and write
+that name in the KDL `families` values for RN, so `kinetic export` emits it.
+Weights come from separate files, not `fontWeight`, for custom faces.

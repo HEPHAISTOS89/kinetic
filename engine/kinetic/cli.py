@@ -412,7 +412,7 @@ def build_parser():
 
     s = sub.add_parser("sheet", help="contact sheet of renders (one PNG) for judging the system at once")
     s.add_argument("images", nargs="+", help="PNG files or folders")
-    s.add_argument("--out", default="contact-sheet.png")
+    s.add_argument("--out", default=".kinetic/contact-sheet.png")
     s.add_argument("--cols", type=int, default=0, help="columns (default: by count)")
     s.add_argument("--width", type=int, default=240, help="cell width in px")
     common(s, False)

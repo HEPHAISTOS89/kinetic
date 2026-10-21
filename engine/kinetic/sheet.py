@@ -160,5 +160,6 @@ def contact_sheet(items, out="contact-sheet.png", cols=0, cell_w=240) -> dict:
             for y in range(h):
                 canvas[y0 + y][3 * x0:3 * (x0 + w)] = px[y]
         y0 += row_h[r] + GAP
+    os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
     write_png(out, W, H, canvas)
     return {"tool": "sheet", "out": out, "count": len(files), "cols": cols, "size": [W, H], "order": files}

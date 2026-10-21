@@ -787,6 +787,62 @@ class TestRound8Regressions(unittest.TestCase):
             shutil.rmtree(d)
 
 
+class TestV20Craft(unittest.TestCase):
+    def _lune(self, **sub):
+        t = rd(LUNE).replace("thesis:\n  statement: The app", "thesis:\n  statement: A friendly, patient app")
+        for a, b in sub.items():
+            t = t.replace(a, b)
+        return {f["rule"] for f in validate.validate_text(t)["findings"]}
+
+    def test_warm_thesis_on_grey_neutrals(self):
+        grey = {'bg: "#F2F1EE"': 'bg: "#F3F3F3"', 'text-2: "#5C5249"': 'text-2: "#555555"',
+                'border: "#E4DAD0"': 'border: "#E0E0E0"'}
+        self.assertIn("K34", self._lune(**grey))
+        self.assertNotIn("K34", self._lune())
+
+    def test_link_blue_accent_and_night(self):
+        self.assertIn("K36", self._lune(**{'accent: "#8A5A2B"': 'accent: "#1E4FD8"', "Sky": "Dune", "water": "tea"}))
+        self.assertNotIn("K36", self._lune())
+        self.assertIn("K35", self._lune(**{'accent: "#D9A877"': 'accent: "#B8B8B8"'}))
+
+    def test_void_in_a_short_state(self):
+        d = tempfile.mkdtemp()
+        try:
+            short = os.path.join(d, "short.png")
+            _png_with_lines(short, 4, 3, gap=20)
+            w, h, px = sheet.read_png(short)
+            for y in range(760, 852):
+                px[y] = bytearray(b"\x20\x20\x20" * w)
+            sheet.write_png(short, w, h, px)
+            full = os.path.join(d, "full.png")
+            _png_with_lines(full, 14, 3, gap=40)
+            self.assertGreater(clarity.measure(short)["void_pt"], 300)
+            self.assertLess(clarity.measure(full)["void_pt"], 60)
+            self.assertTrue(any("empty band" in n for n in clarity.grade(clarity.measure(short))["notes"]))
+        finally:
+            shutil.rmtree(d)
+
+    def test_tiny_text_is_flagged(self):
+        d = tempfile.mkdtemp()
+        try:
+            with open(os.path.join(d, "Map.tsx"), "w") as fh:
+                fh.write("import { Text } from 'react-native';\n"
+                         "export const L = () => <Text style={{fontSize: 10}}>S1</Text>;\n")
+            self.assertIn("D23", {f["rule"] for f in scan([d])["findings"]})
+        finally:
+            shutil.rmtree(d)
+
+    def test_warm_brief_gets_tinted_grounds_and_a_filled_night_accent(self):
+        st = deal.deal("A friendly app for retired volunteers who count birds.", seed=4, options=3)
+        for o in st["options"]:
+            r = o["palette"]["roles"]
+            L, C, H = color.hex_to_oklch(r["light"]["text-2"])
+            self.assertGreaterEqual(C, 0.012, o["palette"]["id"])
+            dL, dC, dH = color.hex_to_oklch(r["dark"]["bg"])
+            self.assertLessEqual(dC, 0.0135, o["palette"]["id"])
+            self.assertGreater(color.wcag(r["dark"]["on-accent"], r["dark"]["accent"]), 4.4)
+
+
 class TestPluginStructure(unittest.TestCase):
     def test_skills_frontmatter_and_links(self):
         for name in os.listdir(os.path.join(ROOT, "skills")):

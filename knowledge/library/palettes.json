@@ -399,6 +399,245 @@
    ],
    "rule": "tangerine marks the live thing only",
    "temperature": "bold"
+  },
+  {
+   "id": "oxblood-oat",
+   "name": "Oxblood on oat",
+   "seed": "#7A2430",
+   "neutral_hue": 75,
+   "neutral_chroma": 0.018,
+   "field": {
+    "light": "#E6DCCB",
+    "dark": "#3A2A22"
+   },
+   "proportion": "ground 65 / oat field 25 / oxblood accent 5 / ink 5",
+   "fits": [
+    "choir",
+    "theatre",
+    "music",
+    "books",
+    "community",
+    "clubs"
+   ],
+   "rule": "the oat field holds the hero; oxblood only for the act and 'yours'; danger gets an icon + word, never more oxblood",
+   "temperature": "warm"
+  },
+  {
+   "id": "peat-heather",
+   "name": "Peat and heather",
+   "seed": "#6E3B5C",
+   "neutral_hue": 60,
+   "neutral_chroma": 0.016,
+   "field": {
+    "light": "#D9CFC4",
+    "dark": "#2E2420"
+   },
+   "proportion": "ground 65 / peat field 25 / heather accent 5 / ink 5",
+   "fits": [
+    "walking",
+    "outdoors",
+    "nature",
+    "survey",
+    "volunteers",
+    "heritage"
+   ],
+   "rule": "a moorland: warm peat ground, heather for the act, slate ink; no greys",
+   "temperature": "warm"
+  },
+  {
+   "id": "rust-buoy",
+   "name": "Rust buoy on sand",
+   "seed": "#B4441E",
+   "neutral_hue": 85,
+   "neutral_chroma": 0.016,
+   "field": {
+    "light": "#E9E1CF",
+    "dark": "#2B2A24"
+   },
+   "proportion": "sand ground 60 / sand field 25 / rust accent 5 / slate ink 10",
+   "fits": [
+    "coast",
+    "harbour",
+    "boats",
+    "birds",
+    "estuary",
+    "tides",
+    "marina"
+   ],
+   "rule": "the coast in daylight: sand, slate ink and one rust buoy for the act; water drawn in a muted sea tone as data",
+   "temperature": "warm"
+  },
+  {
+   "id": "olive-ochre",
+   "name": "Olive and ochre wash",
+   "seed": "#5E6B1F",
+   "neutral_hue": 90,
+   "neutral_chroma": 0.016,
+   "field": {
+    "light": "#EBD9A8",
+    "dark": "#3A3218"
+   },
+   "proportion": "ground 65 / ochre field 20 / olive accent 5 / ink 10",
+   "fits": [
+    "garden",
+    "allotment",
+    "farm",
+    "market",
+    "food",
+    "plants"
+   ],
+   "rule": "olive acts, an ochre wash marks today or 'yours'; soil-brown ink",
+   "temperature": "warm"
+  },
+  {
+   "id": "beet-kraft",
+   "name": "Beet and kraft",
+   "seed": "#8C1D40",
+   "neutral_hue": 65,
+   "neutral_chroma": 0.02,
+   "field": {
+    "light": "#D8C3A0",
+    "dark": "#3B2E1F"
+   },
+   "proportion": "ground 60 / kraft field 25 / beet accent 5 / ink 10",
+   "fits": [
+    "veg box",
+    "co-op",
+    "bakery",
+    "market",
+    "food",
+    "delivery"
+   ],
+   "rule": "kraft paper as the field (the box, the slip), beet for the act; never a cream page",
+   "temperature": "warm"
+  },
+  {
+   "id": "sea-glass",
+   "name": "Sea glass and driftwood",
+   "seed": "#2F7468",
+   "neutral_hue": 70,
+   "neutral_chroma": 0.016,
+   "field": {
+    "light": "#D3E3DB",
+    "dark": "#1E3530"
+   },
+   "proportion": "driftwood ground 65 / sea-glass field 20 / accent 5 / ink 10",
+   "fits": [
+    "coast",
+    "swimming",
+    "wellbeing",
+    "birds",
+    "sailing",
+    "lido"
+   ],
+   "rule": "warm driftwood neutrals, sea-glass green for the act and the water; dark is wet-sand brown-black, not navy",
+   "temperature": "warm"
+  },
+  {
+   "id": "saffron-umber",
+   "name": "Saffron and umber",
+   "seed": "#C47A00",
+   "neutral_hue": 60,
+   "neutral_chroma": 0.02,
+   "field": {
+    "light": "#F3D79A",
+    "dark": "#4A3510"
+   },
+   "proportion": "ground 60 / saffron field 20 / umber ink 15 / accent 5",
+   "fits": [
+    "kitchen",
+    "restaurant",
+    "tea",
+    "festival",
+    "school",
+    "bakery"
+   ],
+   "rule": "saffron as a luminous field with umber ink; the action is umber-filled, not orange",
+   "temperature": "warm"
+  },
+  {
+   "id": "tomato-putty",
+   "name": "Tomato on putty",
+   "seed": "#C8341E",
+   "neutral_hue": 80,
+   "neutral_chroma": 0.012,
+   "field": {
+    "light": "#E9E4DA",
+    "dark": "#2C2A26"
+   },
+   "proportion": "putty ground 70 / field 20 / tomato accent 5 / ink 5",
+   "fits": [
+    "print",
+    "cafe",
+    "shop",
+    "workshop",
+    "repair",
+    "newsletter"
+   ],
+   "rule": "a print-shop red for the act on putty; status 'danger' uses a different hue (deep wine) plus an icon",
+   "temperature": "warm"
+  },
+  {
+   "id": "pine-candle",
+   "name": "Pine and candlelight",
+   "seed": "#1F4D3A",
+   "neutral_hue": 70,
+   "neutral_chroma": 0.018,
+   "field": {
+    "light": "#F1D9A6",
+    "dark": "#3D3015"
+   },
+   "proportion": "ground 65 / candle field 15 / pine accent 10 / ink 10",
+   "fits": [
+    "care",
+    "community",
+    "library",
+    "home",
+    "choir",
+    "volunteers"
+   ],
+   "rule": "pine acts; candlelight is the warm lift for encouraging moments (done, thanks, a first time), never for warnings",
+   "temperature": "warm"
+  },
+  {
+   "id": "state-fields-warm",
+   "name": "Weather of states, warm",
+   "seed": "#3A4F66",
+   "neutral_hue": 70,
+   "neutral_chroma": 0.016,
+   "field": {
+    "light": "#E7DECB",
+    "dark": "#2F2A22"
+   },
+   "states": {
+    "calm": {
+     "light": "#E7DECB",
+     "dark": "#2F2A22"
+    },
+    "attention": {
+     "light": "#F3D79A",
+     "dark": "#4A3510"
+    },
+    "alert": {
+     "light": "#EFC0B2",
+     "dark": "#4E2018"
+    },
+    "done": {
+     "light": "#D6E2C8",
+     "dark": "#26331F"
+    }
+   },
+   "proportion": "field 40 (state) / ground 55 / ink 5",
+   "fits": [
+    "status",
+    "care",
+    "deliveries",
+    "community",
+    "volunteers",
+    "survey"
+   ],
+   "rule": "for the state-field engine on a warm brief: sand calm, ochre attention, brick alert, sage done; slate ink acts",
+   "temperature": "warm"
   }
  ]
 }
