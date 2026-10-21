@@ -390,7 +390,8 @@ LINEAR = {
 
 # ------------------------------------------------------------ the scanner
 class Scanner:
-    def __init__(self, platforms=("ios", "android"), grid=4, theme_paths=None):
+    def __init__(self, platforms=("ios", "android"), grid=4, theme_paths=None, data_hexes=()):
+        self.data_hexes = {h.upper()[:7] for h in data_hexes}
         self.platforms = set(platforms or ())
         self.grid = grid
         self.theme_paths = [re.compile(p) for p in (theme_paths or [])]
@@ -505,9 +506,10 @@ class Scanner:
                                                file=fs.path, line=_line_at(text, m.start()),
                                                message="icon-only Button without accessibilityLabel",
                                                fix="use Label(\"Title\", systemImage:) with .labelStyle(.iconOnly) or add .accessibilityLabel"))
+                frames = re.findall(r"\.frame\(\s*(?:min)?[wW]idth\s*:\s*(\d+)\s*,\s*(?:min)?[hH]eight\s*:\s*(\d+)", after)
                 fm = re.search(r"\.frame\(\s*width\s*:\s*(\d+)\s*,\s*height\s*:\s*(\d+)", after)
-                if fm and max(int(fm.group(1)), int(fm.group(2))) < 44 and ".contentShape" not in after \
-                        and ".padding" not in after:
+                biggest = max((min(int(w), int(h)) for w, h in frames), default=0)
+                if fm and biggest < 44 and ".contentShape" not in after and ".padding" not in after:
                     fs.findings.append(Finding(rule="F05", tier="F", severity="major", evidence="inferred",
                                                file=fs.path, line=_line_at(text, m.start()),
                                                message=f"button frame {fm.group(1)}×{fm.group(2)} below 44pt",
@@ -718,7 +720,8 @@ class Scanner:
             return out
 
         def is_data(f):
-            return bool(DATA_PATH.search(os.path.basename(f.file)) or DATA_CONTEXT.search(f.context))
+            return bool(str(f.value).upper()[:7] in self.data_hexes or DATA_PATH.search(os.path.basename(f.file))
+                        or DATA_CONTEXT.search(f.context))
 
         def is_dark(f):
             return f.theme == "dark"
@@ -895,5 +898,5 @@ class Scanner:
         return keep
 
 
-def scan(paths, platforms=("ios", "android"), grid=4, theme_paths=None) -> dict:
-    return Scanner(platforms, grid, theme_paths).scan_paths(paths if isinstance(paths, (list, tuple)) else [paths])
+def scan(paths, platforms=("ios", "android"), grid=4, theme_paths=None, data_hexes=()) -> dict:
+    return Scanner(platforms, grid, theme_paths, data_hexes).scan_paths(paths if isinstance(paths, (list, tuple)) else [paths])

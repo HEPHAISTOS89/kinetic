@@ -22,6 +22,8 @@ Design goals, in priority order:
 - Inline lists `[a, b, c]` and flat inline maps `{size: 17, line: 22}`.
 - Scalars: bare or quoted strings, integers, decimals, `true`/`false`, `null`.
 - Literal blocks with `|` for multi-line prose.
+- Prose in inline maps may contain commas and apostrophes (`{need: see every member's balance, then settle}`);
+  a quote only opens a string at the start of a value. Quote a value to be explicit.
 - Comments: `#` at line start, or ` # ` after a value. **Hex colors may be bare**
   (`accent: #3D5AFE`): a `#` directly followed by a hex digit is a value.
 - Token references: `$group.name` (e.g. `$color.accent`, `$type.body`,
@@ -213,10 +215,12 @@ system:
     confirm: soft
     error: warning
 ```
-Data colors (transit lines, categories, chart series) are **not** roles and
+Data colors (transit lines, categories, chart series, avatar tints) are **not** roles and
 don't count against the accent budget: put them in `system.color.data`
 (`{T2: "#2E7D4F", M1: "#1F5FAF"}`), give each a text color that passes on it,
 and never reuse a status hue (red/amber/green) for data unless it means status.
+Accepted forms: `name: "#hex"`, `{fill, on, fill_dark, on_dark}` or `{light, dark, on, on_dark}`.
+`kinetic scan` exempts these hex values from the color-chaos counts, and `export` emits them (`KData`, `Color.kData…`, `--k-data-…`).
 
 Required roles in both `light` and `dark`: `bg surface text text-2 border accent on-accent`.
 Checked contrast pairs (WCAG 2.x, plus APCA Lc reported): `text/bg ≥ 4.5`,

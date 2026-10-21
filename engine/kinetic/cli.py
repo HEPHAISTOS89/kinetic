@@ -84,7 +84,7 @@ def _cfg(a, paths):
 
 def cmd_scan(a):
     cfg, plats, grid = _cfg(a, a.paths)
-    r = scan(a.paths, plats, grid, cfg.get("theme_paths"))
+    r = scan(a.paths, plats, grid, cfg.get("theme_paths"), project.data_hexes(a.paths[0]))
     if not a.facts:
         r.pop("facts", None)
     _out(_filter(r, a.tiers, a.min_severity), a.json, limit=a.limit)
@@ -93,7 +93,7 @@ def cmd_scan(a):
 
 def cmd_dna(a):
     cfg, plats, grid = _cfg(a, a.paths)
-    d = dna.dna(scan(a.paths, plats, grid, cfg.get("theme_paths")), grid)
+    d = dna.dna(scan(a.paths, plats, grid, cfg.get("theme_paths"), project.data_hexes(a.paths[0])), grid)
     if a.kdl:
         print(dna.to_kdl(d))
     elif a.json:
@@ -194,6 +194,7 @@ def cmd_init(a):
     r = project.init(a.path, a.mode, a.stack, a.force, a.name)
     _out(r, a.json, "\n".join([f"kinetic init — {r['root']} ({r['stack']}, {', '.join(r['platforms'])})"] +
                                [f"  created {p}" for p in r["created"]] + [f"  kept    {p}" for p in r["kept_existing"]] +
+                               [f"  hint: {h}" for h in r.get("hints", [])] +
                                ["  next: fill .kinetic/design.kdl, then `kinetic validate .kinetic/design.kdl`"]))
     return 0
 

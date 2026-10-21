@@ -70,13 +70,13 @@ def _strip_comment(text: str) -> str:
 
 def _split_top(text: str, sep: str = ",") -> list:
     parts, depth, quote, buf = [], 0, None, []
-    for ch in text:
+    for i, ch in enumerate(text):
         if quote:
             buf.append(ch)
-            if ch == quote:
+            if ch == quote and (i + 1 == len(text) or text[i + 1] in " \t,]}:#"):
                 quote = None
             continue
-        if ch in "\"'":
+        if ch in "\"'" and _opens_quote(text, i):
             quote = ch
         elif ch in "[{":
             depth += 1
@@ -142,13 +142,18 @@ def _scalar(raw: str, line: int):
             raise KDLError(line, f"unterminated inline map {s!r}")
         m = Map()
         m.line = line
+        last = None
         for part in _split_top(s[1:-1]):
             c = _find_colon(part)
             if c < 0:
-                raise KDLError(line, f"inline map entry without ':' {part!r}")
+                if last is None or not isinstance(m[last], str):
+                    raise KDLError(line, f"inline map entry without ':' {part!r} (quote values that contain commas)")
+                m[last] = f"{m[last]}, {part}"  # a comma inside prose, not a new entry
+                continue
             k = _key(part[:c], line)
             m[k] = _scalar(part[c + 1:], line)
             m.lines[k] = line
+            last = k
         return m
     low = s.lower()
     if low in ("true", "yes"):
@@ -173,13 +178,18 @@ def _key(raw: str, line: int) -> str:
     return k
 
 
+def _opens_quote(text: str, i: int) -> bool:
+    """A quote opens a string only at a token start (so `member's` is not a string)."""
+    return text[i] == '"' or i == 0 or text[i - 1] in " \t[{,:"
+
+
 def _depth(text: str) -> int:
     depth, quote = 0, None
-    for ch in text:
+    for i, ch in enumerate(text):
         if quote:
-            if ch == quote:
+            if ch == quote and (i + 1 == len(text) or text[i + 1] in " \t,]}:#"):
                 quote = None
-        elif ch in "\"'":
+        elif ch in "\"'" and _opens_quote(text, i):
             quote = ch
         elif ch in "[{":
             depth += 1

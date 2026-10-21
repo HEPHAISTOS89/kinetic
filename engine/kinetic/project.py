@@ -38,6 +38,24 @@ def load_config(start: str = ".") -> dict:
     return cfg
 
 
+def data_hexes(start: str = ".") -> list:
+    """Hex values declared in `.kinetic/design.kdl` system.color.data (exempt from color-chaos counts)."""
+    root = find_root(start)
+    if not root:
+        return []
+    try:
+        from .kdl import parse_file
+        data = ((((parse_file(os.path.join(root, ".kinetic", "design.kdl")).get("system") or {})
+                  .get("color") or {}).get("data")) or {})
+    except Exception:
+        return []
+    out = []
+    for v in data.values():
+        vals = v.values() if isinstance(v, dict) else [v]
+        out += [str(x) for x in vals if isinstance(x, str) and x.startswith("#")]
+    return out
+
+
 def detect_stack(path: str) -> tuple[str, list]:
     def exists(*p):
         return os.path.exists(os.path.join(path, *p))
@@ -211,6 +229,7 @@ def init(path: str = ".", mode: str = "create", stack: str | None = None, force:
         with open(kdl_path, "w", encoding="utf-8") as fh:
             fh.write(text)
         created.append(kdl_path)
+    hint = ["no stack detected: pass --stack swiftui|flutter|compose|react-native|web"] if stack == "mixed" else []
     return {"tool": "init", "root": path, "stack": stack, "platforms": plats, "created": created,
-            "kept_existing": kept,
+            "kept_existing": kept, "hints": hint,
             "effects": ["writes only inside .kinetic/", "the design hook becomes active for this project"]}

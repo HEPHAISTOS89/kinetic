@@ -48,6 +48,14 @@ class TestKDL(unittest.TestCase):
         self.assertIs(doc["flag"], True)
         self.assertIsNone(doc["nothing"])
 
+    def test_prose_with_apostrophes_and_commas(self):
+        doc = kdl.parse("r: {id: R1, need: see every member's balance, then settle, priority: must}\n"
+                        "q: 'quoted, with comma'\nl: [a, \"b, c\"]\n")
+        self.assertEqual(doc["r"]["need"], "see every member's balance, then settle")
+        self.assertEqual(doc["r"]["priority"], "must")
+        self.assertEqual(doc["q"], "quoted, with comma")
+        self.assertEqual(doc["l"], ["a", "b, c"])
+
     def test_line_numbers(self):
         doc = kdl.parse("x: 1\n\ny:\n  z: 2\n")
         self.assertEqual(doc.lines["y"], 3)

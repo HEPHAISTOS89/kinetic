@@ -77,9 +77,9 @@ def _data(doc):
     out = []
     for name, v in ((((doc.get("system") or {}).get("color") or {}).get("data")) or {}).items():
         if isinstance(v, dict):
-            fill = v.get("fill")
-            on = v.get("on")
-            fd, od = v.get("fill_dark") or fill, v.get("on_dark") or on
+            fill = v.get("fill") or v.get("light")
+            on = v.get("on") or v.get("on_light")
+            fd, od = v.get("fill_dark") or v.get("dark") or fill, v.get("on_dark") or on
         else:
             fill, on, fd, od = v, None, v, None
         if not color.is_hex(str(fill)):

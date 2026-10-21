@@ -65,7 +65,7 @@ def code(paths) -> dict:
         for dp, dns, fns in os.walk(root):
             dns[:] = [d for d in dns if d not in EXCLUDE_DIRS and not d.startswith(".")]
             files += [os.path.join(dp, f) for f in fns]
-    texts = {}
+    texts, skipped_screens = {}, []
     for p in files:
         if os.path.splitext(p)[1].lower() not in LANG_BY_EXT or SKIP_FILE.search(p):
             continue
@@ -80,7 +80,10 @@ def code(paths) -> dict:
             declared.setdefault(name, p)
     for p, text in texts.items():
         scanned += 1
-        if not SCREEN_FILE.search(os.path.basename(p)) or not FETCH.search(text):
+        if not SCREEN_FILE.search(os.path.basename(p)):
+            continue
+        if not FETCH.search(text):
+            skipped_screens.append(p)
             continue
         used = {declared[n] for n in set(re.findall(r"\b([A-Z]\w+)", text)) if n in declared and declared[n] != p}
         context = text + "\n".join(texts[u] for u in used)
@@ -95,9 +98,11 @@ def code(paths) -> dict:
                                         fix=f"design and implement the {st} state (knowledge/states.md)"))
     findings.sort(key=lambda f: (f.order(), f.file))
     return {"tool": "states", "view": "code", "screens": rows,
-            "coverage": {"files_scanned": scanned, "data_screens": len(rows)},
+            "coverage": {"files_scanned": scanned, "data_screens": len(rows),
+                         "screens_not_evaluated": [os.path.basename(s) for s in skipped_screens]},
             "findings": [f.as_dict() for f in findings],
             "limitations": ["keyword heuristics; component files declared in the scanned set are followed one level deep",
+                            "screens with no data-loading keyword (stores/view models elsewhere) are listed as not evaluated — check their states by hand or in KDL",
                             "only files whose name looks like a screen/view/page are evaluated"]}
 
 

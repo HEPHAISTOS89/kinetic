@@ -454,7 +454,7 @@ class Validator:
             if color.is_hex(str(v)):
                 entries.append(("fill", str(v), None))
             elif isinstance(v, dict):
-                for fk, ok in (("fill", "on"), ("fill_dark", "on_dark")):
+                for fk, ok in (("fill", "on"), ("light", "on"), ("fill_dark", "on_dark"), ("dark", "on_dark")):
                     if color.is_hex(str(v.get(fk))):
                         entries.append((fk, str(v[fk]), str(v.get(ok)) if color.is_hex(str(v.get(ok))) else None))
             else:
@@ -810,6 +810,10 @@ def validate_text(text: str, path="design.kdl") -> dict:
         "findings": [f.as_dict() for f in fs],
         "contrast": getattr(v, "contrast", []),
         "coverage": {"sections_checked": v.checked,
+                     "contrast_pairs": len(getattr(v, "contrast", [])),
+                     "data_colors": len(((doc.get("system") or {}).get("color") or {}).get("data") or {})
+                     if isinstance(doc, dict) else 0,
+                     "screens": len(doc.get("screens") or []) if isinstance(doc, dict) else 0,
                      "sections_absent": [s for s in REQUIRED.get(getattr(v, "mode", "create"), [])
                                          if s not in (doc or {})]},
         "limitations": ["checks decisions written in KDL; it cannot see the render or the code"],
