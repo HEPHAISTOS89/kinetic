@@ -163,7 +163,7 @@ def verdict(measured, blocks, judged_scores, meta=None):
     return "iterate", reasons
 
 
-def run(kdl_path=None, code_paths=None, judged_path=None, platforms=("ios", "android"), grid=4) -> dict:
+def run(kdl_path=None, code_paths=None, judged_path=None, platforms=("ios", "android"), grid=4, renders=None) -> dict:
     kdl_result = states_kdl = scan_result = dna_result = states_code = None
     if kdl_path:
         kdl_result = validate_mod.validate_file(kdl_path)
@@ -178,12 +178,20 @@ def run(kdl_path=None, code_paths=None, judged_path=None, platforms=("ios", "and
         dna_result = dna_mod.dna(scan_result, grid)
         states_code = states_mod.code(code_paths)
     measured, formulas, blocks, to_confirm = _measured(kdl_result, scan_result, dna_result, states_kdl, states_code)
+    clarity_result = None
+    if renders:
+        from . import clarity as clarity_mod
+        clarity_result = clarity_mod.clarity(renders)
+        light = [m for m in clarity_result["renders"] if "dark" not in os.path.basename(m["file"])] or clarity_result["renders"]
+        measured["clarity"] = round(sum(m["clarity"] for m in light) / len(light))
+        formulas["clarity"] = "mean render clarity (words, lines, text sizes, quiet rows, edges per viewport; knowledge/clarity.md)"
     judged_scores, problems, meta = {}, [], {}
     if judged_path:
         with open(judged_path, encoding="utf-8") as fh:
             raw = json.load(fh)
         judged_scores, problems = check_judged(raw)
-        meta = {"self_judged": bool(raw.get("self_judged")), "unjudged": raw.get("unjudged") or []}
+        meta = {"self_judged": bool(raw.get("self_judged")), "unjudged": raw.get("unjudged") or [],
+                "panel": (raw.get("panel") or {}).get("size", 1)}
         newest = _newest_mtime(code_paths or [], (".swift", ".dart", ".kt", ".tsx", ".jsx", ".css", ".png"))
         if newest and newest > os.path.getmtime(judged_path) + 1:
             problems.append("judgment is older than the current code/renders: re-run the critic on the new renders")
@@ -209,6 +217,8 @@ def run(kdl_path=None, code_paths=None, judged_path=None, platforms=("ios", "and
         "judged": {k: d["score"] for k, d in judged_scores.items()},
         "judged_mean": jmean,
         "self_judged": bool(meta.get("self_judged")),
+        "panel": meta.get("panel", 0),
+        "clarity_worst": (clarity_result or {}).get("worst", []),
         "judged_problems": problems,
         "next": nxt,
         "to_confirm": [f"[{f['rule']}] {f.get('file', '')}: {f['message']}" for f in to_confirm],
@@ -227,7 +237,8 @@ def render(r: dict) -> str:
     for k, v in r["measured"].items():
         bar = "█" * int(round(v / 10)) + "·" * (10 - int(round(v / 10)))
         out.append(f"  {k:<20} {v:>3} {bar}   {r['formulas'].get(k, '')}")
-    out.append(("judged (SELF — not independent, cannot ship):" if r.get("self_judged") else "judged (independent critic):")
+    out.append(("judged (SELF — not independent, cannot ship):" if r.get("self_judged") else
+                f"judged (independent panel of {r['panel']}):" if r.get("panel", 0) > 1 else "judged (independent critic):")
                if r["judged"] else "judged: none")
     for k, v in r["judged"].items():
         out.append(f"  {k:<20} {v}/5  {'●' * v}{'○' * (5 - v)}")

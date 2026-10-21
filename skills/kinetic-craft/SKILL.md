@@ -27,6 +27,7 @@ names. Review like a jeweller: one property at a time, across the whole screen.
 13. **Sticky and floating things** — a pinned CTA or FAB gets matching bottom padding (its height + a gap) so the last row scrolls clear; check the *last* row in the render, not the first. Sheets hug their content (no dead band between the picker and its actions).
 14. **The core moment in every mode** — the action of the product's fastest moment (log a set, pay, reply) is thumb-reachable in the default state too, not only in a mode the app has to detect first.
 15. **Display numerals scale** — at XXL the hero numeral grows with the text (clamped), or the label-to-number contrast collapses.
+16. **Clarity budgets** — per first viewport: ≤ 45 words, ≤ 12 lines, ≤ 4 text sizes, ≥ 60% quiet rows, no card in a card, one meta line per item (knowledge/clarity.md; `kinetic clarity`). Remove one accessory per screen before calling it done.
 
 ## 2. Code-level detail review (pointilleux)
 Read the UI code like a reviewer who cares about pixels:

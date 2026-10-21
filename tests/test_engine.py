@@ -19,7 +19,7 @@ def rd(p):
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "engine"))
 
-from kinetic import cli, color, deal, dna, export, kdl, score, sheet, states, svg, validate  # noqa: E402
+from kinetic import clarity, cli, color, deal, dna, export, kdl, panel, score, sheet, states, svg, validate  # noqa: E402
 from kinetic.scan import scan  # noqa: E402
 
 FIX = os.path.join(ROOT, "tests", "fixtures")
@@ -678,6 +678,55 @@ class TestRound5Regressions(unittest.TestCase):
     def test_alert_role_is_a_status_role(self):
         self.assertTrue(validate._is_status_role("alert"))
         self.assertTrue(validate._is_status_role("on-alert"))
+
+
+def _png_with_lines(path, n_lines, words_per_line, gap=40):
+    w, h = 393, 852
+    rows = [bytearray(b"\xf8\xf8\xf8" * w) for _ in range(h)]
+    y = 60
+    for _ in range(n_lines):
+        for yy in range(y, y + 14):
+            x = 20
+            for _ in range(words_per_line):
+                for xx in range(x, min(x + 30, w - 10)):
+                    if (xx + yy) % 3 == 0:
+                        rows[yy][3 * xx:3 * xx + 3] = b"\x20\x20\x20"
+                x += 44
+        y += 14 + gap
+        if y > h - 30:
+            break
+    sheet.write_png(path, w, h, rows)
+
+
+class TestV17Studio(unittest.TestCase):
+    def test_clarity_separates_sparse_from_dense(self):
+        d = tempfile.mkdtemp()
+        try:
+            _png_with_lines(os.path.join(d, "calm.png"), 6, 3, gap=60)
+            _png_with_lines(os.path.join(d, "dense.png"), 40, 8, gap=4)
+            calm = clarity.measure(os.path.join(d, "calm.png"))
+            dense = clarity.measure(os.path.join(d, "dense.png"))
+            self.assertLess(calm["lines"], dense["lines"])
+            self.assertLess(calm["words"], dense["words"])
+            self.assertGreater(clarity.grade(calm)["clarity"], 85)
+            self.assertLess(clarity.grade(dense)["clarity"], 60)
+        finally:
+            shutil.rmtree(d)
+
+    def test_panel_median_split_and_consensus(self):
+        def c(scores, fix):
+            return {"dimensions": {"hierarchy": {"score": scores[0], "fix": fix},
+                                   "distinctiveness": {"score": scores[1], "fix": "draw the vocabulary in the hero"}},
+                    "tests": {"squint": "pass"}, "biggest_lever": fix}
+        r = panel.merge([c((4, 3), "reduce the stacked bottom chrome under the hero"),
+                         c((2, 4), "remove the stacked bottom chrome and the pinned bar"),
+                         c((4, 4), "tighten copy")])
+        self.assertEqual(r["dimensions"]["hierarchy"]["score"], 4)
+        self.assertIn("hierarchy", r["panel"]["split"])
+        self.assertTrue(any(f.startswith("hierarchy") for f in r["panel"]["consensus_fixes"]))
+        self.assertFalse(r["self_judged"])
+        with self.assertRaises(ValueError):
+            panel.merge([c((4, 4), "x")])
 
 
 class TestPluginStructure(unittest.TestCase):

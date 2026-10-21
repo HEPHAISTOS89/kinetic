@@ -2,7 +2,7 @@
 name: kinetic
 description: "Senior mobile product design system for native and cross-platform apps (Flutter, SwiftUI, Jetpack Compose, React Native). Use to create, redesign, improve, audit or evolve a mobile app's UI/UX; to build or extract a design system; for design-to-code and code-to-design; for typography, color, layout, icons/SVG, states, motion, haptics and anti-slop review. Thinks like a designer before styling: product thesis and inventory, directions dealt from a native library (so the result is not the category average), a drawn domain vocabulary, the full state matrix, then precise implementation verified by an engine and an independent critic. Not for websites/landing pages (use prismora) or backend work."
 metadata:
-  version: "1.6"
+  version: "1.7"
 ---
 
 # Kinetic — think like a design lead, execute like an engineer
@@ -50,13 +50,21 @@ rigor after — so the craft rules never crowd out the idea):
 |---|---|---|---|
 | D0 | — | `knowledge/anti-slop.md` (F + D), the stack file §slop | — |
 | D1 | — | + `states.md` §2, the stack file, the concern's file (typography / color / iconography-svg) | craft |
-| D2 | think, direct, `priors.md`, `identity-channels.md`, the deal sheet, `sectors.md` (your sector) | states, system, code (+ motion), `states.md`, `copy.md`, `layout.md` §1–3, the platform file, the stack file, docs/KDL.md (sections you write) | craft, critique, `taste-rubric.md` |
+| D2 | think, direct, `priors.md`, `identity-channels.md`, the deal sheet, `sectors.md` (your sector) | states, system, code (+ motion), `clarity.md`, `states.md`, `copy.md`, `layout.md` §1–3, the platform file, the stack file, docs/KDL.md (sections you write) | craft, critique, `taste-rubric.md` |
 | D3 | + `exemplars.md` (mechanisms, not looks) | everything relevant | + the rival and the independent critic |
 Don't read the whole library "to be safe". `directions.md` is legacy reference
 material: the deal replaces it.
 **Without agents** (a sub-agent context, a sandbox): do the director and critic
 steps yourself as the modules describe; `kinetic score` then stops at
 `ship-pending` by design — say so in the report instead of chasing `ship`.
+
+## 1b. Studio or solo
+If you can launch sub-agents and the depth is D2–D3, run the **studio**
+(`kinetic-studio`): three directors in parallel on the dealt options, a rival,
+an editor and a three-critic panel, merged by the engine. It is the default
+for anything a user will judge. Solo (the loop below) is for D0–D1 or when no
+Agent tool exists — then you play each role in order and mark judgments
+`self_judged`.
 
 ## 2. The operating loop (D2–D3)
 1. **Understand** (`kinetic-think`): product truth, user moment, thesis,
@@ -74,8 +82,10 @@ steps yourself as the modules describe; `kinetic score` then stops at
    icons, signature detail, choreography.
 6. **Realise** (`kinetic-code`): `kinetic export` the tokens, implement in the
    existing architecture, smallest coherent diff.
-7. **Prove** (`kinetic-critique`): `kinetic scan` the changed code, capture
-   renders, run the `kinetic-critic` agent in a fresh context, `kinetic score`.
+7. **Clean** (`knowledge/clarity.md`): `kinetic clarity <renders>`; cut until
+   key states score ≥ 85 — answer, proof, act; one loud thing per viewport.
+8. **Prove** (`kinetic-critique`): `kinetic scan` the changed code, capture
+   renders, run the critics (a panel in the studio), `kinetic score --renders`.
    Iterate on the lowest dimensions until the verdict is `ship` or you hit the
    stop rule (3 loops without improvement → report honestly).
 
@@ -94,7 +104,7 @@ loading, empty, error (+ offline) (F06). Labels on icon-only controls (F07).
 Reduce-motion path for every animation (F08). Safe areas and keyboard (F09).
 Never lock text scaling (F10).
 
-## 5. Complete *and* unmistakable
+## 5. Complete, unmistakable, and clean
 Completeness is the floor: every must-have visible where the brief needs it,
 native structure in place (navigation, thumb-zone actions, platform recovery
 paths), every state designed. It is not the goal. In four blind rounds Kinetic
@@ -102,7 +112,9 @@ won completeness and native fidelity every time and still tied the bare model,
 because the bare model's designs were more *distinctive*: a vocabulary drawn
 from the product's world, a hero that answers in the product's voice. A
 design that hides half the brief loses; a complete design that could belong to
-any competitor ties. Ship the one that is both.
+any competitor ties. Ship the one that is both — and say it in fewer words:
+**coverage lives in states, presence is budgeted per viewport**
+(`knowledge/clarity.md`). Every state designed; no state crowded.
 
 ## 6. Specificity beats adjectives
 "Clean, modern, premium" are not decisions. Decisions are numbers and reasons:
@@ -116,6 +128,8 @@ kinetic init [path] --mode create|redesign|…      # .kinetic/ with config + KD
 kinetic deal --brief-file BRIEF.md                 # 3 dealt directions (engine, type, palette, motion)
 kinetic deal --redraw 2.type --reason "…"          # replace one slot, logged; --show to reprint
 kinetic sheet .kinetic/shots                        # all renders on one contact sheet
+kinetic clarity .kinetic/shots                      # clutter per render: words, lines, sizes, quiet space
+kinetic panel critic-*.json --out .kinetic/critique.json   # merge independent critics (median, splits)
 kinetic validate .kinetic/design.kdl               # completeness + coherence (exit 1 on F)
 kinetic palette "#seed" [--kdl]                    # light/dark roles, contrast-checked
 kinetic contrast "#fg" "#bg"                       # WCAG 2 + APCA

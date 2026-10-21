@@ -41,6 +41,12 @@ control tool (screenshot), `xcrun simctl io booted screenshot <file>`,
 under `.kinetic/shots/` with descriptive names. Motion needs a recording;
 otherwise mark motion `unjudged`.
 
+## 3a. Clarity (measured)
+`kinetic clarity .kinetic/shots` before any judgment: a key state under 70 is
+cluttered whatever its taste — run the editor's pass (knowledge/clarity.md)
+first. `kinetic score --renders` adds clarity to the measured block, so it
+gates `ship` like the other measured scores.
+
 ## 3b. Contact sheet and rival (judge the system against the category)
 - `kinetic sheet .kinetic/shots --out .kinetic/shots/_sheet.png` puts every render on one image.
   On the sheet run **sameness** (name each screen's layout in one word; a repeated word is the

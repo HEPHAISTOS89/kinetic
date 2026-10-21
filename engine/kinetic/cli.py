@@ -10,7 +10,7 @@ import os
 import sys
 
 from . import __version__
-from . import color, deal, dna, export, project, report, score, sheet, states, svg, validate
+from . import clarity, color, deal, dna, export, panel, project, report, score, sheet, states, svg, validate
 from .kdl import KDLError, parse_file
 from .scan import scan
 
@@ -148,7 +148,7 @@ def cmd_score(a):
         print("score needs --kdl and/or --code", file=sys.stderr)
         return 2
     cfg, plats, grid = _cfg(a, a.code or [os.path.dirname(a.kdl) or "."])
-    r = score.run(a.kdl, a.code, a.judged, plats, grid)
+    r = score.run(a.kdl, a.code, a.judged, plats, grid, a.renders)
     _out(r, a.json, score.render(r))
     return 1 if r["verdict"] == "blocked" else 0
 
@@ -246,6 +246,36 @@ def cmd_deal(a):
     return 0
 
 
+def cmd_clarity(a):
+    r = clarity.clarity(a.images)
+    if a.json:
+        _out(r, True)
+        return 0
+    out = [f"kinetic clarity — mean {r['mean']}/100 over {len(r['renders'])} renders (clean ≥ 85, cluttered < 70)"]
+    for m in r["renders"]:
+        out.append(f"  {m['clarity']:>3}  {os.path.basename(m['file']):<40} words~{m['words']:<4} lines {m['lines']:<3} "
+                   f"sizes {m['text_sizes']}  quiet {int(m['quiet_share'] * 100)}%  gap {m['largest_gap_pt']}pt")
+    for wst in r["worst"]:
+        for n in wst["notes"]:
+            out.append(f"  → {wst['file']}: {n}")
+    out.append("limitation: " + r["limitations"][0])
+    print("\n".join(out))
+    return 0
+
+
+def cmd_panel(a):
+    r = panel.merge_files(a.critiques)
+    with open(a.out, "w", encoding="utf-8") as fh:
+        json.dump(r, fh, indent=1, ensure_ascii=False)
+    p = r["panel"]
+    lines = [f"kinetic panel — {p['size']} critics merged by median → {a.out}"]
+    for d, v in r["dimensions"].items():
+        lines.append(f"  {d:<16} {v['score']}  {v['scores']}{'  SPLIT' if d in p['split'] else ''}")
+    lines += [f"  consensus: {c}" for c in p["consensus_fixes"][:6]]
+    print("\n".join(lines))
+    return 0
+
+
 def cmd_sheet(a):
     r = sheet.contact_sheet(a.images, a.out, a.cols, a.width)
     _out(r, a.json, f"contact sheet {r['out']}  ({r['count']} renders, {r['cols']} columns)\n" +
@@ -311,7 +341,8 @@ def build_parser():
     s = sub.add_parser("score", help="taste report: measured + independently judged")
     s.add_argument("--kdl")
     s.add_argument("--code", nargs="+")
-    s.add_argument("--judged", help="critic JSON (docs/PROTOCOL.md)")
+    s.add_argument("--judged", help="critic JSON (docs/PROTOCOL.md) or a panel from `kinetic panel`")
+    s.add_argument("--renders", nargs="+", help="render PNGs/folders: adds the measured `clarity` score")
     s.add_argument("--platforms")
     s.add_argument("--grid", type=int)
     common(s, False)
@@ -354,6 +385,17 @@ def build_parser():
     s.add_argument("--out", help="deal file (default .kinetic/deal.json)")
     common(s, False)
     s.set_defaults(fn=cmd_deal)
+
+    s = sub.add_parser("clarity", help="measure clutter on renders: words, lines, text sizes, quiet space")
+    s.add_argument("images", nargs="+", help="PNG files or folders")
+    common(s, False)
+    s.set_defaults(fn=cmd_clarity)
+
+    s = sub.add_parser("panel", help="merge independent critiques (median per dimension, disagreement, consensus)")
+    s.add_argument("critiques", nargs="+")
+    s.add_argument("--out", default=".kinetic/critique.json")
+    common(s, False)
+    s.set_defaults(fn=cmd_panel)
 
     s = sub.add_parser("sheet", help="contact sheet of renders (one PNG) for judging the system at once")
     s.add_argument("images", nargs="+", help="PNG files or folders")

@@ -36,6 +36,19 @@ alternative and how it is verified (tests/).
 - Scanner rules added with them: D33 spent face, D34 spent ground (cream /
   parchment, terracotta), D35 generic part where the KDL vocabulary draws one.
 
+## Clarity and panel (v1.7)
+- `kinetic clarity <pngs or folders>` measures clutter per render (first 852pt,
+  normalised to 393pt wide): estimated words and lines of text, distinct text
+  sizes, quiet-row share, largest gap, edge density → a 0–100 clarity score
+  against the budgets in knowledge/clarity.md (clean ≥ 85, cluttered < 70).
+  Pixel heuristics, not OCR: report as `derived` evidence.
+- `kinetic score --renders <shots>` adds `clarity` to the measured block (light
+  renders), so a cluttered design cannot reach `ship`.
+- `kinetic panel critic-*.json --out .kinetic/critique.json` merges ≥ 2
+  independent critiques: median per dimension, per-critic scores, disagreement
+  and splits (≥ 2 points apart), consensus fixes (asked by ≥ 2 critics), tests
+  as pass counts. `kinetic score --judged` reads the panel like a single critique.
+
 ## Coverage and limits (stated in every result)
 - `scan` is lexical: values computed at runtime, behind helper functions or in
   binary assets are not seen; unscanned or oversized files are listed as

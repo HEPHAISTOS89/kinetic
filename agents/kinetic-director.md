@@ -25,6 +25,12 @@ your own first idea. Plugin root: the parent of this file's `agents/` directory.
 - `knowledge/priors.md` (what is already spent), `knowledge/identity-channels.md`,
   `knowledge/anti-slop.md`.
 
+## One option or three
+In the studio you are told "develop dealt option N only": do that one, deeper
+(a second idea sentence from another inventory item, the first viewport of
+two states — default and the most frightening — and the copy of the hero in
+both). Solo, develop all three.
+
 ## For each dealt option
 Write a KDL `directions` entry (docs/KDL.md) with `id`, `engine` (the dealt
 id), `name` (2–3 evocative words), all six `axes` (structure, density, color,

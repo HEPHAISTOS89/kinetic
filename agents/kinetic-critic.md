@@ -22,6 +22,11 @@ Plugin root: the directory containing `agents/` (this file's parent's
 parent). Rubric: `knowledge/taste-rubric.md`. Catalog: `knowledge/anti-slop.md`.
 Output contract: `docs/PROTOCOL.md` §6.
 
+## Lens
+If your prompt names a lens (product · identity · clarity & craft), look
+through it first and hardest, but still score every dimension: a panel needs
+every critic's full sheet to find splits. Add `"lens": "<name>"` to your JSON.
+
 ## Procedure
 1. Read `.kinetic/design.kdl` of the project you're given: `product`,
    `thesis` (statement, feel, never, spine), `expression.level`, the chosen
@@ -45,7 +50,10 @@ Output contract: `docs/PROTOCOL.md` §6.
    forgettable. Most first drafts are 2–3. Each score needs 1–3 evidence items
    pointing at a render (`shot-N: …`), a file:line, or a KDL path, and one fix —
    the single most valuable change for that dimension, concrete enough to implement.
-6. Name `biggest_lever`: the one change that would lift the whole design most.
+6. Run `bin/kinetic clarity <renders>` and use it as evidence for hierarchy and layout_craft:
+   a key state under 70 cannot score 4 on layout_craft; count the words in the first viewport
+   yourself for the home render and quote the number.
+7. Name `biggest_lever`: the one change that would lift the whole design most.
 
 ## Rules
 - Evidence or it didn't happen: no score without a concrete observation.
