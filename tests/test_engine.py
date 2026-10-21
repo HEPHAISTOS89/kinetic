@@ -165,6 +165,10 @@ def _have(cmd):
     return shutil.which(cmd) is not None
 
 
+KOTLINC = os.environ.get("KOTLINC") or next(
+    (p for p in ("/Applications/Android Studio.app/Contents/plugins/Kotlin/kotlinc/bin/kotlinc",) if os.path.exists(p)), None)
+
+
 class TestExport(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -220,6 +224,18 @@ class TestExport(unittest.TestCase):
         r = subprocess.run(["tsc", "--noEmit", "--strict", "--target", "es2020", "--module", "esnext",
                             "--moduleResolution", "bundler", self.files["react-native"], shim], capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stdout[-2000:])
+
+    @unittest.skipUnless(KOTLINC, "kotlinc not found (set KOTLINC and JAVA_HOME)")
+    def test_compose_compiles_against_signature_stubs(self):
+        stubs = [os.path.join(ROOT, "tests", "compose_stubs", f) for f in sorted(os.listdir(os.path.join(ROOT, "tests", "compose_stubs")))]
+        env = dict(os.environ)
+        jbr = "/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+        if "JAVA_HOME" not in env and os.path.isdir(jbr):
+            env["JAVA_HOME"] = jbr
+            env["PATH"] = os.path.join(jbr, "bin") + os.pathsep + env.get("PATH", "")
+        r = subprocess.run(["bash", KOTLINC, "-nowarn", *stubs, self.files["compose"], "-d", os.path.join(self.tmp, "kout")],
+                           capture_output=True, text=True, env=env)
+        self.assertEqual(r.returncode, 0, (r.stdout + r.stderr)[-2000:])
 
     @unittest.skipUnless(os.environ.get("KINETIC_SLOW") and _have("flutter"), "set KINETIC_SLOW=1 with flutter on PATH")
     def test_flutter_analyzes(self):

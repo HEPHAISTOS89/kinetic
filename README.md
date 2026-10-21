@@ -90,5 +90,5 @@ Protocole d'évaluation (moteur, déclenchement, A/B à l'aveugle) : [docs/EVALU
 ## Limites assumées
 - Le scan est lexical (sans AST) : ses findings `inferred` sont des hypothèses à confirmer.
 - Le score ne donne jamais un « chiffre de goût » unique : le mesuré et le jugé restent séparés.
-- L'export Compose n'est pas compilé dans les tests (pas de toolchain Kotlin ici).
+- L'export Compose est compilé avec `kotlinc` contre des stubs de signatures Compose, pas contre les vraies librairies : seul un build Gradle dans l'app le prouve totalement.
 - Génération d'images (illustrations, icône d'app) : hors périmètre de la v1.

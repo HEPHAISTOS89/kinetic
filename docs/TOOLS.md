@@ -31,9 +31,11 @@ alternative and how it is verified (tests/).
   being reported as facts.
 - `score` never outputs a single taste number: it shows measured and judged
   blocks side by side and the gates that produced the verdict.
-- `export` for Compose is not compiler-verified in this repository's test
-  lane (no Kotlin toolchain); Flutter, SwiftUI (iOS + macOS) and TypeScript
-  outputs are compiled in `tests/` when the toolchains are present.
+- Exports are compiled in `tests/` when toolchains are present: SwiftUI (iOS +
+  macOS, `swiftc`), TypeScript (`tsc`), Flutter (`flutter analyze`, with
+  `KINETIC_SLOW=1`). Compose is compiled with `kotlinc` against signature stubs
+  of the Compose APIs it uses (`tests/compose_stubs/`) — this checks syntax and
+  typing, not the real artifacts; a Gradle build in the app is the final proof.
 
 ## Nearest alternatives
 - Visual regression / pixel diff: not provided; use the platform's snapshot

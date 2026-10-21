@@ -1,0 +1,10 @@
+@file:Suppress("unused", "UNUSED_PARAMETER")
+package androidx.compose.ui.unit
+class Dp(val value: Float)
+class TextUnit(val value: Float)
+val Int.dp: Dp get() = Dp(toFloat())
+val Double.dp: Dp get() = Dp(toFloat())
+val Int.sp: TextUnit get() = TextUnit(toFloat())
+val Double.sp: TextUnit get() = TextUnit(toFloat())
+val Int.em: TextUnit get() = TextUnit(toFloat())
+val Double.em: TextUnit get() = TextUnit(toFloat())
