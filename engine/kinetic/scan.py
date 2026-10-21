@@ -54,6 +54,9 @@ EMOJI = re.compile("[\U0001F300-\U0001FAFF\U00002600-\U000027BF\U0001F900-\U0001
 GREETING = re.compile(r"\b(good\s+(morning|afternoon|evening|night)|welcome back|bonjour|bonsoir|hello|hi|hey|salut|coucou)\b\s*[,!]?\s*(\$|\{|\\\(|[A-Z])", re.I)
 COPY_SLOP = re.compile(r"\b(unlock (your|the)|supercharge|elevate your|empower|revolutioni[sz]e|next[- ]level|game[- ]changer|seamless(ly)?|cutting[- ]edge|boostez|débloquez|révolutionn|oops!|whoops)\b", re.I)
 FAKE_PROOF = re.compile(r"(\b[45](\.\d)?\s*(★|stars?|/\s*5)|\b\d+(\.\d+)?\s*[kKmM]\+?\s*(users|customers|clients|downloads|utilisateurs|members)|trusted by\s+\d|★★★★)", re.I)
+LOG_LINE = re.compile(r"\b(debugPrint|print|log|logger\.\w+|_log\w*|Log\.[a-z]|developer\.log|NSLog|os_log|Logger\b|console\.\w+|"
+                      r"assert|throw|Exception|Error\(|fatalError|precondition|Timber\.\w)\s*\(?", re.I)
+LOG_TAG = re.compile(r"\[[A-Z][\w .:/-]{2,40}\]|^\$_?\w*prefix", re.I)
 STRING_LIT = re.compile(r"\"((?:[^\"\\\n]|\\.){2,200})\"|'((?:[^'\\\n]|\\.){2,200})'")
 JSX_TEXT = re.compile(r">\s*([^<>{}\n]{3,160}?)\s*<")
 
@@ -259,11 +262,11 @@ EXTRACT["tsx"] = [e for e in EXTRACT["tsx"] if e]
 # direct signals: (rule, tier, severity, evidence, regex, message, fix)
 SIG = {
     "flutter": [
-        ("F02", "F", "block", "observed", r"\bon(?:Pressed|Tap|LongPress|Changed|Submitted)\s*:\s*\(\s*\w?\s*\)\s*(?:\{\s*\}|=>\s*\{\s*\})", "empty handler: control promises but does nothing", "wire the action or remove the control"),
+        ("F02", "F", "major", "observed", r"\bon(?:Pressed|Tap|LongPress|Changed|Submitted)\s*:\s*\(\s*\w?\s*\)\s*(?:\{\s*\}|=>\s*\{\s*\})", "empty handler: the control looks active but does nothing", "wire the action; while loading/unavailable pass null so it renders disabled"),
         ("F10", "F", "block", "observed", r"TextScaler\.noScaling|textScaleFactor\s*:\s*1(?:\.0)?\b|TextScaler\.linear\(\s*1(?:\.0)?\s*\)", "user text size is locked", "support text scaling; reflow at large sizes (withClampedTextScaling only with a stated maximum ≥ 2.0)"),
         ("F05", "F", "major", "observed", r"MaterialTapTargetSize\.shrinkWrap", "tap target shrunk below 48dp", "keep the padded tap target; shrink the glyph instead"),
         ("D28", "D", "major", "observed", r"\bFittedBox\(", "FittedBox used as a layout patch", "reflow the layout; give critical text room"),
-        ("D28", "D", "minor", "observed", r"TextOverflow\.ellipsis", "ellipsis truncation (fine for secondary text, harmful on critical content)", "wrap or restructure critical text"),
+        ("D28", "D", "info", "observed", r"TextOverflow\.ellipsis", "ellipsis truncation (fine for secondary text, harmful on critical content)", "check each: wrap or restructure titles, prices, CTAs and legal text"),
         ("D30", "D", "major", "observed", r"seedColor\s*:\s*Colors\.(deepPurple|purple|indigo)|primarySwatch\s*:\s*Colors\.blue\b", "Flutter template default palette left in place", "make the palette a decision from the thesis (`kinetic palette`)"),
         ("D26", "D", "minor", "inferred", r"\bShaderMask\(", "ShaderMask (often gradient text / glow)", "carry emphasis with weight, size, color"),
         ("D05", "D", "minor", "observed", r"\bBackdropFilter\(|ImageFilter\.blur", "blur filter", "native materials on bars/sheets only; never as card decoration"),
@@ -300,7 +303,7 @@ SIG = {
     "compose": [
         ("F02", "F", "block", "observed", r"onClick\s*=\s*\{\s*\}", "empty click handler", "wire the action or remove the control"),
         ("F10", "F", "block", "observed", r"fontScale\s*=\s*1(?:\.0)?f", "font scale locked", "respect the user's font scale; reflow"),
-        ("D28", "D", "minor", "observed", r"TextOverflow\.Ellipsis", "ellipsis truncation", "wrap or restructure critical text"),
+        ("D28", "D", "info", "observed", r"TextOverflow\.Ellipsis", "ellipsis truncation", "check each: wrap or restructure critical text"),
         ("D28", "D", "major", "observed", r"\bautoSize\b|TextAutoSize", "auto-shrinking text", "reflow instead of shrinking"),
         ("D05", "D", "minor", "observed", r"Modifier\.blur\(|\.blur\(\s*\d", "blur", "reserve for overlays"),
         ("D29", "D", "major", "observed", r"\.(?:width|height|size)\(\s*(?:360|375|390|393|411|412|414|640|731|800|812|844|851|915)\.dp", "mockup device dimension hard-coded", "use fillMaxWidth, weights, WindowSizeClass"),
@@ -442,7 +445,7 @@ class Scanner:
     # structural heuristics needing more than one line
     def _structural(self, fs: FileScan, text: str, lang: str):
         if lang == "flutter":
-            for m in re.finditer(r"\bIconButton(?:\.\w+)?\(", text):
+            for m in re.finditer(r"\bIconButton(?:\.(?:filled|filledTonal|outlined))?\(", text):
                 reg = _region(text, m.start(), 900)
                 if "tooltip" not in reg and "Semantics" not in text[max(0, m.start() - 200):m.start()] \
                         and "semanticLabel" not in reg:
@@ -503,8 +506,17 @@ class Scanner:
                                                fix="add accessibilityLabel (RN) or aria-label (web)"))
 
     def _strings(self, fs: FileScan, lines, lang: str):
-        ui_file = not re.search(r"(model|service|repository|api|dto|entity|test|mock|fixture)s?\b", os.path.basename(fs.path), re.I)
+        ui_file = not re.search(r"(model|service|repository|api|dto|entity|test|mock|fixture|logger|log)s?\b",
+                                os.path.basename(fs.path), re.I)
+        log_depth = 0
         for no, line in lines:
+            if log_depth > 0:
+                log_depth += line.count("(") - line.count(")")
+                continue
+            m = LOG_LINE.search(line)
+            if m:
+                log_depth = max(0, line[m.start():].count("(") - line[m.start():].count(")"))
+                continue
             if re.search(r"^\s*(import|export\s+\*|package|@)", line):
                 continue
             chunks = [a or b for a, b in STRING_LIT.findall(line)]
@@ -513,6 +525,8 @@ class Scanner:
             for s in chunks:
                 if not ui_file:
                     break
+                if LOG_TAG.search(s):
+                    continue
                 if EMOJI.search(s):
                     fs.findings.append(Finding(rule="D06", tier="D", severity="minor", evidence="observed", file=fs.path,
                                                line=no, message=f"emoji in UI text: {s[:50]!r}",
@@ -678,13 +692,14 @@ class Scanner:
                                     message=f"{len(hues)} saturated hue families: {', '.join(sorted(hues))}",
                                     fix="one accent carries meaning; status colors are separate roles"))
         hard = Counter(f.file for f in by_kind["color"] if not f.themed)
-        for path, n in hard.most_common():
-            if n >= 3:
-                f0 = first("color", lambda f, p=path: f.file == p and not f.themed)
-                findings.append(Finding(rule="D13", tier="D", severity="minor", evidence="inferred", file=path,
-                                        line=f0.line if f0 else 0,
-                                        message=f"{n} hard-coded colors outside the theme",
-                                        fix="reference theme roles; keep literals in one token file"))
+        heavy = [(p, n) for p, n in hard.most_common() if n >= 3]
+        if heavy:
+            top = ", ".join(f"{os.path.relpath(p) if not p.startswith('..') else p} ({n})" for p, n in heavy[:6])
+            f0 = first("color", lambda f, p=heavy[0][0]: f.file == p and not f.themed)
+            findings.append(Finding(rule="D13", tier="D", severity="minor" if len(heavy) < 10 else "major", evidence="inferred",
+                                    file=heavy[0][0], line=f0.line if f0 else 0,
+                                    message=f"hard-coded colors outside the theme in {len(heavy)} files — top: {top}",
+                                    fix="reference theme roles (dark mode and rebranding depend on it); keep literals in one token file"))
         # radii
         radii = Counter(f.value for f in by_kind["radius"] if isinstance(f.value, (int, float)) and 0 < f.value < 100)
         if len(radii) > 4:
@@ -792,12 +807,16 @@ class Scanner:
     def _collapse(self, findings):
         """Info-level counters (D03, D10, D11, D16, D25…) become one finding per file with a count."""
         keep, buckets = [], defaultdict(list)
+        emoji = defaultdict(list)
         for f in findings:
-            if f.severity == "info" and f.rule in ("D03", "D10", "D11", "D16", "D25", "D20", "D21", "D27", "D19"):
+            if f.rule == "D06" and f.message.startswith("emoji in UI text"):
+                emoji[f.file].append(f)
+                continue
+            if f.severity == "info" and f.rule in ("D03", "D10", "D11", "D16", "D25", "D20", "D21", "D27", "D19", "D28"):
                 buckets[(f.rule, f.file)].append(f)
             else:
                 keep.append(f)
-        thresholds = {"D03": 5, "D10": 4, "D11": 5, "D16": 4, "D25": 8, "D20": 1, "D21": 1, "D27": 1, "D19": 2}
+        thresholds = {"D03": 5, "D10": 4, "D11": 5, "D16": 4, "D25": 8, "D20": 1, "D21": 1, "D27": 1, "D19": 2, "D28": 3}
         for (rule, path), group in buckets.items():
             if len(group) >= thresholds.get(rule, 1):
                 g0 = group[0]
@@ -806,6 +825,12 @@ class Scanner:
                                     file=path, line=g0.line,
                                     message=f"{g0.message} ×{len(group)}" if len(group) > 1 else g0.message,
                                     fix=g0.fix, snippet=g0.snippet))
+        for path, group in emoji.items():
+            g0 = group[0]
+            keep.append(Finding(rule="D06", tier="D", severity="minor", evidence="observed", file=path, line=g0.line,
+                                message=g0.message if len(group) == 1 else
+                                f"emoji in UI text ×{len(group)} (e.g. {g0.snippet[:40]!r})",
+                                fix=g0.fix, snippet=g0.snippet))
         return keep
 
 
