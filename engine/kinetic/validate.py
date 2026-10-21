@@ -5,6 +5,8 @@ file, never from a render. Codes: catalog IDs (F/D) when the check maps to a
 catalog rule, K-codes for structural completeness."""
 from __future__ import annotations
 
+import json
+import os
 import re
 
 from . import color
@@ -46,7 +48,11 @@ KINDS = {"text", "numeral", "button", "icon-button", "link", "field", "toggle", 
 SCREEN_STATES = ["content", "loading", "empty", "error"]
 REQUIRED_ROLES = ["bg", "surface", "text", "text-2", "border", "accent", "on-accent"]
 SECTIONS = {"kdl", "mode", "product", "requirements", "thesis", "expression", "audit", "directions", "journeys",
-            "system", "screens", "signature", "premortem", "exceptions"}
+            "system", "screens", "signature", "premortem", "exceptions",
+            "inventory", "idea", "vocabulary", "contract"}
+VOCAB_ROLES = {"progress_bar", "status_dot", "chip", "badge", "tab_icon", "empty_illustration", "data_mark", "divider",
+               "input_control", "card", "banner", "map", "chart", "thumbnail", "header", "avatar", "background"}
+CONTRACT_KEYS = ("thesis", "idea", "own_world", "first_viewport", "vocabulary", "signature_move", "live_thing")
 STYLE_KEYS = {"size", "line", "weight", "track", "numerals", "width", "family", "case", "use"}
 STATUS = ("danger", "success", "warning", "error", "info", "caution", "critical", "positive", "negative")
 MOTION_KINDS = ("feedback", "transition", "signature", "ambient")
@@ -107,9 +113,11 @@ def _words(text: str) -> list:
 
 
 class Validator:
-    def __init__(self, doc, path="design.kdl"):
+    def __init__(self, doc, path="design.kdl", deal=None, root=None):
         self.doc = doc
         self.path = path
+        self.deal = deal
+        self.root = root
         self.findings: list[Finding] = []
         self.checked: list[str] = []
 
@@ -161,6 +169,7 @@ class Validator:
         level = self.check_expression()
         self.check_audit()
         self.check_directions()
+        self.check_identity()
         self.check_system(level)
         self.check_screens(level)
         self.check_requirements()
@@ -311,6 +320,115 @@ class Validator:
                              f"directions {i + 1} and {j + 1} differ on fewer than 3 axes",
                              "vary structure, density, color strategy, type voice and motion — not three palettes on one layout",
                              self.line("directions"))
+
+    # ----------------------------------------------------------- identity
+    def check_identity(self):
+        """v1.6 identity gate: inventory → idea → dealt engine → most distinctive viable direction → vocabulary."""
+        d = self.doc.get("directions")
+        if not isinstance(d, list) or self.mode not in ("create", "redesign"):
+            return
+        self.checked.append("identity")
+        inv = self.doc.get("inventory")
+        items = [str(x.get("item") if isinstance(x, dict) else x) for x in inv] if isinstance(inv, list) else []
+        if not items:
+            self.add("K28", "D", "major", "inventory", "no `inventory` of things only this product has",
+                     "list 8–12 items of the product's own world (objects, places, rituals, printed artefacts, numbers, names) before any direction",
+                     self.line("inventory"))
+        elif len(items) < 8:
+            self.add("K28", "D", "minor", "inventory", f"inventory has {len(items)} items",
+                     "8–12 items: the identity is drawn from them, and a short list is the category's list",
+                     self.line("inventory"))
+        idea = self.doc.get("idea")
+        if not isinstance(idea, dict):
+            self.add("K28", "D", "major", "idea", "no `idea` (In this app, [inventory item] becomes [the engine's device])",
+                     "write idea: {subject_item, becomes, competitor_test: {competitor, fails_because}}", self.line("idea"))
+        else:
+            for k in ("subject_item", "becomes"):
+                if not idea.get(k):
+                    self.add("K28", "D", "minor", f"idea.{k}", f"idea has no `{k}`", "complete the idea sentence",
+                             self.line("idea"))
+            ct = idea.get("competitor_test")
+            if not isinstance(ct, dict) or not ct.get("competitor") or not ct.get("fails_because"):
+                self.add("K28", "D", "minor", "idea.competitor_test",
+                         "idea has no competitor test", "name the nearest competitor and why the idea fails for it — "
+                         "if it fits them too, it is the category's idea, not this product's", self.line("idea"))
+            subj = str(idea.get("subject_item") or "").lower()
+            if subj and items and not any(subj in i.lower() or i.lower() in subj for i in items):
+                self.add("K28", "D", "minor", "idea.subject_item", f"`{idea.get('subject_item')}` is not in the inventory",
+                         "the idea must start from an inventory item", self.line("idea"))
+        chosen = next((x for x in d if isinstance(x, dict) and x.get("verdict") == "chosen"), None)
+        dealt = [o["engine"]["id"] for o in (self.deal or {}).get("options", []) if isinstance(o, dict)]
+        if self.deal is None:
+            self.add("K29", "I", "info", "directions", "no `.kinetic/deal.json` next to this record",
+                     "run `kinetic deal --brief …` and choose among the dealt options", self.line("directions"))
+        elif chosen is not None and chosen.get("engine") not in dealt:
+            self.add("K29", "D", "major", "directions", f"chosen direction's engine `{chosen.get('engine')}` was not dealt "
+                     f"({', '.join(dealt)})", "choose a dealt option, or redraw its engine with "
+                     "`kinetic deal --redraw N.engine --reason …`", self.line("directions"))
+        for h in (self.deal or {}).get("history", []):
+            if len(str(h.get("reason") or "").strip()) < 12:
+                self.add("K33", "D", "major", "deal.history", f"redraw of option {h.get('option')} {h.get('slot')} has no reason",
+                         "every redraw states the product fact or brand constraint that rules the dealt slot out")
+
+        def sc(x, k):
+            try:
+                return float((x.get("scores") or {}).get(k))
+            except (TypeError, ValueError, AttributeError):
+                return None
+
+        def viable(x):
+            f, u, fe = sc(x, "product_fit"), sc(x, "usability"), sc(x, "feasibility")
+            return f is not None and u is not None and fe is not None and f >= 4 and u >= 4 and fe >= 3
+        if chosen is not None and sc(chosen, "distinctiveness") is not None:
+            better = [x for x in d if isinstance(x, dict) and x is not chosen and viable(x)
+                      and (sc(x, "distinctiveness") or 0) > (sc(chosen, "distinctiveness") or 0)]
+            if better:
+                self.add("K30", "D", "major", "directions",
+                         f"a more distinctive viable direction ({better[0].get('id')}) was rejected for a safer one",
+                         "rule: among directions with fit ≥ 4, usability ≥ 4, feasibility ≥ 3, choose the most distinctive "
+                         "(write the brand/user fact that forbids it in `because` if one truly does, and lower its fit score)",
+                         self.line("directions"))
+        voc = self.doc.get("vocabulary")
+        if not isinstance(voc, list) or not voc:
+            self.add("K31", "D", "major", "vocabulary", "no drawn `vocabulary`",
+                     "6–10 marks drawn from the inventory, each replacing a generic part: "
+                     "[{mark, from, replaces, sites, file}]", self.line("vocabulary"))
+        else:
+            sites = []
+            for i, m in enumerate(voc):
+                if not isinstance(m, dict):
+                    continue
+                ss = m.get("sites") or []
+                sites += [str(x).lower() for x in (ss if isinstance(ss, list) else [ss])]
+                rep = m.get("replaces")
+                if rep and str(rep) not in VOCAB_ROLES:
+                    self.add("K31", "I", "info", f"vocabulary.{i}.replaces", f"unknown role `{rep}`",
+                             f"roles: {', '.join(sorted(VOCAB_ROLES))}", self.line(f"vocabulary.{i}"))
+                f = m.get("file")
+                if f and self.root and not os.path.exists(os.path.join(self.root, str(f))):
+                    self.add("K31", "D", "minor", f"vocabulary.{i}.file", f"mark file `{f}` not found",
+                             "draw the mark as SVG (kinetic svg lint) or in code, and point `file` at it",
+                             self.line(f"vocabulary.{i}"))
+            if len(sites) < 4:
+                self.add("K31", "D", "major", "vocabulary", f"the vocabulary appears in {len(sites)} place(s)",
+                         "carry it into ≥ 4 places: the hero, a list item, a data encoding, a degraded state",
+                         self.line("vocabulary"))
+            if not any("hero" in x for x in sites):
+                self.add("K31", "D", "minor", "vocabulary", "the vocabulary is not in the hero",
+                         "the first viewport is the vocabulary's home", self.line("vocabulary"))
+        c = self.doc.get("contract")
+        if not isinstance(c, dict):
+            self.add("K32", "D", "minor", "contract", "no direction `contract`",
+                     f"≤ 200 words protecting the idea through the build: {', '.join(CONTRACT_KEYS)}", self.line("contract"))
+        else:
+            missing = [k for k in CONTRACT_KEYS if not c.get(k)]
+            if missing:
+                self.add("K32", "D", "minor", "contract", f"contract misses {', '.join(missing)}",
+                         "every block in one or two sentences", self.line("contract"))
+            words = sum(len(str(v).split()) for v in c.values())
+            if words > 220:
+                self.add("K32", "I", "info", "contract", f"contract is {words} words",
+                         "≤ 200: it is read before every screen, so it must stay a contract, not a spec", self.line("contract"))
 
     # ------------------------------------------------------------- system
     def check_system(self, level: int):
@@ -876,7 +994,7 @@ class Validator:
                          self.line(f"premortem.{i}"))
 
 
-def validate_text(text: str, path="design.kdl") -> dict:
+def validate_text(text: str, path="design.kdl", deal=None, root=None) -> dict:
     try:
         doc = parse(text)
     except KDLError as e:
@@ -884,7 +1002,7 @@ def validate_text(text: str, path="design.kdl") -> dict:
                     evidence="observed", message=f"syntax: {e.message}", fix="fix the KDL syntax (docs/KDL.md)")
         return {"tool": "validate", "ok": False, "mode": None, "findings": [f.as_dict()],
                 "coverage": {"sections_checked": []}}
-    v = Validator(doc, path).run()
+    v = Validator(doc, path, deal, root).run()
     fs = sorted(v.findings, key=lambda f: (f.order(), f.line))
     return {
         "tool": "validate",
@@ -905,4 +1023,14 @@ def validate_text(text: str, path="design.kdl") -> dict:
 
 def validate_file(path: str) -> dict:
     with open(path, encoding="utf-8") as fh:
-        return validate_text(fh.read(), path)
+        text = fh.read()
+    kdir = os.path.dirname(os.path.abspath(path))
+    deal, dpath = None, os.path.join(kdir, "deal.json")
+    if os.path.exists(dpath):
+        try:
+            with open(dpath, encoding="utf-8") as fh:
+                deal = json.load(fh)
+        except (OSError, ValueError):
+            deal = None
+    root = os.path.dirname(kdir) if os.path.basename(kdir) == ".kinetic" else kdir
+    return validate_text(text, path, deal, root)

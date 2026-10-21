@@ -10,12 +10,18 @@ description: "Kinetic's design-system generator for mobile apps: decide typograp
 Each decision narrows the next. Making them out of order is how palettes end
 up fighting typography and radii fight density.
 
+In create/redesign the **type system, palette and motion personality were
+dealt** (`.kinetic/deal.json`, chosen option): systemise them, don't re-choose
+them. The display face carries the voice; text stays the platform face. The
+palette's **field** and **proportion** are part of the decision (the field goes
+in `system.color.roles.<theme>.field` with its `on-field`).
+
 ## Order (write each into KDL `system`, then `kinetic validate`)
 1. **Type** (`knowledge/typography.md`): families (system first on iOS), a
    5–8 step ramp anchored on body 17 (iOS) / 16 (Android), ratio from the
    expression level, line heights, em tracking, numerals, width (condensed numerals for dense figures, typography.md §8b). Platform ramps:
    `knowledge/platform-ios.md`, `knowledge/platform-android.md`.
-2. **Color** (`knowledge/color.md`; data colors such as transit lines or categories go in `system.color.data`, §8b): seed from brand or thesis →
+2. **Color** (`knowledge/color.md`; data colors such as transit lines or categories go in `system.color.data`, §8b): the dealt palette's seed (or the brand's) →
    `kinetic palette "#seed" --kdl` → edit roles for atmosphere (warm/cool
    neutrals, accent restraint) → keep every pair passing. Dark theme designed:
    tonal surfaces, desaturated accent, near-white text.

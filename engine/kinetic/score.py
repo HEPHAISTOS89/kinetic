@@ -172,8 +172,9 @@ def run(kdl_path=None, code_paths=None, judged_path=None, platforms=("ios", "and
         except Exception:  # syntax errors are already in kdl_result
             states_kdl = None
     if code_paths:
-        from .project import data_hexes, exceptions
-        scan_result = scan(code_paths, platforms, grid, None, data_hexes(code_paths[0]), exceptions(code_paths[0]))
+        from .project import data_hexes, exceptions, vocabulary_roles
+        scan_result = scan(code_paths, platforms, grid, None, data_hexes(code_paths[0]), exceptions(code_paths[0]),
+                           vocabulary_roles(code_paths[0]))
         dna_result = dna_mod.dna(scan_result, grid)
         states_code = states_mod.code(code_paths)
     measured, formulas, blocks, to_confirm = _measured(kdl_result, scan_result, dna_result, states_kdl, states_code)

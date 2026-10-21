@@ -44,7 +44,7 @@ render/critic can decide; **kdl** = `kinetic validate` checks the decision recor
 | D04 | **Dashboard costume** — stat tiles, rings, sparklines and "insights" that support no decision | 3+ metric tiles; progress rings | Show the one number that matters with its meaning; detail on demand | judge |
 | D05 | **Glass everywhere** — blur/frosted panels as a premium shortcut | `BackdropFilter`, `.ultraThinMaterial` on content cards | Native materials only on bars/sheets/overlays over moving content | auto |
 | D06 | **Icon chaos** — emoji as icons; mixed families, weights, fills; decorative icons on every row | emoji in `Text`; >1 icon family; filled+outlined mixed | One family, one weight, fill only for selection; drop icons that don't aid scanning | auto |
-| D07 | **Generic illustration** — 3D blobs, stock characters, abstract waves as content | asset names `blob`, `wave`, `illustration_*` | Typography, data and real content carry the screen; images return in v2 with intent | auto+judge |
+| D07 | **Generic illustration** — 3D blobs, stock characters, abstract waves as content | asset names `blob`, `wave`, `illustration_*` | The product's drawn vocabulary (kinetic-direct §4b), real photos of the subject's world where honest, or one purposeful illustration per key empty state | auto+judge |
 | D08 | **Navigation by habit** — 5 equal tabs where 2–3 suffice; hamburger menu on iOS; tabs for actions | tab count; drawer on iOS | Tabs for parallel top-level areas only; actions live in context | auto+judge |
 | D09 | **FAB reflex** — floating action button on iOS, or when creation isn't the primary action | `FloatingActionButton` on iOS target | Toolbar/nav-bar action on iOS; FAB only for Android creation-first screens | auto |
 | D10 | **Interruption habit** — toasts for every action; dialogs for non-destructive choices | many `SnackBar`/`showDialog`/`.alert` calls | Inline confirmation, undo, state change in place | auto+judge |
@@ -69,6 +69,9 @@ render/critic can decide; **kdl** = `kinetic validate` checks the decision recor
 | D29 | **Mockup sizes in code** — `width: 375`, `height: 812`, fixed screen-sized frames | literal device dimensions | Constraints and flexible layout; safe-area-aware | auto |
 | D31 | **Legend-dependent encoding** — meaning carried by size/color/position that needs a legend, coach tip or onboarding to be understood | a legend line or first-run tip explaining a visual rule | Put the meaning in the element itself (a word, an icon + word, a clear boundary): if it needs a legend, it isn't designed yet | judge |
 | D32 | **Status echo** — one fact said in 3+ places (header pill, banner, card footnote, row badge), each in different words | the same status in several components of one screen | Say it once, where it can be acted on; elsewhere at most a quiet marker using the *same* term | judge |
+| D33 | **Spent face** — the display/brand face is one models reach for by default (Inter, Fraunces, Space Grotesk, DM Sans, IBM Plex, Playfair, Manrope, Poppins, Montserrat, Instrument Serif…) | the family name or `GoogleFonts.x` in code | Take the dealt type system (`kinetic deal`); a brand that pins the face goes in KDL `exceptions` | auto |
+| D34 | **Spent ground** — cream/parchment paper ground, terracotta/clay accent: the most common generated look (knowledge/priors.md) | background hex with L 0.93–0.99, C ≥ 0.007, hue 55–100; accent near #D97757 | A dealt palette: the ground stays neutral (or cool), warmth goes into a field or the accent | auto |
+| D35 | **Generic part where the vocabulary draws one** — a stock progress bar, chip or status dot in a role the KDL `vocabulary` replaces with the product's mark | `LinearProgressIndicator(value:)`, `ProgressView(value:)`, `FilterChip(` with a matching `vocabulary.replaces` | Use the drawn mark; or remove the role from `vocabulary` | auto |
 | D30 | **Default theme untouched** — stock Material purple / iOS default blue with no decision | `Colors.deepPurple`, `seedColor: Colors.purple`, unmodified template | Make the palette a decision from the thesis | auto |
 
 ## C — conditional (judge against thesis and level)
@@ -81,7 +84,7 @@ render/critic can decide; **kdl** = `kinetic validate` checks the decision recor
 | C04 | Gradients | When they carry meaning: time of day, data intensity, brand light. Low chroma, few stops. |
 | C05 | Blur/materials | Native bars, sheets, menus over scrolling content. |
 | C06 | Overshoot springs | Direct manipulation, playful brands, expression ≥ 4. |
-| C07 | Illustration | Empty states and onboarding when on-brand and purposeful (v2). |
+| C07 | Illustration | Drawn from the product's inventory (its vocabulary at a larger size), for empty, offline and first-run states; never stock blobs or characters. |
 | C08 | FAB | Android, creation-first screens. |
 | C09 | Centered layout | Single-focus moments: a hero numeral, an auth screen, a confirmation. |
 | C10 | Stock Material / Cupertino components | Deliberately chosen, themed and tuned; native fidelity is a virtue. |

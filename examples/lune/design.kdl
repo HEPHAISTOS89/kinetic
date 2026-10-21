@@ -44,8 +44,27 @@ expression:
   because: low stakes but used in a fragile state at night; calm beats spectacle, identity lives in one numeral
   factors: {stakes: low, frequency: daily, density: low, brand_freedom: high}
 
+inventory:
+  - the bedside lamp and its click
+  - the alarm time set the night before
+  - the moon's real phase tonight
+  - the curtains and the strip of street light
+  - the hours on a bedside clock face
+  - the glass of water
+  - the duvet pulled up - the posture of the moment
+  - the dawn chorus and first light time
+  - waking at 3 a.m. and checking the time
+
+idea:
+  subject_item: the hours on a bedside clock face
+  becomes: the night drawn as an arc of a dimmed clock face - asleep hours filled, awake minutes as gaps - read in one glance with one eye open
+  competitor_test:
+    competitor: Apple Health sleep stages
+    fails_because: their night is a stage chart for analysis in daylight; a dimmed clock face only makes sense in the dark, half-awake
+
 directions:
   - id: A
+    engine: time-atmosphere
     name: Night paper
     axes: {structure: single-column narrative, density: airy, color: warm dark monochrome,
            type: large light numerals with a quiet serif voice, motion: slow breath}
@@ -53,6 +72,7 @@ directions:
     verdict: chosen
     because: the half-asleep moment needs one glanceable number and a sentence of meaning, not charts
   - id: B
+    engine: dial
     name: Sky instrument
     axes: {structure: dashboard of tiles, density: medium, color: cool blue night gradient,
            type: grotesk with tabular data, motion: crisp snaps}
@@ -60,12 +80,28 @@ directions:
     verdict: rejected
     because: precise but cold; it is the performance dashboard named in thesis.never
   - id: C
+    engine: specimen
     name: Soft garden
     axes: {structure: illustrated scenes, density: low, color: pastel botanicals,
            type: rounded friendly sans, motion: playful growth}
     scores: {product_fit: 3, distinctiveness: 4, usability: 3, feasibility: 2, risk_of_slop: 4}
     verdict: rejected
-    because: depends on illustration (out of v1 scope) and drifts into whimsy at 1 a.m.
+    because: a catalogue of illustrated nights asks you to browse at 1 a.m.; whimsy fights the thesis
+
+vocabulary:
+  - {mark: clock-arc, from: the hours on a bedside clock face, replaces: data_mark, sites: [hero night arc, week list rows], file: icons/clock-arc.svg}
+  - {mark: wake-gap, from: waking at 3 a.m., replaces: status_dot, sites: [hero night arc, night detail]}
+  - {mark: moon-phase, from: the moon's real phase tonight, replaces: empty_illustration, sites: [empty first night, offline state]}
+  - {mark: lamp-dot, from: the bedside lamp, replaces: progress_bar, sites: [wind-down countdown]}
+
+contract:
+  thesis: tells you how you slept without waking you up
+  idea: last night drawn as an arc of a dimmed bedside clock face
+  own_world: the bedside at night - clock, lamp, moon, the 3 a.m. glance
+  first_viewport: the arc at 280pt with the hours asleep as one numeral inside it and one sentence of meaning under it; nothing pure white
+  vocabulary: clock-arc, wake-gap, moon-phase, lamp-dot replace charts, dots, empty art and progress
+  signature_move: the palette darkens with the real clock toward bedtime
+  live_thing: scrub around the arc to read any hour of the night
 
 journeys:
   - id: check-last-night

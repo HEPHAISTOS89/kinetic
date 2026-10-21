@@ -10,7 +10,7 @@ import os
 import sys
 
 from . import __version__
-from . import color, dna, export, project, report, score, states, svg, validate
+from . import color, deal, dna, export, project, report, score, sheet, states, svg, validate
 from .kdl import KDLError, parse_file
 from .scan import scan
 
@@ -85,7 +85,7 @@ def _cfg(a, paths):
 def cmd_scan(a):
     cfg, plats, grid = _cfg(a, a.paths)
     r = scan(a.paths, plats, grid, cfg.get("theme_paths"), project.data_hexes(a.paths[0]),
-             project.exceptions(a.paths[0]))
+             project.exceptions(a.paths[0]), project.vocabulary_roles(a.paths[0]))
     if not a.facts:
         r.pop("facts", None)
     _out(_filter(r, a.tiers, a.min_severity), a.json, limit=a.limit)
@@ -217,6 +217,41 @@ def cmd_spring(a):
     return 0
 
 
+def _deal_path(a):
+    if a.out:
+        return a.out
+    root = project.find_root(".")
+    return os.path.join(root or ".", ".kinetic", "deal.json")
+
+
+def cmd_deal(a):
+    path = _deal_path(a)
+    if a.redraw:
+        opt, _, slot = a.redraw.partition(".")
+        state = deal.redraw(deal.load(path), int(opt), slot, a.reason or "")
+    elif a.show:
+        state = deal.load(path)
+    else:
+        if os.path.exists(path) and not a.fresh:
+            raise ValueError(f"{path} exists: a project is dealt once (use --show, --redraw N.slot --reason, or --fresh)")
+        brief = a.brief or ""
+        if a.brief_file:
+            with open(a.brief_file, encoding="utf-8") as fh:
+                brief += "\n" + fh.read()
+        state = deal.deal(brief, a.seed, a.options, a.exclude.split(",") if a.exclude else ())
+    if not a.show:
+        deal.save(state, path)
+    _out(dict(state, path=path), a.json, deal.sheet(state) + f"\n\nsaved: {path}")
+    return 0
+
+
+def cmd_sheet(a):
+    r = sheet.contact_sheet(a.images, a.out, a.cols, a.width)
+    _out(r, a.json, f"contact sheet {r['out']}  ({r['count']} renders, {r['cols']} columns)\n" +
+         "\n".join(f"  {i + 1:>2}. {os.path.basename(f)}" for i, f in enumerate(r["order"])))
+    return 0
+
+
 def build_parser():
     p = argparse.ArgumentParser(prog="kinetic", description="Kinetic design engine")
     p.add_argument("--version", action="version", version=f"kinetic {__version__}")
@@ -304,6 +339,28 @@ def build_parser():
     s.add_argument("--force", action="store_true")
     common(s, False)
     s.set_defaults(fn=cmd_init)
+
+    s = sub.add_parser("deal", help="deal directions (engine, type, palette, motion) from the library")
+    s.add_argument("--brief", help="brief text (weights the deal; never decides it)")
+    s.add_argument("--brief-file", help="read the brief from a file")
+    s.add_argument("--seed", type=int, help="reproduce a deal (default: random, recorded)")
+    s.add_argument("--options", type=int, default=3)
+    s.add_argument("--exclude", help="library ids to leave out (comma-separated)")
+    s.add_argument("--redraw", help="N.slot, e.g. 2.type — replace one dealt slot (needs --reason)")
+    s.add_argument("--reason", help="why the dealt slot cannot work (a product fact or brand constraint)")
+    s.add_argument("--show", action="store_true", help="print the recorded deal")
+    s.add_argument("--fresh", action="store_true", help="deal again even if .kinetic/deal.json exists")
+    s.add_argument("--out", help="deal file (default .kinetic/deal.json)")
+    common(s, False)
+    s.set_defaults(fn=cmd_deal)
+
+    s = sub.add_parser("sheet", help="contact sheet of renders (one PNG) for judging the system at once")
+    s.add_argument("images", nargs="+", help="PNG files or folders")
+    s.add_argument("--out", default="contact-sheet.png")
+    s.add_argument("--cols", type=int, default=0, help="columns (default: by count)")
+    s.add_argument("--width", type=int, default=240, help="cell width in px")
+    common(s, False)
+    s.set_defaults(fn=cmd_sheet)
 
     s = sub.add_parser("spring", help="convert a KDL spring to every stack")
     s.add_argument("response", type=float)

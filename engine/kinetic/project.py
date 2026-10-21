@@ -56,6 +56,19 @@ def data_hexes(start: str = ".") -> list:
     return out
 
 
+def vocabulary_roles(start: str = ".") -> list:
+    """Generic roles the KDL `vocabulary` replaces with drawn marks (the scanner flags leftovers)."""
+    root = find_root(start)
+    if not root:
+        return []
+    try:
+        from .kdl import parse_file
+        voc = parse_file(os.path.join(root, ".kinetic", "design.kdl")).get("vocabulary") or []
+    except Exception:
+        return []
+    return sorted({str(m.get("replaces")) for m in voc if isinstance(m, dict) and m.get("replaces")})
+
+
 def exceptions(start: str = ".") -> list:
     """`exceptions` declared in `.kinetic/design.kdl`: findings accepted on purpose, with a reason."""
     root = find_root(start)
@@ -163,23 +176,46 @@ CREATE = """
 requirements:   # every must-have of the brief; screens reference them in `serves`
   - {id: R1, need: TODO, priority: must, above_fold: false}
 
-directions:
+inventory:      # 8-12 things only this product's world has (kinetic-think 3b)
+  - TODO
+
+idea:           # In this app, [inventory item] becomes [the dealt engine's device]
+  subject_item: TODO
+  becomes: TODO
+  competitor_test: {competitor: TODO, fails_because: TODO}
+
+directions:     # run: kinetic deal --brief-file <brief>  — one entry per dealt option
   - id: A
+    engine: TODO dealt engine id
     name: TODO
-    axes: {structure: TODO, density: TODO, color: TODO, type: TODO, motion: TODO}
+    axes: {structure: TODO, density: TODO, color: TODO, type: TODO, motion: TODO, material: TODO}
     scores: {product_fit: 3, distinctiveness: 3, usability: 3, feasibility: 3, risk_of_slop: 3}
     verdict: chosen
     because: TODO
   - id: B
+    engine: TODO
     name: TODO
-    axes: {structure: TODO, density: TODO, color: TODO, type: TODO, motion: TODO}
+    axes: {structure: TODO, density: TODO, color: TODO, type: TODO, motion: TODO, material: TODO}
     verdict: rejected
     because: TODO
   - id: C
+    engine: TODO
     name: TODO
-    axes: {structure: TODO, density: TODO, color: TODO, type: TODO, motion: TODO}
+    axes: {structure: TODO, density: TODO, color: TODO, type: TODO, motion: TODO, material: TODO}
     verdict: rejected
     because: TODO
+
+vocabulary:     # drawn marks replacing generic parts, >= 4 sites incl. the hero
+  - {mark: TODO, from: TODO, replaces: data_mark, sites: [hero]}
+
+contract:       # <= 200 words, re-read before every screen
+  thesis: TODO
+  idea: TODO
+  own_world: TODO
+  first_viewport: TODO
+  vocabulary: TODO
+  signature_move: TODO
+  live_thing: TODO
 
 journeys:
   - id: TODO

@@ -1,4 +1,10 @@
-# Directions — the taste library
+# Directions — legacy reference (v1.5)
+
+> Since v1.6 directions are **dealt** by `kinetic deal` from `knowledge/library/`
+> (engines, native type systems, palettes with fields, motion personalities).
+> This file stays as reference for ramps and token sets. Several of its type
+> choices (Inter, Fraunces, DM Sans, Space Grotesk, IBM Plex, a cream ground)
+> are now listed as spent in `priors.md`: don't pick them by default.
 
 A model with no target designs the average app. This library gives it fourteen
 specific targets, each a complete, internally consistent system with numbers

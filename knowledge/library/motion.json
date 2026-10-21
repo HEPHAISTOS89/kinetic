@@ -1,0 +1,13 @@
+{
+  "about": "Motion personalities. Springs as (response s, damping ratio); stacks: SwiftUI .spring(response:dampingFraction:), Compose spring(dampingRatio, stiffness ~ (2pi/response)^2), Flutter SpringDescription via `kinetic spring`, RN Animated.spring / Reanimated withSpring via `kinetic spring`. Every personality has a reduce-motion path.",
+  "personalities": [
+    {"id": "exact", "name": "Exact", "springs": {"move": [0.30, 1.0], "settle": [0.25, 1.0]}, "durations": {"fade": 150}, "haptics": "selection on detents only", "reduce": "crossfade 120ms", "fits": ["tools", "finance", "transit"]},
+    {"id": "settled", "name": "Settled", "springs": {"move": [0.42, 0.90], "sheet": [0.45, 0.92]}, "durations": {"fade": 200}, "haptics": "soft impact on commit", "reduce": "crossfade 160ms", "fits": ["care", "health", "reading"]},
+    {"id": "tactile", "name": "Tactile", "springs": {"press": [0.25, 0.70], "move": [0.38, 0.80]}, "durations": {"fade": 180}, "haptics": "rigid impact on detents, success on commit", "reduce": "no scale, opacity only", "fits": ["object-control", "logging", "games"]},
+    {"id": "paper", "name": "Paper", "springs": {"turn": [0.50, 0.95]}, "durations": {"slide": 260, "fade": 180}, "haptics": "none except commit", "reduce": "cut", "fits": ["notebooks", "ledgers", "artefacts"]},
+    {"id": "weighty", "name": "Weighty", "springs": {"move": [0.55, 0.88], "drop": [0.45, 0.75]}, "durations": {"fade": 240}, "haptics": "medium impact when objects land", "reduce": "crossfade 200ms", "fits": ["stacks", "shelves", "strata"]},
+    {"id": "breath", "name": "Breath", "springs": {"move": [0.60, 1.0]}, "durations": {"ambient-half": 1600, "fade": 300}, "haptics": "none", "reduce": "static, live dot replaced by the word 'live'", "fits": ["monitoring", "sleep", "time-atmosphere"]},
+    {"id": "snappy-mechanical", "name": "Mechanical", "springs": {"snap": [0.20, 1.0], "flip": [0.28, 0.85]}, "durations": {"tick": 90}, "haptics": "selection per tick (split-flap, counters)", "reduce": "values change without flip", "fits": ["countdown", "scoreboards", "departures"]},
+    {"id": "lively", "name": "Lively", "springs": {"pop": [0.32, 0.65], "move": [0.40, 0.78]}, "durations": {"fade": 160}, "haptics": "light impact on add", "reduce": "crossfade", "fits": ["kids", "social", "celebration states only elsewhere"]}
+  ]
+}

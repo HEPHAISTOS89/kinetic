@@ -41,6 +41,16 @@ control tool (screenshot), `xcrun simctl io booted screenshot <file>`,
 under `.kinetic/shots/` with descriptive names. Motion needs a recording;
 otherwise mark motion `unjudged`.
 
+## 3b. Contact sheet and rival (judge the system against the category)
+- `kinetic sheet .kinetic/shots --out .kinetic/shots/_sheet.png` puts every render on one image.
+  On the sheet run **sameness** (name each screen's layout in one word; a repeated word is the
+  template showing), **fullness** (a half-empty first viewport is underbuilt, not calm) and
+  **drift** (two screens that look like two apps).
+- **Rival**: write — or ask the `kinetic-rival` agent for — the category-standard home of the
+  same brief in five lines (what a competent template ships: priors.md). Judge yours against
+  it on distinctiveness and hierarchy. If yours is not clearly more distinctive, it is the rival
+  with better states.
+
 ## 4. Judged evidence (independent critic)
 Launch the **kinetic-critic** agent with: the path to `.kinetic/design.kdl`,
 the render files, the changed source paths, and the instruction to return
@@ -60,6 +70,9 @@ Self-critique is biased; reduce the bias, never hide it:
    (kinetic-direct §4b). Self-judged `distinctiveness` cannot exceed 3 unless the hero is
    ownable and the domain vocabulary appears in ≥ 4 places — across four blind rounds,
    independent critics scored Kinetic's distinctiveness 0.5–1 point below its self-judgment.
+   **Cover-the-logo and priors**: cover the product name on the home render; name the element
+   that still tells you which product it is, and the priors.md cluster it is closest to. If you
+   can't name the first or can name the second, distinctiveness ≤ 3.
    **Fear test**: render the most frightening state (health alert, failed payment, missed train) and
    check knowledge/states.md §3c line by line; it decides trust more than coverage does.
 3. Save `.kinetic/critique.json` with `"self_judged": true`. `kinetic score` then caps
@@ -75,7 +88,7 @@ decide on a critique older than the current renders/code — re-run the critic.
 | Verdict | Meaning | Next |
 |---|---|---|
 | blocked | F(block) findings | fix integrity/function first |
-| rethink | product_fit ≤ 2, distinctiveness ≤ 2 or mean < 3 | go back to kinetic-direct; polish won't save it |
+| rethink | product_fit ≤ 2, distinctiveness ≤ 2 or mean < 3 | go back to kinetic-direct (redraw a slot with its reason); polish won't save it |
 | iterate | gates not met | fix the lowest judged dimensions and major D findings, re-render, re-judge |
 | ship-pending | gates pass, but self-judged or some dimensions declared unjudgeable | report what remains to verify (device, motion recording, independent critic) |
 | ship | all gates pass, independent critic, every dimension judged | report |
@@ -86,7 +99,8 @@ the judged mean, stop and report the remaining gap honestly, with the
 critic's `biggest_lever`.
 Without an independent critic, once the self-judged mean is ≥ 4 and the gates
 pass, do one last loop aimed only at what critics most often find that authors
-miss — identity inventory, the fear test, sticky CTAs covering content — then
+miss — identity inventory, cover-the-logo against the rival, the fear test,
+sticky CTAs covering content — then
 stop at `ship-pending` and say what an independent critic should check.
 
 ## 6. Audit mode (no code changes)

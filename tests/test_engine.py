@@ -19,7 +19,7 @@ def rd(p):
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "engine"))
 
-from kinetic import cli, color, dna, export, kdl, score, states, svg, validate  # noqa: E402
+from kinetic import cli, color, deal, dna, export, kdl, score, sheet, states, svg, validate  # noqa: E402
 from kinetic.scan import scan  # noqa: E402
 
 FIX = os.path.join(ROOT, "tests", "fixtures")
@@ -410,7 +410,7 @@ class TestCLI(unittest.TestCase):
         self.assertEqual(self.run_cli("validate", os.path.join(FIX, "slop.kdl"))[0], 1)
         self.assertEqual(self.run_cli("scan", os.path.join(FIX, "flutter_slop"))[0], 1)
         self.assertEqual(self.run_cli("validate", "/nonexistent.kdl")[0], 2)
-        code, out = self.run_cli("contrast", "#5C5249", "#F6F1EA", "--json")
+        code, out = self.run_cli("contrast", "#5C5249", "#F3F4F1", "--json")
         self.assertEqual(json.loads(out)["aa_body"], True)
 
     def test_init_create_skeleton_has_every_required_section(self):
@@ -548,6 +548,109 @@ class TestHook(unittest.TestCase):
             self.assertIn("F10", ctx)
             r = subprocess.run([sys.executable, "-I", hook], input="not json", capture_output=True, text=True)
             self.assertEqual((r.returncode, r.stdout), (0, ""))
+        finally:
+            shutil.rmtree(d)
+
+
+LIBRARY_KDL = """kdl: 1
+mode: create
+product: {name: Shelf, stack: flutter, platforms: [ios, android], users: readers, moment: at the returns slot,
+          frequency: weekly, stakes: low, density: low, brand: {status: none}}
+thesis: {statement: the library card that tells you what is due before the fine does, feel: [calm], never: [a fine notice],
+         spine: due dates are stamps}
+expression: {level: 2, because: weekly utility}
+inventory: [the date stamp, spine labels, the returns slot, the reading room, the card number, the hold shelf,
+            the overdue slip, the opening hours board]
+idea: {subject_item: the date stamp, becomes: days left as stamps, competitor_test: {competitor: Libby, fails_because: no stamps}}
+directions:
+  - {id: A, engine: ENG_A, name: Stamped, axes: {structure: a, density: b, color: c, type: d, motion: e},
+     scores: {product_fit: 4, distinctiveness: 3, usability: 4, feasibility: 4, risk_of_slop: 2}, verdict: chosen, because: x}
+  - {id: B, engine: ENG_B, name: Shelf, axes: {structure: f, density: g, color: h, type: i, motion: j},
+     scores: {product_fit: 4, distinctiveness: 5, usability: 4, feasibility: 4, risk_of_slop: 2}, verdict: rejected, because: y}
+  - {id: C, engine: ENG_C, name: Board, axes: {structure: k, density: l, color: m, type: n, motion: o},
+     scores: {product_fit: 2, distinctiveness: 5, usability: 3, feasibility: 3, risk_of_slop: 3}, verdict: rejected, because: z}
+vocabulary:
+  - {mark: stamp, from: the date stamp, replaces: progress_bar, sites: [hero, loan rows]}
+  - {mark: spine, from: spine labels, replaces: data_mark, sites: [loan rows, empty shelf]}
+contract: {thesis: a, idea: b, own_world: c, first_viewport: d, vocabulary: e, signature_move: f, live_thing: g}
+"""
+
+
+class TestV16Identity(unittest.TestCase):
+    def test_deal_is_seeded_diverse_and_contrast_checked(self):
+        a = deal.deal("a library app for loans and holds", seed=11)
+        b = deal.deal("a library app for loans and holds", seed=11)
+        c = deal.deal("a library app for loans and holds", seed=12)
+        ids = lambda st: [o["engine"]["id"] for o in st["options"]]
+        self.assertEqual(ids(a), ids(b))
+        self.assertEqual(len({o["engine"]["family"] for o in a["options"]}), 3)
+        self.assertNotEqual([ids(deal.deal("x", seed=s)) for s in range(5)].count(ids(c)), 5)
+        for o in a["options"]:
+            for theme, r in o["palette"]["roles"].items():
+                self.assertGreaterEqual(color.wcag(r["text"], r["bg"]), 4.5)
+                if "field" in r:
+                    self.assertGreaterEqual(color.wcag(r["on-field"], r["field"]), 4.5, (o["palette"]["id"], theme))
+
+    def test_every_library_palette_field_has_readable_ink(self):
+        lib = deal.load_library()
+        for p in lib["palette"]:
+            roles = deal._roles(p)
+            for theme, r in roles.items():
+                for k in [k for k in r if k == "field" or k.startswith("state-")]:
+                    self.assertGreaterEqual(color.wcag(r["on-" + k], r[k]), 4.5, (p["id"], theme, k))
+                self.assertTrue(all(c["ok"] for c in color.check_roles({theme: {k: v for k, v in r.items()
+                                                                                  if not k.startswith(("field", "on-field", "state-", "on-state-"))}})), p["id"])
+
+    def test_redraw_needs_a_reason_and_is_logged(self):
+        st = deal.deal("library", seed=3)
+        with self.assertRaises(ValueError):
+            deal.redraw(st, 1, "type", "nicer")
+        old = st["options"][0]["type"]["id"]
+        st = deal.redraw(st, 1, "type", "the brand pins a slab serif in its signage")
+        self.assertNotEqual(st["options"][0]["type"]["id"], old)
+        self.assertEqual(st["history"][0]["from"], old)
+
+    def test_identity_gate(self):
+        st = deal.deal("library", seed=5)
+        e = [o["engine"]["id"] for o in st["options"]]
+        text = LIBRARY_KDL.replace("ENG_A", e[0]).replace("ENG_B", e[1]).replace("ENG_C", e[2])
+        rules = lambda r: {(f["rule"], f["severity"]) for f in r["findings"]}
+        r = validate.validate_text(text, deal=st)
+        self.assertIn(("K30", "major"), rules(r))          # B is viable and more distinctive than A
+        self.assertNotIn(("K29", "major"), rules(r))
+        self.assertNotIn(("K31", "major"), rules(r))       # 4 sites incl. hero
+        r = validate.validate_text(text.replace(e[0], "ledger-made-up"), deal=st)
+        self.assertIn(("K29", "major"), rules(r))
+        r = validate.validate_text(text.replace("subject_item: the date stamp", "subject_item: a moon"), deal=st)
+        self.assertIn(("K28", "minor"), rules(r))
+        bare = re.sub(r"(?ms)^vocabulary:.*?(?=^contract:)", "", text)
+        self.assertIn(("K31", "major"), rules(validate.validate_text(bare, deal=st)))
+
+    def test_scan_flags_spent_defaults_and_vocabulary_leftovers(self):
+        d = tempfile.mkdtemp()
+        try:
+            with open(os.path.join(d, "home.dart"), "w") as fh:
+                fh.write("import 'package:flutter/material.dart';\n"
+                         "const bg = Color(0xFFF4F1EA);\n"
+                         "final t = TextStyle(fontFamily: 'Space Grotesk');\n"
+                         "Widget p() => LinearProgressIndicator(value: 0.3);\n")
+            got = {f["rule"] for f in scan([d], vocab_roles={"progress_bar"})["findings"]}
+            self.assertTrue({"D33", "D34", "D35"} <= got, got)
+            got = {f["rule"] for f in scan([d])["findings"]}
+            self.assertNotIn("D35", got)
+        finally:
+            shutil.rmtree(d)
+
+    def test_contact_sheet_roundtrip(self):
+        d = tempfile.mkdtemp()
+        try:
+            rows = [bytearray(b"".join(bytes((x * 4 % 256, y * 4 % 256, 90)) for x in range(60))) for y in range(100)]
+            for i in range(3):
+                sheet.write_png(os.path.join(d, f"s{i}.png"), 60, 100, rows)
+            r = sheet.contact_sheet([d], os.path.join(d, "out.png"), 0, 30)
+            w, h, px = sheet.read_png(r["out"])
+            self.assertEqual((r["count"], w), (3, 12 + 3 * (30 + 12)))
+            self.assertEqual(px[12][12 * 3:12 * 3 + 3], bytearray((2, 2, 90)))  # 2x2 box average
         finally:
             shutil.rmtree(d)
 

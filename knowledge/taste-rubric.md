@@ -13,7 +13,7 @@ Most first drafts are 2–3. Don't grade on effort; grade the artefact.
 |---|---|---|---|
 | **product_fit** | Could be any app; contradicts the thesis or the user moment | Serves the task; thesis visible only in copy | Every element traceable to the thesis and moment; the design *argues* for the product |
 | **hierarchy** | No primary element; everything competes | Primary element clear; secondary/tertiary muddled | One primary, one second, calm rest on every screen; squint test passes |
-| **distinctiveness** | Fails the swap test; stock patterns everywhere | Competent but familiar; recognisable only by logo | Unmistakable without the logo; one signature idea carried consistently, not decoration |
+| **distinctiveness** | Fails the swap test; stock patterns everywhere | What a strong model produces unaided: competent, coherent, category-typical; recognisable only by logo, or close to a known cluster (priors.md) | Unmistakable without the logo; an idea from the product's own world carried through the hero, lists, data and degraded states — not decoration |
 | **typography** | Many sizes, wrong leading, default tracking at display sizes | Coherent ramp; generic choices; some rhythm issues | Ramp, leading, tracking, numerals and measure tuned; type carries hierarchy and voice |
 | **color** | Default palette, contrast failures, inverted dark mode | Role-based, passes contrast; generic greys or accent overuse | Tinted neutrals, accent with meaning, both themes designed; atmosphere matches thesis |
 | **layout_craft** | Off-grid, misaligned, inconsistent radii/padding | Grid mostly respected; a few optical misses | Exact grid, optical alignment, concentric radii, consistent rhythm; nothing accidental |
@@ -41,8 +41,9 @@ distinctiveness and the other ahead on anticipation.
 
 ## How to judge (critic procedure)
 1. Read the thesis, expression level and chosen direction in KDL first; judge
-   against *them*, not your own preferred style. A precise level-1 instrument
-   should not be marked down for being quiet.
+   fit against *them*, not your own preferred style. A precise level-1
+   instrument is not marked down on hierarchy or colour for being quiet — but
+   quiet never scores above 3 on distinctiveness by itself.
 2. Look at renders: each key screen in light and dark, at default and largest
    text size, on the smallest and largest supported phone. No render → say so;
    judge code only for the dimensions code can show and mark the rest unjudged.

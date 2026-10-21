@@ -22,6 +22,20 @@ alternative and how it is verified (tests/).
 | `init [path]` | generate | `.kinetic/config.json` + mode skeleton `design.kdl` | — | writes only inside `.kinetic/`; keeps existing files unless `--force` |
 | `spring <response> <damping>` | compute | Exact spring parameters for SwiftUI, Flutter, Compose, Reanimated and CSS `linear()` | derived | read-only |
 
+## Deal and contact sheet (v1.6)
+- `kinetic deal --brief-file BRIEF.md [--seed N] [--options 3]` deals composition
+  engines (from different families), a native type system, a palette (roles
+  derived and contrast-checked, plus a field and its on-field ink) and a motion
+  personality per option from `knowledge/library/`. Brief words weight the
+  draw (fits +, misfits excluded); they never decide it. Writes
+  `.kinetic/deal.json` once per project (`--fresh` to deal again, `--show` to
+  reprint). `--redraw N.slot --reason "…"` replaces one slot and logs it.
+- `kinetic sheet <pngs or folders> --out sheet.png` composites every render on
+  one image (stdlib PNG decoder: 8-bit, non-interlaced) for sameness, fullness
+  and drift checks. Pure Python: about 1 s per full-size render.
+- Scanner rules added with them: D33 spent face, D34 spent ground (cream /
+  parchment, terracotta), D35 generic part where the KDL vocabulary draws one.
+
 ## Coverage and limits (stated in every result)
 - `scan` is lexical: values computed at runtime, behind helper functions or in
   binary assets are not seen; unscanned or oversized files are listed as

@@ -25,8 +25,10 @@ Output contract: `docs/PROTOCOL.md` §6.
 ## Procedure
 1. Read `.kinetic/design.kdl` of the project you're given: `product`,
    `thesis` (statement, feel, never, spine), `expression.level`, the chosen
-   direction, `signature`, `premortem`. Judge against these, not against your
-   personal taste. A level-1 instrument is not "boring"; a level-5 brand app is not "noisy" by default.
+   direction, `idea`, `contract`, `vocabulary`, `signature`, `premortem`. Judge fit against these,
+   not against your personal taste. A level-1 instrument is not "noisy" for having a voice; but
+   quietness never earns distinctiveness: blind judges score a calm, correct, category-typical
+   design 3 on distinctiveness, and so do you.
 2. Open every render you were given (Read the image files). Note per image:
    screen, state, theme, text size, device. If a dimension cannot be judged
    from the renders (e.g. motion without a recording), list it in `unjudged`.
@@ -34,7 +36,11 @@ Output contract: `docs/PROTOCOL.md` §6.
    `bin/kinetic scan <paths> --tiers F,D --min-severity major` to know the
    measured issues (don't re-score them; use them as context and evidence).
 4. Run the tests: swap, squint, silence, thumb, night, XXL, thesis
-   (anti-slop.md "deeper tests"). Record pass/fail with a reason.
+   (anti-slop.md "deeper tests"), plus **cover-the-logo** (what still tells you which product
+   this is?), **priors** (which cluster of knowledge/priors.md is it nearest?), **sameness** and
+   **fullness** on the contact sheet if one is given. Record pass/fail with a reason.
+   If you were given a rival (category-standard) render or sketch, judge distinctiveness and
+   hierarchy pairwise against it: the design must beat it by ≥ 1 on distinctiveness to score 4.
 5. Score each dimension 1–5 against the rubric anchors. 3 = competent and
    forgettable. Most first drafts are 2–3. Each score needs 1–3 evidence items
    pointing at a render (`shot-N: …`), a file:line, or a KDL path, and one fix —
@@ -46,7 +52,8 @@ Output contract: `docs/PROTOCOL.md` §6.
 - Be specific: "the 13pt grey caption under the CTA fails 4.5:1 on the dark
   surface (shot-3)" — not "contrast could be improved".
 - Name slop by catalog ID when you see it (D03 card soup, D18 entrance confetti…).
-- Don't propose a different direction unless product_fit or distinctiveness ≤ 2.
+- Propose a different direction when product_fit ≤ 2, or when distinctiveness ≤ 3 and the
+  `idea` never reaches the first viewport (the fix is the idea's device, not more polish).
 - Never inflate. Never pad with compliments. One sentence of what works per
   dimension is allowed in evidence when it's the reason for a 4–5.
 

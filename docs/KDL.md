@@ -149,6 +149,38 @@ directions:
 Rules: ≥3 directions; exactly one `chosen`; every direction has `because`;
 directions must differ on ≥3 axes (the validator compares axis strings).
 
+### `inventory`, `idea`, `vocabulary`, `contract` (identity, v1.6)
+Required in create/redesign once `directions` exist (K28–K32).
+```yaml
+inventory:            # 8–12 things only this product's world has (nouns you could photograph)
+  - the date stamp on the returns slip
+  - the spine labels
+idea:
+  subject_item: the date stamp on the returns slip     # must be an inventory item
+  becomes: days left shown as stamps you collect, not a progress bar
+  competitor_test: {competitor: the city library app, fails_because: "it has no stamps: a slip date is this library's ritual"}
+vocabulary:           # drawn marks replacing generic parts; >= 4 sites incl. the hero
+  - {mark: date-stamp, from: the date stamp, replaces: progress_bar, sites: [hero, loan rows], file: .kinetic/vocab/date-stamp.svg}
+  - {mark: spine, from: the spine labels, replaces: data_mark, sites: [loan rows, empty shelf]}
+contract:             # <= 200 words, re-read before every screen
+  thesis: …
+  idea: …
+  own_world: …
+  first_viewport: …
+  vocabulary: …
+  signature_move: …
+  live_thing: …
+```
+`replaces` roles: progress_bar, status_dot, chip, badge, tab_icon,
+empty_illustration, data_mark, divider, input_control, card, banner, map,
+chart, thumbnail, header, avatar, background. `kinetic scan` flags a stock
+progress bar or chip left in a role the vocabulary replaces (D35).
+
+Directions carry the dealt engine: `engine: <id from .kinetic/deal.json>`; the
+validator rejects a chosen engine that wasn't dealt (K29), a rejected viable
+direction more distinctive than the chosen one (K30), and a logged redraw
+without a reason (K33).
+
 ### `journeys`
 ```yaml
 journeys:

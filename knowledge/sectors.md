@@ -6,13 +6,13 @@ fabricated trust, the sector's typical slop (IDs from anti-slop.md) and the
 states that most often go missing. Break a tendency when the thesis demands it,
 and write down why in KDL `because`.
 
-Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (directions.md #).
+Legend: **Expr** = expression level (1–5). Directions are dealt (`kinetic deal`), not looked up by sector: a sector → look table makes every app in a sector the same. Use this file for what the sector must make trustworthy, its slop and its critical states.
 
 ---
 
 ### Fintech (payments, budgeting, investing)
 - **Feel / do:** in control, informed, never ashamed. Check, move, decide.
-- **Expr** 1–3 · **Density** medium–high · **Dir** 1, 6, 12, 4.
+- **Expr** 1–3 · **Density** medium–high.
 - **Legitimate trust:** exact amounts with currency, clear fees *before* confirmation, real-time status, regulatory info in context, biometric confirmation. **Fabricated:** "bank-grade security" shields, invented user counts, fake portfolio growth on onboarding (F01).
 - **Sector slop:** D04 dashboard costume, D01 violet card gradients, D14 black+gold "premium", D27 investing streaks, F07 gain/loss by color alone.
 - **Tendencies:** tabular numerals always, one anchor balance, restrained color, and up/down semantics with sign and arrow. **Break it** when the audience is young or new to money: warmth and plain language beat terminal aesthetics.
@@ -20,7 +20,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Banking (retail / traditional)
 - **Feel / do:** safe and competent. Balance, pay, cards, help.
-- **Expr** 1–2 · **Density** medium · **Dir** 4, 12, 10.
+- **Expr** 1–2 · **Density** medium.
 - **Legitimate trust:** consistency with the bank's identity, clear security actions (freeze card), human help reachable. **Fabricated:** padlock ornaments, fake "AI insights".
 - **Sector slop:** D03 card soup on home, D10 dialogs for everything, D21 carousel onboarding, D02 greeting.
 - **Tendencies:** platform-native, accessible-first, large type support essential (older users). **Break it** with one signature, never with chrome.
@@ -28,7 +28,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Health / medical
 - **Feel / do:** reassured, understood, safe to act. Read results, book, take medication, message clinicians.
-- **Expr** 1–2 · **Density** medium · **Dir** 12, 4.
+- **Expr** 1–2 · **Density** medium.
 - **Legitimate trust:** named clinicians and credentials where real, sources for guidance, clear data provenance (device, lab, self-reported). **Fabricated:** "doctor-approved" badges, invented accuracy claims (F01).
 - **Sector slop:** D27 gamified health, D04 rings and vanity metrics, alarming red for neutral info, D22 wellness copy ("Unlock your best self").
 - **Tendencies:** plain-language interpretation under every value, reference ranges, units always, calm accent, high contrast. **Break it** never on clinical surfaces. Warmth belongs only in onboarding and support copy.
@@ -36,7 +36,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Wellness / meditation / sleep
 - **Feel / do:** calm, held, unhurried. Start a session, reflect, wind down.
-- **Expr** 2–3 · **Density** low · **Dir** 3, 7, 2.
+- **Expr** 2–3 · **Density** low.
 - **Legitimate trust:** credible guidance authors, honest expected outcomes. **Fabricated:** "scientifically proven" without source, fake community stats.
 - **Sector slop:** D01 purple/indigo night gradients, D07 blobs and abstract waves, D27 streak guilt, D18 entrance confetti, D19 bouncy motion.
 - **Tendencies:** dim and warm palettes at night, slow damped motion, one primary action. **Break it** for daytime energy products, but keep motion soft.
@@ -44,7 +44,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Fitness / sport
 - **Feel / do:** energized and capable. Start a workout, track live, review.
-- **Expr** 3–5 · **Density** medium · **Dir** 13, 5, 11.
+- **Expr** 3–5 · **Density** medium.
 - **Legitimate trust:** accurate sensor data with source, honest PRs. **Fabricated:** inflated calorie claims, fake leaderboards.
 - **Sector slop:** D04 ring clones, D27 streak shaming, small numbers mid-workout (F04 at a glance), D26 neon glow.
 - **Tendencies:** dark-first, huge tabular live metrics, strong haptics. **Break it** for rehab and senior fitness, where calm and clinical clarity beat energy — and for a **local venue's own app** (a gym, a pool, a club): use "Community venue" below, not this costume.
@@ -52,7 +52,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Nutrition / food tracking
 - **Feel / do:** supported, not judged. Log quickly, understand patterns.
-- **Expr** 2–3 · **Density** medium · **Dir** 7, 12.
+- **Expr** 2–3 · **Density** medium.
 - **Legitimate trust:** nutrition sources, editable entries, estimated-vs-exact labels. **Fabricated:** "AI knows your calories" certainty.
 - **Sector slop:** red "over budget" shaming, D04 macro rings everywhere, D07 food illustrations.
 - **Tendencies:** speed of logging is everything (recent items, barcode, voice), neutral semantics. **Break it** for clinical diets (diabetes): there, precision and Clinical Calm win.
@@ -60,7 +60,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Education / learning
 - **Feel / do:** guided, progressing, confident. Continue a lesson, practise, review.
-- **Expr** 2–4 (kids 4–5) · **Density** low–medium · **Dir** 9, 7, 2.
+- **Expr** 2–4 (kids 4–5) · **Density** low–medium.
 - **Legitimate trust:** clear curriculum, honest progress, qualified authors. **Fabricated:** "Learn X in 7 days" claims.
 - **Sector slop:** D27 copied streak/league systems, D07 generic mascots, D21 carousel onboarding, D22 hype copy.
 - **Tendencies:** one clear "continue" action, immediate proportional feedback, readable type at large sizes. **Break it** for adult professional learning: Editorial Serif beats cartoon.
@@ -68,7 +68,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Productivity / notes / tasks
 - **Feel / do:** focused and fast. Capture, organise, complete.
-- **Expr** 1–2 · **Density** medium · **Dir** 4, 1, 2.
+- **Expr** 1–2 · **Density** medium.
 - **Legitimate trust:** reliable sync with visible status, export. **Fabricated:** productivity scores.
 - **Sector slop:** D04 productivity dashboards, D03 card soup for tasks, D10 toasts on every check-off, D09 FAB on iOS.
 - **Tendencies:** capture in ≤ 1 tap, identical row anatomy, keyboard and gesture shortcuts, minimal color. **Break it** when the brand needs to be remembered, by adding one signature interaction (Things' magic plus).
@@ -76,7 +76,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Social / community
 - **Feel / do:** belonging and expression. Browse, post, react, talk.
-- **Expr** 3–5 · **Density** medium · **Dir** 5, 9, 8.
+- **Expr** 3–5 · **Density** medium.
 - **Legitimate trust:** real people and identities, moderation visible, safety tools. **Fabricated:** fake activity ("12 people are viewing"), bot-inflated counts.
 - **Sector slop:** D25 badge confetti, D27 gamified engagement, D18 entrance animation on every post, F07 icon-only actions.
 - **Tendencies:** content first, the UI recedes, reactions are fast and tactile. **Break it** for professional communities, where calm and density help.
@@ -84,7 +84,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Messaging
 - **Feel / do:** instant, private, reliable. Read, reply, share.
-- **Expr** 1–3 · **Density** medium · **Dir** 4, 1.
+- **Expr** 1–3 · **Density** medium.
 - **Legitimate trust:** encryption stated plainly, delivery/read states, verified contacts. **Fabricated:** security theatre badges.
 - **Sector slop:** D24 cross-platform chrome, D05 glass bubbles, heavy D19 motion on send.
 - **Tendencies:** platform-native, bubble anatomy rigorous, keyboard-safe composer (F09). **Break it** rarely, since messaging is muscle memory.
@@ -92,7 +92,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Marketplace / commerce
 - **Feel / do:** confident choice and frictionless purchase. Discover, compare, buy, track.
-- **Expr** 2–4 · **Density** medium · **Dir** 5, 14, 4.
+- **Expr** 2–4 · **Density** medium.
 - **Legitimate trust:** real reviews with counts and distribution, return policy, delivery estimates, total price before checkout. **Fabricated:** fake scarcity ("Only 2 left!"), fake reviews (F01), countdown timers.
 - **Sector slop:** D25 sale badges everywhere, D21 onboarding, D03 identical product cards with unequal information, D22 hype copy.
 - **Tendencies:** consistent card metadata order (price position never moves), sticky purchase action, real media. **Break it** for luxury: Gallery Whitespace or Luxe Restraint.
@@ -100,7 +100,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Travel
 - **Feel / do:** prepared and calm under pressure. Search, book, travel day, change plans.
-- **Expr** 2–4 · **Density** medium · **Dir** 1, 11, 5.
+- **Expr** 2–4 · **Density** medium.
 - **Legitimate trust:** live status, total price incl. fees, change/cancel rules upfront. **Fabricated:** urgency banners.
 - **Sector slop:** D07 stock destination imagery, D25 deal badges, missing live states.
 - **Tendencies:** the travel day is a different app: glanceable, large type, offline-ready boarding pass. **Break it** in inspiration and planning, where expression can rise.
@@ -108,7 +108,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Media / streaming / music
 - **Feel / do:** immersed. Find something, play, continue.
-- **Expr** 3–5 · **Density** low · **Dir** 8, 5.
+- **Expr** 3–5 · **Density** low.
 - **Legitimate trust:** accurate metadata, honest availability per region. **Fabricated:** fake "trending" lists.
 - **Sector slop:** text over artwork without scrim (F03), D05 glass everywhere, autoplay noise.
 - **Tendencies:** dark-first, content-sampled color, shared-element transitions, continue-watching as the anchor. **Break it** for audiobooks and podcasts: Editorial Serif and readable chapters.
@@ -116,7 +116,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### News / reading
 - **Feel / do:** informed and respected. Scan headlines, read, save.
-- **Expr** 2–3 · **Density** medium · **Dir** 2, 14.
+- **Expr** 2–3 · **Density** medium.
 - **Legitimate trust:** bylines, timestamps, corrections, sources, clearly labelled opinion vs reporting. **Fabricated:** engagement bait.
 - **Sector slop:** D22 clickbait copy, D25 "BREAKING" badges as decoration, cramped measure.
 - **Tendencies:** type-led hierarchy, comfortable measure, reader controls (text size, theme). **Break it** for live events (election night): data and Swiss precision.
@@ -124,7 +124,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Devtools / technical
 - **Feel / do:** precise and fast. Monitor, triage, deploy, read logs.
-- **Expr** 1–3 · **Density** high · **Dir** 6, 1, 4.
+- **Expr** 1–3 · **Density** high.
 - **Legitimate trust:** exact timestamps, IDs, real status, links to source. **Fabricated:** "AI health score".
 - **Sector slop:** D13 fake terminal costumes (monospace caps everywhere), D26 neon on black, D04 dashboard tiles.
 - **Tendencies:** monospace only for code and IDs, status color plus shape, dense but tappable rows. **Break it** for onboarding new developers: friendlier explanation layers.
@@ -132,7 +132,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Kids
 - **Feel / do:** joyful, safe, capable. Play, learn, create.
-- **Expr** 4–5 · **Density** low · **Dir** 9, 7.
+- **Expr** 4–5 · **Density** low.
 - **Legitimate trust (for parents):** parental gate, privacy clarity, no dark patterns. **Fabricated:** ads disguised as content.
 - **Sector slop:** D07 generic mascots, manipulative D27 rewards, text-heavy screens for pre-readers.
 - **Tendencies:** huge targets (64+), audio and visual instructions, few colors used boldly, no time pressure. **Break it** for the parent area, which should be Quiet Native.
@@ -140,7 +140,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### B2B field apps (service, inspection, logistics)
 - **Feel / do:** efficient under real conditions. Next job, capture evidence, complete, sync.
-- **Expr** 1–2 · **Density** medium · **Dir** 11, 6, 4.
+- **Expr** 1–2 · **Density** medium.
 - **Legitimate trust:** sync status, audit trail, timestamps, GPS accuracy shown honestly. **Fabricated:** productivity gamification.
 - **Sector slop:** D23 web dashboards squeezed onto phones, thin type, tiny targets (F05), gesture-only actions.
 - **Tendencies:** glove-sized targets, offline-first with explicit queue, camera and scan as primary inputs, high contrast. **Break it** essentially never.
@@ -148,7 +148,7 @@ Legend: **Expr** = expression level (1–5). **Dir** = suggested directions (dir
 
 ### Mobility / maps / delivery
 - **Feel / do:** oriented, informed of ETA, safe. Request, wait, ride/track, pay.
-- **Expr** 2–4 · **Density** medium · **Dir** 1, 11, 5.
+- **Expr** 2–4 · **Density** medium.
 - **Legitimate trust:** live position, driver/courier identity, upfront price, safety tools. **Fabricated:** fake ETAs and "searching nearby" theatre.
 - **Sector slop:** cluttered map overlays, D10 dialogs over the map, small ETA text.
 - **Tendencies:** the map is the canvas, a bottom sheet holds the state, ETA in display type. **Break it** for brand moments (order confirmed) with Mono-Accent flood.
@@ -178,7 +178,7 @@ and keep the system shared.
 
 ## Community venue (a gym, club, pool, studio run by its people)
 - **Need**: "is it busy now?", "what's new since last time?", and a 30-second action in place (log a session, book a slot), often with wet or dirty hands. The venue is a place with people, not a performance tracker.
-- **Expression**: 3–4. Density medium. **Dir**: borrow structure from Quiet Native (#4), voice from the venue's own materials — not Kinetic Sport (#13), whose volt-on-black reads as a gamified fitness app.
+- **Expression**: 3–4. Density medium.
 - **Identity source**: the venue's own physical objects and paper (equipment, the noticeboard, the membership card), found per kinetic-direct §4b and drawn as UI parts; the busy verdict in the venue's voice.
 - **Legitimate trust**: a live count with its time and a typical-day curve; stale counts *look* stale (approximate, past tense); staff named. **Fabricated**: streaks, badges, leaderboards nobody asked for.
 - **Sector slop**: D27 streaks and "crush your goals", fitness ring clones (D04), a numeral-only hero when the question is "is it packed?".
@@ -186,7 +186,7 @@ and keep the system shared.
 
 ## Childcare / family logistics (daycare, school, after-school)
 - **Need**: a parent glancing during the work day — "is she OK, is she napping, did she eat?" — then acting on what needs them (sign, bring, pick up). Carers are professionals; the app is their notebook, not a social feed.
-- **Expression**: 2–3. Density low–medium. **Dir**: Editorial Serif voice (#2) on Clinical Calm structure (#12) is a good start; the identity comes from the carers' own tools and the child's day, drawn (kinetic-direct §4b) — not from a feed or a dashboard.
+- **Expression**: 2–3. Density low–medium.
 - **Legitimate trust**: who logged what and when; lag said plainly; quantities in words, not percentages. **Fabricated**: metrics and scores about a toddler, "likes", fake real-time.
 - **Sector slop**: dashboards of naps/meals as charts (D04/D27), feed scrolling, alarm red for anything below the medical threshold, cute mascots (D07).
 - **Critical states**: health alert (states.md §3c); logging lag; not arrived / absent / day over / closed; several children; someone else picking up; offline.

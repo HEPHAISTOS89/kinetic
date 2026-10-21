@@ -1,109 +1,104 @@
 ---
 name: kinetic-direct
-description: "Kinetic's creative direction engine for mobile apps: diverge into three genuinely different art directions (structure, density, color strategy, type voice, motion personality), score them against the thesis, converge on one with reasons, and choose a signature detail. Use after kinetic-think for create/redesign, or when a mobile UI looks generic and needs a distinctive, product-specific identity."
+description: "Kinetic's creative direction step for mobile apps: deal three directions from Kinetic's library (composition engine, native type system, palette with a colour field, motion personality), fuse the chosen one with the product's inventory into an idea and a drawn vocabulary, and pick the most distinctive viable direction. Use after kinetic-think for create/redesign, or when a mobile UI looks generic, templated or interchangeable."
 ---
 
-# Diverge, then converge
+# Deal, fuse, choose the most distinctive viable
 
-> Paths below are relative to the Kinetic plugin root (two directories above this file). The engine is `<root>/bin/kinetic`, written `kinetic` here. Part of the `kinetic` skill's pipeline; read that router first if you arrived here directly.
+> Paths are relative to the Kinetic plugin root (two directories above this file). The engine is `<root>/bin/kinetic`, written `kinetic` here.
 
-The first idea is the average idea. Designers explore deliberately different
-answers before committing; this module forces that and records it in KDL
-`directions`, so the choice is visible and challengeable.
+Directions you generate yourself come from your prior: the category's average
+and your own habits (`knowledge/priors.md`). In four blind rounds that prior
+made Kinetic correct and forgettable. So the first draw comes from outside you:
 
-## 1. Material to think with
-- `knowledge/directions.md` — 14 complete directions with tokens. Starting points, not costumes.
-- `knowledge/exemplars.md` — mechanisms from exemplary products (what to borrow, when not to).
-- `knowledge/sectors.md` — what the sector legitimately needs.
-- The thesis, spine and expression level from kinetic-think (`.kinetic/design.kdl`).
+## 1. Deal (before you imagine anything)
+```
+kinetic deal --brief-file <brief or PRODUCT.md>        # writes .kinetic/deal.json
+```
+You get three options, each an **engine** (how something of the product's
+world becomes the screen's device, with first-viewport geometry), a native
+**type system**, a **palette** with a colour field and proportions
+(contrast-checked roles), and a **motion personality**. Read the sheet; read
+`knowledge/library/*.json` only for the dealt ids if you need more.
 
-For D3 work, prefer delegating the divergence to the **kinetic-director**
-agent (fresh context = less anchoring), then evaluate its proposals here.
+Rules:
+- Choose **among the dealt options**. Do not blend them back toward what you
+  would have done anyway.
+- Replace a slot only with `kinetic deal --redraw N.slot --reason "…"`, and
+  only for a **product fact or brand constraint** ("brand colour is #0A7A3E",
+  "the venue has no printed artefact"). "I prefer…" is not a reason. Redraws
+  are logged; the validator rejects a chosen engine that was never dealt (K29).
+- The category standard is always available as an exit if the *user* asks for
+  it. Never recommend it.
 
-## 2. Diverge: three directions that differ on ≥ 3 axes
-Axes (write all six for each direction):
-| Axis | Examples of genuinely different answers |
-|---|---|
-| structure | single-column narrative · hub of tools · feed · canvas/map-first · one-question-at-a-time |
-| density | airy · balanced · dense/expert |
-| color | tinted monochrome · neutral + one accent · dominant brand surface · data-driven color · dark-first |
-| type | system native · editorial serif display · grotesk tabular · rounded friendly · mono technical |
-| motion | still and precise · native calm · unhurried · lively · playful physical |
-| material | the domain object drawn as a vocabulary (holds, tape, notebook, ticket) · one hero illustration per state · data drawn as the object · pure type (only with a voiced display) |
+## 2. Fuse each option with the inventory
+For each dealt option, write the **idea sentence** with an item from
+`inventory` (kinetic-think writes 8–12):
 
-Recipe that reliably produces divergence:
-- **A — the faithful one**: the strongest expression of the thesis in the
-  sector's language, executed better than competitors.
-- **B — the reframe**: change the *structure* (e.g. dashboard → one sentence +
-  one number; list → timeline; tabs → single hub).
-- **C — the bold one**: push the spine or the brand to expression +1/+2, or
-  borrow a mechanism from an unrelated domain (exemplars.md) that fits the moment.
-Three palettes on one layout is not divergence (the validator flags K05).
+> In this app, **[inventory item]** becomes **[the engine's device]**.
 
-Mutate library directions: take **structure from one, voice from another**,
-never average two palettes. Change at least three things so the result
-belongs to this product.
+Then the **competitor test**: name the nearest competitor and say why the
+sentence fails for them. If it fits them too, it is the category's idea — pick
+another inventory item. Sketch the home's first viewport in five lines using
+the engine's geometry (primary, proof, vocabulary object, next decision, thumb
+action). Write the three as KDL `directions` with `engine:` set to the dealt id
+and all six axes (structure, density, color, type, motion, material).
 
 ## 3. Score honestly (1–5)
-`product_fit` (thesis + moment), `distinctiveness` (swap test),
-`usability` (task speed, accessibility), `feasibility` (stack, time, assets),
-`risk_of_slop` (5 = high risk). Ask of each: which slop IDs is it close to?
-(e.g. a "premium dark" direction near D14.)
+`product_fit` (thesis + moment), `usability` (task speed, accessibility, the
+brief's must-haves above the fold), `feasibility` (stack, time, assets),
+`distinctiveness` (cover-the-logo: could this home belong to a competitor?),
+`risk_of_slop` (which D IDs and which prior is it near?).
 
-## 4. Converge
-Choose the direction with the best product_fit that keeps risk_of_slop ≤ 2
-and feasibility ≥ 3. Distinctiveness breaks ties — never overrides fit.
-Write `verdict: chosen` with `because`, and a one-line `because` for each
-rejected direction (it is evidence of judgment and helps the user disagree).
+## 4. Converge: the most distinctive viable direction
+1. **Viable** = product_fit ≥ 4, usability ≥ 4, feasibility ≥ 3, every `must`
+   requirement served in the first viewport where the brief needs it.
+2. Among viable directions, **choose the highest distinctiveness**. Fit is a
+   floor, not the tie-breaker: a calm, correct, forgettable direction lost
+   every blind round. If a brand or user fact rules the more distinctive one
+   out, lower its fit score and write the fact in `because` (K30 checks).
+3. If no option is viable, redraw the weakest slot with its reason — don't
+   retreat to the category standard.
+Write `verdict: chosen` + `because`, one `because` per rejected direction.
 
-Hybrid is allowed only as "A with B's structure" etc., stated explicitly.
+## 4b. Identity: inventory → idea → vocabulary (all expression levels)
+The expression level sets the **volume** of identity, never its presence
+(`knowledge/identity-channels.md`: native frame, owned content).
+1. **Vocabulary as an artefact.** Draw 6–10 marks from the inventory
+   (`.kinetic/vocab/*.svg` or code-drawn, `kinetic svg lint` clean on the 24
+   grid) and record them in KDL `vocabulary: [{mark, from, replaces, sites,
+   file}]`. Each **replaces** a generic part: progress_bar, status_dot, chip,
+   badge, tab_icon, empty_illustration, data_mark, divider, card… Examples
+   from other domains: a library's loans are spine labels, not list bullets;
+   days left are date stamps, not a progress bar; a renewal waiting for signal
+   is an *outlined* stamp.
+2. **≥ 4 sites**: the hero, a list item, a data encoding, a degraded state
+   (K31). The scanner flags a stock progress bar or chip left in a role the
+   vocabulary covers (D35).
+3. **The hero is the vocabulary's home.** The first viewport holds the answer
+   *and* the identity. When the glance question is qualitative, the answer is a
+   display-size verdict sentence in the product's voice, with the number under
+   it (layout.md §glance headers).
+4. **Identity never costs legibility**: every mark carries a word or a grade
+   (D31); controls stay native.
 
-## 4b. Identity: a domain vocabulary, not a detail (all expression levels)
-The expression level sets the **volume** of identity, never its presence. One
-signature detail is not enough: in four blind A/B rounds the designs judged more
-distinctive (5 vs 4, 4 vs 3) did the same three things, and Kinetic's did not.
+Gate before building: list every block of the first two viewports as
+**ownable** (only this product could have it) or **generic** (swap test).
+At least half ownable at expression ≥ 3; at ≤ 2 the hero and one more.
 
-1. **Find the domain's material.** What do users touch, see or say in the real
-   world of this product? A library: the date stamp, the spine label, the
-   returns slot. A bakery: the oven schedule, the paper bag, the chalk price
-   board. Transit: the platform sign, the ticket. A vineyard: the row, the
-   harvest crate, the cellar tag.
-   Write 3–6 of them before drawing anything.
-2. **Draw them as a small vocabulary and let it replace generic parts**:
-   icons, dots, counters, progress, empty and offline states, data marks.
-   A loan is a spine label, not a list bullet; days left are date stamps, not a
-   progress bar; a renewal waiting for signal is an *outlined* stamp; each
-   loan state has its own mark (on the shelf, in your bag, in the returns slot). Carry it into at
-   least four places: the hero, list items, one data encoding, one degraded
-   state. Expression level sets the rendering (level 2: monochrome line marks
-   on the 24 grid; level 4–5: illustrated colour), not whether it exists.
-3. **Make the hero the vocabulary's home.** The first viewport holds the
-   answer *and* the identity: a display-size verdict sentence when the glance
-   question is qualitative ("Plenty left until two." beat "62 loaves"; layout.md
-   §glance headers), with the drawn hero beside or under it. A loud grid of
-   identity chips that competes with the answer is not a hero — quiet it.
+## 5. Signature move and live thing
+- **Signature move**: the dealt engine's signature, made from the idea (a
+  detail a stranger understands in one glance, no legend — D31).
+- **One live thing**: a direct manipulation made from the idea (scrub the
+  spine, drag the needle, tear the stub), one-handed, with a reduce-motion path
+  and a plain-control equivalent. It must never block a task.
+- **Substance**: real content at full density (fixture data labelled as
+  such), one drawn or photographed moment per key empty/first-run state.
 
-Gate before building: list every block of the first two viewports and mark it
-**ownable** (only this product could have it) or **generic** (swap test). At
-expression ≥ 3, at least half are ownable; at ≤ 2, the hero and one more. A
-generic inset list is fine *below* an ownable hero; a generic hero is not.
-Identity never costs legibility: the vocabulary carries words or grades with it
-(D31), and `kinetic svg lint` + the 24px render check every glyph.
-
-## 5. The signature detail
-One memorable decision derived from the spine that improves understanding or
-feeling — a hero numeral, a time-aware tint, a gesture that matches the
-mental model, a progress form that is the brand. Budget by expression level
-(1: one quiet detail; 5: several). Write KDL `signature: {what, where, because}`.
-A signature that doesn't trace to the spine is decoration — drop it.
-**Legibility test**: a stranger understands the signature in one glance with no
-legend, tooltip or coach mark. If it needs explaining, encode the meaning in the
-element itself (a word, icon + word, a visible boundary) — D31. In the A/B
-evaluation, two clever-but-cryptic signatures (a "run chip", size-coded
-reachability with a legend) lost to plain words like "Too soon".
-
-## 6. Then
-Run `kinetic validate` (directions block), report the choice in 3–5 lines
-(chosen + why, rejected + why), and continue with kinetic-states and
-kinetic-system. If the user disagrees, switch directions without defending
-sunk cost — the record makes switching cheap.
+## 6. Contract, then build
+Write KDL `contract` (≤ 200 words, K32): thesis, idea, own_world,
+first_viewport, vocabulary, signature_move, live_thing. Re-read it before
+each screen; it protects the idea through the build. Then `kinetic validate`,
+report the choice in 3–5 lines (chosen + why, rejected + why, redraws), and
+continue with kinetic-states and kinetic-system — those systemise the dealt
+type, palette and motion; they don't re-choose them.

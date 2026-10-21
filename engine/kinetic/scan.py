@@ -279,6 +279,19 @@ EXTRACT = {
 }
 EXTRACT["tsx"] = [e for e in EXTRACT["tsx"] if e]
 
+# spent faces (knowledge/priors.md): as a string family or a google_fonts call
+SPENT_FACE = re.compile(r"""["'`](Inter|Inter Display|Fraunces|Space Grotesk|DM Sans|DM Serif Display|IBM Plex (?:Sans|Serif|Mono)|Playfair Display|Manrope|Poppins|Montserrat|Plus Jakarta Sans|Outfit|Sora|Instrument Serif|Instrument Sans|Geist)["'`]"""
+                        r"""|GoogleFonts\.(inter|fraunces|spaceGrotesk|dmSans|ibmPlex\w*|playfairDisplay|manrope|poppins|montserrat|plusJakartaSans|outfit|sora|instrumentSerif)\b""")
+# generic parts a declared vocabulary replaces (determinate progress, chips, status dots)
+GENERIC_PARTS = {
+    "flutter": {"progress_bar": r"\bLinearProgressIndicator\([^)]*\bvalue\s*:|\bCircularProgressIndicator\([^)]*\bvalue\s*:",
+                "chip": r"\b(?:Filter|Choice|Input|Action)?Chip\("},
+    "swiftui": {"progress_bar": r"\bProgressView\(\s*value\s*:|\bGauge\(", "chip": r"\.buttonStyle\(\.bordered\).*\.clipShape\(\.capsule\)"},
+    "compose": {"progress_bar": r"\bLinearProgressIndicator\(\s*progress\s*=|\bCircularProgressIndicator\(\s*progress\s*=",
+                "chip": r"\b(?:Filter|Assist|Suggestion|Input)Chip\("},
+    "tsx": {"progress_bar": r"<ProgressBar\b|<Progress\.\w+|ProgressViewIOS"},
+}
+
 # direct signals: (rule, tier, severity, evidence, regex, message, fix)
 SIG = {
     "flutter": [
@@ -397,8 +410,10 @@ LINEAR = {
 
 # ------------------------------------------------------------ the scanner
 class Scanner:
-    def __init__(self, platforms=("ios", "android"), grid=4, theme_paths=None, data_hexes=(), exceptions=()):
+    def __init__(self, platforms=("ios", "android"), grid=4, theme_paths=None, data_hexes=(), exceptions=(),
+                 vocab_roles=()):
         self.exceptions = [e for e in exceptions if isinstance(e, dict) and e.get("rule")]
+        self.vocab_roles = set(vocab_roles)
         self.data_hexes = {h.upper()[:7] for h in data_hexes}
         self.platforms = set(platforms or ())
         self.grid = grid
@@ -474,6 +489,7 @@ class Scanner:
         self._strings(fs, lines, lang)
         self._motion(fs, lines, lang, text)
         self._gradients(fs, text, lang)
+        self._priors(fs, lines, lang)
         if fs.fixture:  # previews/fixtures: keep integrity findings, drop system/layout ones
             fs.findings = [f for f in fs.findings if f.tier == "F" and f.rule not in ("F01",)]
         return fs
@@ -621,6 +637,40 @@ class Scanner:
             fs.findings.append(Finding(rule="D18", tier="D", severity="minor", evidence="inferred", file=fs.path,
                                        line=0, message=f"{fs.flags['entrance']} entrance animations in one file",
                                        fix="animate what changed, where it changed; content that was there stays still"))
+
+    def _priors(self, fs: FileScan, lines, lang: str):
+        """Spent defaults (knowledge/priors.md): faces and grounds every model reaches for, and generic
+        parts left where the KDL vocabulary says a drawn mark replaces them."""
+        for no, line in lines:
+            m = SPENT_FACE.search(line)
+            if m:
+                fs.findings.append(Finding(rule="D33", tier="D", severity="minor", evidence="observed", file=fs.path,
+                                           line=no, message=f"spent face `{m.group(1) or m.group(2)}` (a default models reach for)",
+                                           fix="take the dealt type system (`kinetic deal`); if the brand pins this face, record it in `exceptions`",
+                                           snippet=line.strip()[:120]))
+            if self.vocab_roles:
+                for role, rx in GENERIC_PARTS.get(lang, {}).items():
+                    if role in self.vocab_roles and re.search(rx, line):
+                        fs.findings.append(Finding(rule="D35", tier="D", severity="minor", evidence="inferred", file=fs.path,
+                                                   line=no, message=f"generic {role.replace('_', ' ')} where the KDL vocabulary draws one",
+                                                   fix="use the product's mark from `vocabulary` (or remove the role from it)",
+                                                   snippet=line.strip()[:120]))
+        for f in fs.facts:
+            if f.kind != "color" or not color.is_hex(str(f.value)[:7]):
+                continue
+            hx = str(f.value)[:7]
+            L, C, H = color.hex_to_oklch(hx)
+            ctx = (f.context or f.raw or "").lower()
+            ground = re.search(r"\b(bg|background|ground|scaffold|canvas|paper|base|surface|page)", ctx)
+            if ground and 0.93 <= L <= 0.99 and 0.007 <= C <= 0.05 and 55 <= H <= 100:
+                fs.findings.append(Finding(rule="D34", tier="D", severity="minor", evidence="inferred", file=fs.path,
+                                           line=f.line, message=f"cream/parchment ground {hx} (the most common generated look)",
+                                           fix="a dealt palette's ground; warmth belongs in a field or the accent, not the paper",
+                                           snippet=(f.context or f.raw or "")[:120]))
+            elif color.delta_e_ok(hx, "#D97757") < 0.04:
+                fs.findings.append(Finding(rule="D34", tier="D", severity="minor", evidence="inferred", file=fs.path,
+                                           line=f.line, message=f"terracotta/clay accent {hx} (a generated-look tell)",
+                                           fix="take the dealt palette's accent", snippet=(f.context or f.raw or "")[:120]))
 
     def _gradients(self, fs: FileScan, text: str, lang: str):
         start = GRADIENT_START.get(lang)
@@ -932,5 +982,7 @@ class Scanner:
         return keep
 
 
-def scan(paths, platforms=("ios", "android"), grid=4, theme_paths=None, data_hexes=(), exceptions=()) -> dict:
-    return Scanner(platforms, grid, theme_paths, data_hexes, exceptions).scan_paths(paths if isinstance(paths, (list, tuple)) else [paths])
+def scan(paths, platforms=("ios", "android"), grid=4, theme_paths=None, data_hexes=(), exceptions=(),
+         vocab_roles=()) -> dict:
+    return Scanner(platforms, grid, theme_paths, data_hexes, exceptions, vocab_roles).scan_paths(
+        paths if isinstance(paths, (list, tuple)) else [paths])

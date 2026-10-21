@@ -1,8 +1,8 @@
 ---
 name: kinetic
-description: "Senior mobile product design system for native and cross-platform apps (Flutter, SwiftUI, Jetpack Compose, React Native). Use to create, redesign, improve, audit or evolve a mobile app's UI/UX; to build or extract a design system; for design-to-code and code-to-design; for typography, color, layout, icons/SVG, states, motion, haptics and anti-slop review. Thinks like a designer before styling: product thesis, expression level, divergent directions, full state matrix, then precise implementation verified by an engine and an independent critic. Not for websites/landing pages (use prismora) or backend work."
+description: "Senior mobile product design system for native and cross-platform apps (Flutter, SwiftUI, Jetpack Compose, React Native). Use to create, redesign, improve, audit or evolve a mobile app's UI/UX; to build or extract a design system; for design-to-code and code-to-design; for typography, color, layout, icons/SVG, states, motion, haptics and anti-slop review. Thinks like a designer before styling: product thesis and inventory, directions dealt from a native library (so the result is not the category average), a drawn domain vocabulary, the full state matrix, then precise implementation verified by an engine and an independent critic. Not for websites/landing pages (use prismora) or backend work."
 metadata:
-  version: "1.0"
+  version: "1.6"
 ---
 
 # Kinetic — think like a design lead, execute like an engineer
@@ -20,8 +20,8 @@ contracts in `<root>/docs/` (KDL.md, PROTOCOL.md, TOOLS.md).
 **Mode** (infer from the request; don't make the user name it):
 | Request sounds like | Mode | Pipeline (modules in order) |
 |---|---|---|
-| new app / new screen / "design me…" | create | think → direct → states → system → craft+motion → code → critique |
-| "make it look premium / less generic / redo the UI" | redesign | code-to-design (forensics) → think → direct → states → system → code → critique |
+| new app / new screen / "design me…" | create | think → deal + direct → states → system → craft+motion → code → critique |
+| "make it look premium / less generic / redo the UI" | redesign | code-to-design (forensics) → think → deal + direct → states → system → code → critique |
 | "improve this screen", small UX/UI upgrade | improve | forensics (scoped) → think (short) → states → craft → code → critique |
 | "review / audit / what's wrong" | audit | forensics → states code → critique (no code changes) |
 | design tokens, theme, design system | system | think (short) → system → code (export) |
@@ -41,18 +41,19 @@ existing `.kinetic/design.kdl` → `kinetic validate` it and continue from it.
 |---|---|---|
 | D0 touch-up | padding, one color, one label | craft only; check the edit with `kinetic scan <file>` |
 | D1 component | a button system, a card, an icon set | states (variants) → system slice → craft → code |
-| D2 screen / flow | redesign checkout, a new settings flow | think (short) → direct → states → system → craft (+ motion) → code → critique |
+| D2 screen / flow | redesign checkout, a new settings flow | think (short) → deal + direct → states → system → craft (+ motion) → code → critique |
 | D3 product | new app, full redesign, design system | the full pipeline, KDL complete, critic loop |
 
-**Minimum reading per depth** (read more only when a decision needs it):
-| Depth | Always | Plus, per task |
-|---|---|---|
-| D0 | `knowledge/anti-slop.md` (F + D tables) | the stack file `knowledge/stacks/<stack>.md` §slop |
-| D1 | + `knowledge/states.md` §2, the stack file | `typography.md` / `color.md` / `iconography-svg.md` for the component's concern |
-| D2 | + module skills think, direct, states, system, craft, code, critique (+ motion if anything moves); `states.md`; `copy.md`; `layout.md` §1–3; `platform-ios.md` or `platform-android.md`; `taste-rubric.md` (the anchors you will be judged on); docs/KDL.md (syntax + the sections you write) | `sectors.md` (your sector only), `directions.md` (skim the table, read 3 candidates), `typography.md` / `color.md` when kinetic-system reaches that step, `motion.md` if anything moves |
-| D3 | everything relevant above + `exemplars.md`, `taste-rubric.md`, docs/KDL.md | — |
-Don't read the whole library "to be safe": the router, the module you are in
-and the files it names are enough.
+**Reading, in the order the work needs it** (the choice comes first, the
+rigor after — so the craft rules never crowd out the idea):
+| Depth | 1. Before choosing | 2. After the direction is settled | 3. Before calling it done |
+|---|---|---|---|
+| D0 | — | `knowledge/anti-slop.md` (F + D), the stack file §slop | — |
+| D1 | — | + `states.md` §2, the stack file, the concern's file (typography / color / iconography-svg) | craft |
+| D2 | think, direct, `priors.md`, `identity-channels.md`, the deal sheet, `sectors.md` (your sector) | states, system, code (+ motion), `states.md`, `copy.md`, `layout.md` §1–3, the platform file, the stack file, docs/KDL.md (sections you write) | craft, critique, `taste-rubric.md` |
+| D3 | + `exemplars.md` (mechanisms, not looks) | everything relevant | + the rival and the independent critic |
+Don't read the whole library "to be safe". `directions.md` is legacy reference
+material: the deal replaces it.
 **Without agents** (a sub-agent context, a sandbox): do the director and critic
 steps yourself as the modules describe; `kinetic score` then stops at
 `ship-pending` by design — say so in the report instead of chasing `ship`.
@@ -61,8 +62,10 @@ steps yourself as the modules describe; `kinetic score` then stops at
 1. **Understand** (`kinetic-think`): product truth, user moment, thesis,
    anti-thesis, spine, expression level, journeys. Write them to
    `.kinetic/design.kdl` (`kinetic init` creates it).
-2. **Decide** (`kinetic-direct`): 3 genuinely different directions, scored,
-   one chosen with reasons. Use `knowledge/directions.md` as material, never as a costume.
+2. **Decide** (`kinetic-direct`): `kinetic deal` deals three directions from
+   the library; fuse each with the inventory (idea sentence + competitor
+   test); choose the **most distinctive viable** one; draw its vocabulary;
+   write the ≤ 200-word `contract`.
 3. **Anticipate** (`kinetic-states`): every screen × state, every interactive
    component × variant, the environment of each important element.
 4. **Systemise** (`kinetic-system`): type → color → space → shape → elevation
@@ -91,13 +94,15 @@ loading, empty, error (+ offline) (F06). Labels on icon-only controls (F07).
 Reduce-motion path for every animation (F08). Safe areas and keyboard (F09).
 Never lock text scaling (F10).
 
-## 5. Completeness before cleverness
-The concept, signature and spine come *after* the brief is fully served:
-every must-have visible where the brief needs it (saved items above the fold,
-search reachable), native structure in place (navigation, thumb-zone actions,
-platform recovery paths), tinted neutrals rather than default greys. Independent
-critics in the A/B evaluation preferred a plain, complete design over a
-distinctive one that hid half of the brief.
+## 5. Complete *and* unmistakable
+Completeness is the floor: every must-have visible where the brief needs it,
+native structure in place (navigation, thumb-zone actions, platform recovery
+paths), every state designed. It is not the goal. In four blind rounds Kinetic
+won completeness and native fidelity every time and still tied the bare model,
+because the bare model's designs were more *distinctive*: a vocabulary drawn
+from the product's world, a hero that answers in the product's voice. A
+design that hides half the brief loses; a complete design that could belong to
+any competitor ties. Ship the one that is both.
 
 ## 6. Specificity beats adjectives
 "Clean, modern, premium" are not decisions. Decisions are numbers and reasons:
@@ -108,6 +113,9 @@ If you catch yourself writing an adjective, replace it with the value it implies
 ## 7. Engine quick reference
 ```
 kinetic init [path] --mode create|redesign|…      # .kinetic/ with config + KDL skeleton
+kinetic deal --brief-file BRIEF.md                 # 3 dealt directions (engine, type, palette, motion)
+kinetic deal --redraw 2.type --reason "…"          # replace one slot, logged; --show to reprint
+kinetic sheet .kinetic/shots                        # all renders on one contact sheet
 kinetic validate .kinetic/design.kdl               # completeness + coherence (exit 1 on F)
 kinetic palette "#seed" [--kdl]                    # light/dark roles, contrast-checked
 kinetic contrast "#fg" "#bg"                       # WCAG 2 + APCA

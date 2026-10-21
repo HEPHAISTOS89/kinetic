@@ -25,9 +25,10 @@ Before any idea, list every must-have of the brief as KDL `requirements`
 (`{id, need, priority: must|should, above_fold, element}`): each data type it
 names, each job, each state it mentions, each platform expectation (search,
 navigation). Later every screen declares which ones it `serves`, and the
-validator flags any `must` left unserved (K21). **Completeness before
-cleverness**: a strong concept that drops a requirement loses to a plain design
-that serves them all — this is the failure the Kinetic A/B evaluation measured.
+validator flags any `must` left unserved (K21). Completeness is a **floor**: a
+concept that drops a requirement loses to a plain design that serves them all —
+but a plain design that serves them all still loses to one that serves them
+all *and* is unmistakably this product's.
 
 ## Step 2 — The user moment (the most important field)
 Answer concretely, as if filming it:
@@ -59,13 +60,23 @@ Add:
 3. Does it promise a feature that doesn't exist? → remove.
 4. Can you point at a screen element and say which word of the thesis it serves? → if not, the thesis is too abstract.
 
+## Step 3b — Inventory: what only this product has
+Before any concept, list 8–12 concrete things from the product's own world as
+KDL `inventory` — the raw material of its identity (kinetic-direct §4b):
+objects people handle there, the place and its plan, the printed artefacts
+(tickets, labels, forms, boards), rituals and hours, its own numbers and units,
+names people use, materials and colours that are really there. Nouns you
+could photograph, not qualities ("trust", "community" are not items). A list
+that would fit the competitor is the category's list: replace items until at
+least half are specific to this product, place or audience.
+
 ## Step 4 — The concept spine
 One generative idea that can drive **layout, color and motion at once**, so
 the design has a mind instead of a theme. Techniques to find it:
 - **From the moment**: half-asleep → "the light goes down"; on a bus → "one glance, one answer".
 - **From the data's nature**: a flight is a line through time → "the journey is a single line"; money is a balance → "level, not dashboard".
 - **From the core verb**: log, check, decide, share, learn → what does that verb look like physically?
-- **From a material/place** (sparingly): paper, instrument panel, field notebook — only if it connects to the moment.
+- **From the inventory**: an object or artefact of this product's world that the moment already involves.
 Write `spine_expressions` for layout, color and motion. If the spine can't
 generate all three, it's a decoration, not a spine — find another.
 
@@ -96,7 +107,7 @@ longest strings and other languages, XXL text, dark mode at night, small and
 large phones, interruptions. These go to `screens[].states` and `premortem`.
 
 ## Step 8 — Write it down
-`kinetic init` (if no `.kinetic/`), then fill `product`, `thesis`,
+`kinetic init` (if no `.kinetic/`), then fill `product`, `thesis`, `inventory`,
 `expression`, `journeys` in `.kinetic/design.kdl`. Run `kinetic validate`;
 fix every K02/K04/K06 finding in these sections before moving on.
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 abstract final class KColor {
-  static const bg = Color(0xFFF6F1EA);
+  static const bg = Color(0xFFF3F4F1);
   static const surface = Color(0xFFFFFFFF);
   static const text = Color(0xFF1E1A16);
   static const text2 = Color(0xFF5C5249);
