@@ -45,7 +45,9 @@ Honest reading:
 - On blind judged design quality, Kinetic currently **matches** a strong frontier model; it does not beat it.
   Differences are within critic variance: in two of three rounds the two critics picked different winners.
 - Kinetic **robustly** wins on what the engine measures (system coherence, grid, contrast, reduce-motion,
-  state coverage: 0 findings in every round) and on copy/tone faithful to the brief.
+  state coverage: 0 findings in every round) and on copy/tone faithful to the brief. Caveat: the engine is
+  Kinetic's own and the Kinetic arms could run it during the task, so this gap is partly by construction —
+  it shows the rules are followed, not that the rules are the right ones.
 - Its recurring weakness was identity, traced to our own guidance favouring quiet system typography; fixed in v1.4
   but **not yet re-measured**.
 - Self-critique was more lenient than independent critics every time (+0.3 to +0.6): `ship` therefore requires an
