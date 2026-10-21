@@ -34,7 +34,7 @@ Limits: N = 1 brief, one model, one critic; macOS `ImageRenderer` cannot show
 Dynamic Type scaling (XXL needs the iOS Simulator); a blind critic is still a
 model. Treat a result as evidence about this brief, not a universal ranking.
 
-## 4. Results so far (six blind rounds, eight briefs, 30 critic reads)
+## 4. Results so far (nine blind rounds, fourteen briefs, 48 critic reads)
 | Round | Brief | Stack | Arms | Critics | Judged mean (baseline / Kinetic) | Clean (baseline / Kinetic) | Verdicts |
 |---|---|---|---|---|---|---|---|
 | 1 | Courant (transit) | SwiftUI | model vs v1.0 | 2 | 3.67 / 3.78 | — | split |
@@ -46,6 +46,16 @@ model. Treat a result as evidence about this brief, not a universal ranking.
 | 5b | Petit Jour (re-run) | React Native | same baseline vs v1.5 | 3 | 3.74 / 4.11 | — | K clear ×3 |
 | 6a | Officine (pharmacy) — fresh | Flutter | model vs v1.6 | 3 | **4.00 / 3.44** | 4.0 / 3.0 | A clear ×3 |
 | 6b | The Rialto (cinema) — fresh | React Native | model vs v1.6 | 3 | **4.11 / 3.74** | 3.7 / 2.7 | A clear ×2, A slight |
+
+Rounds 7–9 are three-arm head-to-heads on fresh briefs (Kinetic studio vs other skills; means are per arm):
+| Round | Brief | Stack | Arms (mean · clean) | Critic rankings |
+|---|---|---|---|---|
+| 7a | Kiln (pottery studio) | Flutter | **Kinetic v1.7 3.93 · 3.0**, model 3.89 · 4.0, ui-ux-pro-max 3.52 · 3.0 | K 1st ×1, model 1st ×2 |
+| 7b | Mooring (marina) | React Native | **Kinetic 3.85 · 4.67**, ui-ux-pro-max 3.81 · 2.67, model 3.59 · 3.0 | K 1st ×2, U 1st ×1 |
+| 8a | Furrow (veg box co-op) | Flutter | **Kinetic v1.8 4.19 · 5.0**, taste-skill 4.15 · 4.0, impeccable 3.30 · 2.33 | K 1st ×2, T 1st ×1 |
+| 8b | Chorus (community choir) | React Native | **Kinetic 4.44 · 4.33**, taste-skill 3.81 · 3.0, impeccable 3.52 · 2.33 | K 1st ×3 |
+| 9a | Plot 42 (allotments) | Flutter | **Kinetic v1.9 4.41 · 4.33**, native-polish 3.81 · 3.0, frontend-design 3.74 · 3.0 | K 1st ×3 |
+| 9b | Tern (bird survey) | React Native | **Kinetic 4.41 · 4.67**, frontend-design 3.63 · 4.0, model 3.48 · 2.67 | K 1st ×3, margin large/clear |
 
 Honest reading, round by round:
 - **Rounds 1–4**: Kinetic matched a strong frontier model (pooled 3.90 / 3.91). Stable trade: Kinetic more
@@ -69,5 +79,14 @@ Honest reading, round by round:
   6's pair the way the critics did), and the **studio**: three directors, a rival, an editor and a
   three-critic panel in separate contexts. Measured next in round 7 against the bare model *and*
   ui-ux-pro-max.
+- **Round 7 (v1.7, studio)**: first three-arm match. Kinetic led narrowly (pooled 3.89 vs model 3.74 vs
+  ui-ux-pro-max 3.67), first in 3 of 6 reads. The studio fixed round 6's regression but the margin was thin.
+- **Round 8 (v1.8)**: vs taste-skill and impeccable. Kinetic 4.31, taste-skill 3.98, impeccable 3.41; first
+  in 5 of 6 reads, cleanness 4.67 vs 3.5 vs 2.33.
+- **Round 9 (v1.9)**: vs native-polish, frontend-design and the bare model. Kinetic 4.41 on both briefs,
+  **first in 6 of 6 reads**, margins 0.6–0.9 over the second arm; product fit 5.0, distinctiveness 5.0 and
+  anticipation ≥ 4.67 on both. Recurring weaknesses still named by the critics: colour (cool, near-grey
+  neutrals; the primary turning outline-only in dark mode), layout craft (accidental voids below a short
+  state), and a signature mark that is only explained once it becomes an alert.
 - Measured rigor still holds: baselines keep shipping engine-detectable defects; Kinetic arms ship none
   (caveat: Kinetic's own engine).
