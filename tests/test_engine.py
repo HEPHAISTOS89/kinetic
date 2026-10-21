@@ -760,6 +760,33 @@ class TestFonts(unittest.TestCase):
             shutil.rmtree(d)
 
 
+class TestRound8Regressions(unittest.TestCase):
+    def test_flutter_export_spring_and_duration_may_share_a_name(self):
+        text = rd(os.path.join(ROOT, "examples", "lune", "design.kdl"))
+        doc = kdl.parse(text)
+        doc["system"]["motion"]["durations"]["strike"] = 200
+        doc["system"]["motion"]["springs"]["strike"] = {"response": 0.32, "damping": 0.88}
+        out = export.export(doc, "flutter", "design.kdl")
+        self.assertIn("Duration strike =", out)
+        self.assertIn("SpringDescription strikeSpring =", out)
+
+    def test_deal_ignores_harness_deliverables(self):
+        brief = "A warm local shop.\n\n## Deliverables\n- Flutter, fonts, gallery, renders"
+        st = deal.deal(brief, seed=1)
+        self.assertNotIn("flutter", st["brief_words"])
+        self.assertIn("warm", st["brief_words"])
+
+    def test_rn_pressable_without_onpress_is_flagged(self):
+        d = tempfile.mkdtemp()
+        try:
+            with open(os.path.join(d, "Home.tsx"), "w") as fh:
+                fh.write("import { Pressable, Text } from 'react-native';\n"
+                         "export const A = () => <Pressable style={{padding: 8}}><Text>Try again</Text></Pressable>;\n")
+            self.assertIn("F02", {f["rule"] for f in scan([d])["findings"]})
+        finally:
+            shutil.rmtree(d)
+
+
 class TestPluginStructure(unittest.TestCase):
     def test_skills_frontmatter_and_links(self):
         for name in os.listdir(os.path.join(ROOT, "skills")):

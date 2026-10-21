@@ -29,8 +29,9 @@ Agents return their work as text; you save it to the files named below (some rol
 
 ## Protocol
 1. **Brief** (you): kinetic-think → `product`, `requirements`, `thesis`,
-   `inventory`, `expression`, `journeys` in `.kinetic/design.kdl`. Then
-   `kinetic deal --brief-file <brief>`.
+   `inventory`, `expression`, `journeys` in `.kinetic/design.kdl`. Then sketch
+   **your authored direction A** in the KDL (`source: author`) *before* reading
+   any deal, and only then `kinetic deal --brief-file <brief> --options 2`.
 2. **Diverge** (parallel): 3 × kinetic-director — director 1 develops **your
    authored direction A** (you wrote its thesis-led sketch in the KDL), directors
    2 and 3 each "develop dealt challenger N only" (`kinetic deal --options 2`) —
@@ -56,6 +57,10 @@ Agents return their work as text; you save it to the files named below (some rol
    Render **both platforms**: at least the default state as an Android
    variant (Material navigation, sheets, buttons) beside iOS — native
    fidelity was 3/5 for every arm that rendered only one platform.
+   From loop 2 on, every critic also receives the previous loop's
+   `panel.json` and your `loopN/lead.md` (what you fixed, what you declined
+   and why): their first job is to **verify those fixes**, then score. A fix
+   reversed by a later critic needs a reason that names the earlier one.
 7. **Iterate** (you): fix the panel's consensus fixes and every dimension
    with a median < 4 or a split (disagreement ≥ 2) — splits mean the render
    is ambiguous, not that one critic is wrong. Re-render → editor → panel.

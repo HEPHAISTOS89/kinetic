@@ -366,7 +366,8 @@ class Validator:
         if len(authored) > 1:
             self.add("K29", "D", "minor", "directions", f"{len(authored)} directions marked `source: author`",
                      "one direction is yours (from the thesis); the others are the dealt challengers", self.line("directions"))
-        if self.deal is not None and chosen is not None and chosen.get("source") != "author" and chosen.get("engine") not in dealt:
+        if self.deal is not None and chosen is not None and chosen.get("source") not in ("author", "fusion") \
+                and chosen.get("engine") not in dealt:
             self.add("K29", "D", "major", "directions", f"chosen direction's engine `{chosen.get('engine')}` was not dealt "
                      f"({', '.join(dealt)})", "choose a dealt option, or redraw its engine with "
                      "`kinetic deal --redraw N.engine --reason …`", self.line("directions"))

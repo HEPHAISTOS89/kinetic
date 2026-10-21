@@ -30,6 +30,14 @@ Your first palette, first face and first layout are these. Deal instead.
   meta strings joined by middle dots everywhere, small monospace labels as
   "technical" decoration, `→` appended to every button.
 
+## Accent priors
+- **Link blue as the accent** (#1E4FD8–#2F6BFF, saturated royal/cobalt) on a
+  warm or earthy product reads as "default" to blind critics (round 8: "the
+  one element that would survive a swap"). Take the accent from the domain's
+  materials (soil, ink, glaze, signal paint), unless the domain is ink or water.
+- **A dark hero slab kept in light mode** (charcoal header on a light page)
+  makes "light mode" a dark screen with a light footer: design the light hero.
+
 ## Home-screen priors (mobile)
 - Greeting header ("Good morning, Sam") → summary card → 2×2 tile grid → list.
 - Big number + small label + sparkline + "+12% this week" chip.

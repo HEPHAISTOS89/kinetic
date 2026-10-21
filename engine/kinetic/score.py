@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 
 from . import dna as dna_mod
 from . import states as states_mod
@@ -182,7 +183,10 @@ def run(kdl_path=None, code_paths=None, judged_path=None, platforms=("ios", "and
     if renders:
         from . import clarity as clarity_mod
         clarity_result = clarity_mod.clarity(renders)
-        light = [m for m in clarity_result["renders"] if "dark" not in os.path.basename(m["file"])] or clarity_result["renders"]
+        # the first viewport of each state: light renders, not scrolled continuations or open sheets
+        first = [m for m in clarity_result["renders"] if "dark" not in os.path.basename(m["file"])
+                 and not re.search(r"scroll|below|bottom|-page|sheet|form", os.path.basename(m["file"]))]
+        light = first or [m for m in clarity_result["renders"] if "dark" not in os.path.basename(m["file"])] or clarity_result["renders"]
         measured["clarity"] = round(sum(m["clarity"] for m in light) / len(light))
         formulas["clarity"] = "mean render clarity (words, lines, text sizes, quiet rows, edges per viewport; knowledge/clarity.md)"
     judged_scores, problems, meta = {}, [], {}

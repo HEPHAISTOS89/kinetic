@@ -355,6 +355,7 @@ SIG = {
         ("D25", "D", "info", "observed", r"\b(?:AssistChip|FilterChip|SuggestionChip|InputChip|Badge)\(", "chip/badge", "badges only for state the user must notice"),
     ],
     "tsx": [
+        ("F02", "F", "major", "inferred", r"<(?:Pressable|TouchableOpacity|TouchableHighlight)\b(?![^>]*\bon(?:Press|LongPress)\b)(?![^>]*\bdisabled\b)[^>]*>", "pressable without onPress (looks tappable, does nothing)", "wire onPress, or render it as plain text / disabled with a reason"),
         ("F02", "F", "block", "observed", r"on(?:Press|Click|LongPress)\s*=\s*\{\s*\(\s*\)\s*=>\s*\{\s*\}\s*\}|href\s*=\s*[\"']#[\"']", "control does nothing", "wire the action or remove the control"),
         ("F10", "F", "block", "observed", r"allowFontScaling\s*=\s*\{\s*false\s*\}|maxFontSizeMultiplier\s*=\s*\{\s*1(?:\.0)?\s*\}|user-scalable\s*=\s*no|maximum-scale\s*=\s*1(?:\.0)?\b", "user text size or zoom is locked", "allow scaling; reflow at large sizes"),
         ("D28", "D", "major", "observed", r"adjustsFontSizeToFit", "text shrinks to fit", "reflow instead"),

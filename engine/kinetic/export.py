@@ -215,11 +215,13 @@ def to_flutter(doc, src="design.kdl") -> str:
     L.append("abstract final class KMotion {")
     for k, v in (mot.get("durations") or {}).items():
         L.append(f"  static const Duration {ident(k)} = Duration(milliseconds: {int(_num(v, 200))});")
+    dur_names = {ident(k) for k in (mot.get("durations") or {})}
     for k, sp in (mot.get("springs") or {}).items():
         if isinstance(sp, dict):
             p = spring_physics(_num(sp.get("response"), 0.35), _num(sp.get("damping"), 0.9))
+            name = ident(k) + ("Spring" if ident(k) in dur_names else "")  # a spring and a duration may share a KDL name
             L.append(f"  /// response {sp.get('response')}s, damping ratio {sp.get('damping')}")
-            L.append(f"  static final SpringDescription {ident(k)} = SpringDescription.withDampingRatio("
+            L.append(f"  static final SpringDescription {name} = SpringDescription.withDampingRatio("
                      f"mass: 1, stiffness: {p['stiffness']}, ratio: {p['ratio']});")
     reduce = mot.get("reduce", "crossfade")
     L.append(f"\n  /// Reduce-motion policy: {reduce}. Use for every Duration you animate with.")

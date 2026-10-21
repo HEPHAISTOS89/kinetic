@@ -1,0 +1,27 @@
+# Kinetic v1.8 — candid feedback from the Furrow studio run
+
+## Top issues
+1. **The deal ignored the brief's tone for option 2.** The brief is "earthy, honest, generous". Option 2's palette came out as a cool grey ground with a raspberry accent. I redrew it twice with a stated reason, and the two redraws gave a navy field, then cobalt and orange on #F8FAFD: still cool both times. The likely cause is that the dealt type slot (Optima) carries the rule "pair with a cool or green ground". That rule constrains the palette pool, so tone weighting cannot win. The deal says it weights palettes by tone, but here a type rule overrode it. Suggestion: resolve type-palette rules together with the tone, or redraw the pair together.
+2. **`kinetic export` generated Flutter that does not compile when a spring and a duration share a name.** Spring `strike` plus duration `strike` produced a "duplicate_definition" error in `KMotion`. `validate` accepted the KDL. Either namespace them in the export (`KMotion.springStrike`) or have validate reject the collision.
+3. **The clarity heuristic is driven by pixel saturation and edge counts, and it rewards cosmetic moves.**
+   - A 1px vertical margin rule (a vocabulary mark) counted as an edge in every row, so the slip scored about 26% "quiet rows". Lightening the rule by 25 luma moved the slip states from about 47 to about 79.
+   - Desaturating the kraft field by about 10 chroma removed it from "loud areas".
+   - Light and dark renders of the same layout differ by 15–25 points.
+   - The engine, the editor and three critics then quoted these numbers as evidence. I had to choose between the design and the metric more than once.
+   - Suggestion: discount long straight rules and thin full-height lines. Treat a declared `field` colour as the allowed loud thing, by role rather than by pixel. Normalise between themes.
+4. **The protocol asks for 3 loops but gives no guidance on conflicting judges.** In loop 2 the identity critic's biggest lever was "print the farm stamps on the band". In loop 2 two critics and the editor called that same element decorative ("attached to nothing"). In loop 3 the identity critic asked for it again. The panel reports medians and "consensus" fixes. It flags splits only per score, not between contradictory fixes, so the lead oscillates. Suggestion: `kinetic panel` should list conflicting fixes, and the studio skill should say how the lead resolves them (for example, contract first).
+5. **The rule "the last loop ends with a panel" plus "max 3 loops" guarantees shipping unaddressed consensus fixes.** Every loop-3 fix arrives after the cap. With an independent panel the score verdict stayed at ITERATE (judged mean 3.89, layout_craft 3), although the loop-2 mean was 4.0. Panels re-score from scratch each loop and find new nits, so the mean is not monotonic. "Stop when two loops don't raise the median mean" therefore triggers on noise. Suggestion: give critics the previous panel's fixes and ask them to rate whether each was addressed.
+
+## Other notes
+- **Router reading order versus effort.** The D2 reading list is long: think, direct, priors, identity-channels, deal sheet, sectors, states, system, code, clarity, states.md, copy, layout, platform files, stack file, KDL, craft, critique, taste-rubric. Running the studio as well costs about 12 sub-agent runs of 100–130k tokens each. The studio skill gives no budget guidance.
+- **`sectors.md` has no grocery-subscription or veg-box section.** "Marketplace" and "Mobility/delivery" each fit half the product.
+- **The director agent file says "the three dealt options" and "Solo, develop all three".** The studio sends director 1 the lead's authored direction, which is not a dealt option, and the file has no instructions for that case. `engine:` for an authored direction is also unclear: the director wrote `engine: author`, while the KDL docs say a fusion carries the borrowed engine id.
+- **Directors 2 and 3 read design.kdl, which already contains the lead's direction A.** I had to tell them to ignore `directions`. The studio could keep A in a separate file until the choice is made.
+- **The Flutter stack note warns about Ahem boxes, but the exported `KType` styles have no `fontFamily`.** My first render showed every system-text line as black boxes, because a `TextTheme.bodyMedium` override lost the family. The export could take a `systemFamily` parameter.
+- **NBSP and word joiners in Charter render as wide gaps** (missing glyph, so fallback). The "avoid orphans" advice from critics has no safe Flutter recipe in the stack notes.
+- **KDL `case: upper` is accepted, but export ignores it.**
+- **`kinetic deal --redraw` printed no warning when a redraw landed in the same cool family again.**
+- **D34 flagged `surface-2 #EBE8E1` as "cream/parchment"** although it is the tear-off stub's paper (inferred). This is fine as info, but noisy.
+- **`kinetic contrast`** took two separate arguments. In zsh, a quoted "fg bg" pair silently failed with a usage error. A small usability issue.
+- **Critics cannot judge motion from goldens**, so motion is always "unjudged". The studio could make a short frame strip (pump at 0/100/200/400 ms) as a standard artefact.
+- **Panel JSONs** must be saved verbatim by the lead from the agents' text. That costs lead context: about 3×3k tokens per loop. Letting critics write their own file would be cheaper and safer.

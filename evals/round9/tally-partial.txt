@@ -1,0 +1,10 @@
+== flutter
+  F: mean 3.74 [3.78, 3.67, 3.78]  clean 3.00  ranks [3, 3, 3]
+     produ 4.00  hiera 4.00  disti 3.33  typog 3.33  color 4.00  layou 4.00  nativ 3.00  antic 4.00  copy 4.00
+  K: mean 4.41 [4.44, 4.22, 4.56]  clean 4.33  ranks [1, 1, 1]
+     produ 5.00  hiera 4.67  disti 5.00  typog 4.00  color 4.00  layou 3.67  nativ 4.00  antic 4.67  copy 4.67
+  N: mean 3.81 [3.78, 3.89, 3.78]  clean 3.00  ranks [2, 2, 2]
+     produ 4.00  hiera 3.33  disti 3.00  typog 4.00  color 4.00  layou 4.00  nativ 3.00  antic 4.00  copy 5.00
+pooled F: 3.74
+pooled K: 4.41
+pooled N: 3.81

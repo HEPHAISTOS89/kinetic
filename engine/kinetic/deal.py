@@ -153,8 +153,15 @@ def _summary(opt: dict, tn=frozenset()) -> dict:
     }
 
 
+def _brief_text(brief: str) -> str:
+    """The product part of a brief: deliverables and harness instructions (stack, fonts, files) say nothing about tone."""
+    m = re.search(r"(?im)^#+\s*(deliverables|technical|harness|constraints)\b", brief or "")
+    return brief[:m.start()] if m else (brief or "")
+
+
 def deal(brief: str = "", seed: int | None = None, options: int = 3, exclude=(), lib_dir: str = LIB) -> dict:
     lib = load_library(lib_dir)
+    brief = _brief_text(brief)
     if seed is None:
         seed = int.from_bytes(os.urandom(4), "big")
     rng = random.Random(seed)
@@ -189,7 +196,13 @@ def redraw(state: dict, option: int, slot: str, reason: str, lib_dir: str = LIB)
         new = _pick(rng, pool, words, set(), "engine")
     else:
         eng = next(e for e in lib["engine"] if e["id"] == cur["engine"]["id"])
-        new = _pick(rng, lib[slot], words, taken[slot], slot, eng)
+        pool = lib[slot]
+        if slot == "palette":  # a redraw must not hand back the temperature the brief's tone just ruled out
+            tn = tone(words)
+            ok = [p for p in pool if not ("warm" in tn and p.get("temperature") in ("cool", "bold"))
+                  and not ("calm" in tn and p.get("temperature") == "bold")]
+            pool = ok or pool
+        new = _pick(rng, pool, words, taken[slot], slot, eng)
     full = {"engine": next(e for e in lib["engine"] if e["id"] == cur["engine"]["id"]),
             "type": next(t for t in lib["type"] if t["id"] == cur["type"]["id"]),
             "palette": next(p for p in lib["palette"] if p["id"] == cur["palette"]["id"]),
