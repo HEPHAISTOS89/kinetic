@@ -18,7 +18,7 @@ FETCH = re.compile(r"FutureBuilder|StreamBuilder|AsyncValue|ref\.watch\(|BlocBui
 HANDLES = {
     "loading": re.compile(r"CircularProgressIndicator|LinearProgressIndicator|isLoading|\bloading\b|ProgressView|"
                           r"\.redacted\(|ActivityIndicator|Skeleton|Shimmer|ConnectionState\.waiting|isPending|isFetching", re.I),
-    "error": re.compile(r"hasError|\berror\b|\bcatch\b|onError|failure|isError|ErrorView|\bretry\b|\.failure|Result\.failure", re.I),
+    "error": re.compile(r"hasError|\berror\b|\bcatch\b|onError|failure|isError|ErrorView|retry|tryAgain|\.failure|\.failed\b|Result\.failure", re.I),
     "empty": re.compile(r"isEmpty|\bempty\b|ContentUnavailableView|EmptyView|no results|ListEmptyComponent|\.count\s*==\s*0|"
                         r"length\s*===?\s*0|NoData|nothing (here|yet)|aucun", re.I),
     "offline": re.compile(r"connectivity|offline|NWPathMonitor|NetInfo|isConnected|reachab", re.I),
@@ -65,18 +65,27 @@ def code(paths) -> dict:
         for dp, dns, fns in os.walk(root):
             dns[:] = [d for d in dns if d not in EXCLUDE_DIRS and not d.startswith(".")]
             files += [os.path.join(dp, f) for f in fns]
+    texts = {}
     for p in files:
         if os.path.splitext(p)[1].lower() not in LANG_BY_EXT or SKIP_FILE.search(p):
             continue
         try:
-            text = read_text(p)
+            texts[p] = read_text(p)
         except OSError:
             continue
+    # where each type is declared, so a screen's handling inside its components is seen
+    declared = {}
+    for p, text in texts.items():
+        for name in re.findall(r"\b(?:struct|class|enum|fun|function|const)\s+([A-Z]\w+)", text):
+            declared.setdefault(name, p)
+    for p, text in texts.items():
         scanned += 1
         if not SCREEN_FILE.search(os.path.basename(p)) or not FETCH.search(text):
             continue
-        handled = {k: bool(rx.search(text)) for k, rx in HANDLES.items()}
-        rows.append({"file": p, "fetches": True, "handles": handled})
+        used = {declared[n] for n in set(re.findall(r"\b([A-Z]\w+)", text)) if n in declared and declared[n] != p}
+        context = text + "\n".join(texts[u] for u in used)
+        handled = {k: bool(rx.search(context)) for k, rx in HANDLES.items()}
+        rows.append({"file": p, "fetches": True, "handles": handled, "followed": sorted(used)})
         for st in ("error", "empty", "loading"):
             if not handled[st]:
                 findings.append(Finding(rule="F06", tier="F" if st != "loading" else "D",
@@ -88,7 +97,7 @@ def code(paths) -> dict:
     return {"tool": "states", "view": "code", "screens": rows,
             "coverage": {"files_scanned": scanned, "data_screens": len(rows)},
             "findings": [f.as_dict() for f in findings],
-            "limitations": ["keyword heuristics: handling in a shared widget or another file is not seen",
+            "limitations": ["keyword heuristics; component files declared in the scanned set are followed one level deep",
                             "only files whose name looks like a screen/view/page are evaluated"]}
 
 

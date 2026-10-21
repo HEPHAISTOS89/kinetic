@@ -216,6 +216,19 @@ class TestExport(unittest.TestCase):
                                capture_output=True, text=True)
             self.assertEqual(r.returncode, 0, r.stderr[-2000:])
 
+    @unittest.skipUnless(_have("xcrun"), "xcrun not available")
+    def test_swift_font_width_typechecks(self):
+        doc = kdl.parse_file(LUNE)
+        doc["system"]["type"]["scale"]["display"]["width"] = "condensed"
+        doc["system"]["type"]["families"]["numeric"] = "SF Pro Condensed"
+        p = os.path.join(self.tmp, "Width.swift")
+        with open(p, "w") as fh:
+            fh.write(export.export(doc, "swiftui"))
+        self.assertIn("width: .condensed", rd(p))
+        r = subprocess.run(["xcrun", "--sdk", "iphonesimulator", "swiftc", "-typecheck", "-target",
+                            "arm64-apple-ios17.0-simulator", p], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stderr[-2000:])
+
     @unittest.skipUnless(_have("tsc"), "tsc not available")
     def test_typescript_typechecks(self):
         shim = os.path.join(self.tmp, "rn-shim.d.ts")
@@ -333,6 +346,17 @@ class TestCLI(unittest.TestCase):
         self.assertEqual(self.run_cli("validate", "/nonexistent.kdl")[0], 2)
         code, out = self.run_cli("contrast", "#5C5249", "#F6F1EA", "--json")
         self.assertEqual(json.loads(out)["aa_body"], True)
+
+    def test_init_create_skeleton_has_every_required_section(self):
+        d = tempfile.mkdtemp()
+        try:
+            self.run_cli("init", d, "--stack", "swiftui", "--name", "Courant")
+            doc = kdl.parse_file(os.path.join(d, ".kinetic", "design.kdl"))
+            for section in validate.REQUIRED["create"]:
+                self.assertIn(section, doc, section)
+            self.assertEqual(doc["product"]["name"], "Courant")
+        finally:
+            shutil.rmtree(d)
 
     def test_init_does_not_overwrite(self):
         d = tempfile.mkdtemp()

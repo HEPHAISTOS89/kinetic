@@ -44,6 +44,10 @@ alternative and how it is verified (tests/).
 - Full AST linters (dart analyze, SwiftLint, detekt, ESLint): complementary;
   they check code correctness, Kinetic checks design decisions.
 
+## Invocation notes
+- The plugin path often contains spaces: always quote it (`"$KROOT/bin/kinetic" scan lib`).
+  In zsh, prefer an alias or `bash "$KROOT/bin/kinetic" …` over `K=…; "$K"` constructs inside `eval`.
+
 ## Configuration (`.kinetic/config.json`)
 ```json
 {"stack": "flutter", "platforms": ["ios", "android"], "grid": 4,

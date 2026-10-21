@@ -102,6 +102,16 @@ Pairing rules:
 - Check: the font supports the app's languages (accents, Cyrillic, CJK fallbacks)
   and has the weights you specify.
 
+## 8b. Width axes — the native tool for numbers
+SF Pro ships Condensed, Compressed and Expanded widths (SwiftUI
+`.fontWidth(.condensed)` / `Font.system(...).width(.condensed)`, iOS 16+).
+Condensed tabular numerals are the best mobile answer for big, changing
+figures in narrow columns (departures, timers, prices, scores): large without
+wrapping. Width is an axis of the same family, not a second family. In KDL:
+`width: condensed` on the style; `kinetic export` maps it to SwiftUI `.width`
+and CSS `font-stretch`; Flutter/Compose need a variable font with a `wdth` axis
+(`FontVariation('wdth', 75)`) or a dedicated condensed cut.
+
 ## 9. Large text and Dynamic Type (F04, F10)
 - Support the full range: iOS up to the accessibility sizes (AX1–AX5), Android
   font scale ≥ 2.0. Never lock scaling (F10).

@@ -147,7 +147,7 @@ system:
   type:
     families: {display: New York, text: SF Pro Text, numeric: SF Pro Rounded}
     scale:                           # size/line in pt (dp/sp), track in em
-      display: {size: 40, line: 44, weight: 300, track: -0.02, numerals: tabular}
+      display: {size: 40, line: 44, weight: 300, track: -0.02, numerals: tabular}   # optional width: condensed | compressed | expanded
       title:   {size: 22, line: 28, weight: 600, track: -0.01}
       body:    {size: 17, line: 24, weight: 400, track: 0}
       caption: {size: 13, line: 18, weight: 500, track: 0.01}
@@ -201,6 +201,11 @@ system:
     confirm: soft
     error: warning
 ```
+Data colors (transit lines, categories, chart series) are **not** roles and
+don't count against the accent budget: put them in `system.color.data`
+(`{T2: "#2E7D4F", M1: "#1F5FAF"}`), give each a text color that passes on it,
+and never reuse a status hue (red/amber/green) for data unless it means status.
+
 Required roles in both `light` and `dark`: `bg surface text text-2 border accent on-accent`.
 Checked contrast pairs (WCAG 2.x, plus APCA Lc reported): `text/bg ≥ 4.5`,
 `text/surface ≥ 4.5`, `text-2/bg ≥ 4.5`, `text-2/surface ≥ 4.5`,
@@ -242,6 +247,7 @@ screens:
       first-run: n/a: covered by onboarding
     motion:
       - id: numeral-enter
+        kind: signature               # feedback | transition | signature (only signature counts against the budget)
         trigger: screen appears
         change: numeral settles 8pt upward and fades in
         spring: $spring.gentle
@@ -256,6 +262,8 @@ Any component with both `fg` and `bg` color references gets a contrast check.
 Required screen states: `content loading empty error` (+ `offline` when
 `network: true`). Each is either described or `n/a: reason`.
 Each motion entry needs `trigger`, `change`, `spring` or `duration`, `reduce`.
+`kind` defaults to `transition`; the expression budget limits only `signature` moments.
+New screens: `kinetic states template <id> --block` prints a paste-ready block.
 
 ### `signature`
 ```yaml

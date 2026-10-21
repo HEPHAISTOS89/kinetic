@@ -42,13 +42,26 @@ reasoning — that is the point. Save its output to `.kinetic/critique.json`, th
 kinetic score --kdl .kinetic/design.kdl --code <paths> --judged .kinetic/critique.json
 ```
 
+### When you cannot launch the critic agent
+Self-critique is biased; reduce the bias, never hide it:
+1. Critique from the **renders only**, before re-reading your KDL or code.
+2. Judge against the rubric anchors; for each dimension write what a stranger would see in the render.
+3. Save `.kinetic/critique.json` with `"self_judged": true`. `kinetic score` then caps
+   the verdict at `ship-pending` (an independent critic must confirm).
+4. List what renders can't show in `unjudged` with a reason (`"motion: no recording"`,
+   `"typography: Dynamic Type not scaled by the renderer"`). A declared, reasoned
+   `unjudged` dimension doesn't block the gates; it turns `ship` into `ship-pending`.
+
 ## 5. Verdict and loop
 | Verdict | Meaning | Next |
 |---|---|---|
 | blocked | F(block) findings | fix integrity/function first |
 | rethink | product_fit ≤ 2, distinctiveness ≤ 2 or mean < 3 | go back to kinetic-direct; polish won't save it |
 | iterate | gates not met | fix the lowest judged dimensions and major D findings, re-render, re-judge |
-| ship | all gates pass | report |
+| ship-pending | gates pass, but self-judged or some dimensions declared unjudgeable | report what remains to verify (device, motion recording, independent critic) |
+| ship | all gates pass, independent critic, every dimension judged | report |
+Findings with `evidence: inferred` never gate: `kinetic score` lists them under
+"to confirm". Open the code, confirm or dismiss them, and say which.
 **Stop rule**: at most 3 iterate loops; if two consecutive loops don't raise
 the judged mean, stop and report the remaining gap honestly, with the
 critic's `biggest_lever`.

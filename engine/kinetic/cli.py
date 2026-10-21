@@ -136,7 +136,8 @@ def cmd_states(a):
         r = states.code(a.target)
         _out(r, a.json)
         return 0
-    print(states.template(a.target[0] if a.target else "new-screen", not a.no_network))
+    item = states.template(a.target[0] if a.target else "new-screen", not a.no_network)
+    print(("screens:\n" + item) if a.block else item)
     return 0
 
 
@@ -190,7 +191,7 @@ def cmd_svg(a):
 
 
 def cmd_init(a):
-    r = project.init(a.path, a.mode, a.stack, a.force)
+    r = project.init(a.path, a.mode, a.stack, a.force, a.name)
     _out(r, a.json, "\n".join([f"kinetic init — {r['root']} ({r['stack']}, {', '.join(r['platforms'])})"] +
                                [f"  created {p}" for p in r["created"]] + [f"  kept    {p}" for p in r["kept_existing"]] +
                                ["  next: fill .kinetic/design.kdl, then `kinetic validate .kinetic/design.kdl`"]))
@@ -260,6 +261,7 @@ def build_parser():
     s.add_argument("view", choices=["matrix", "code", "template"])
     s.add_argument("target", nargs="*")
     s.add_argument("--no-network", action="store_true")
+    s.add_argument("--block", action="store_true", help="template: include the `screens:` key")
     common(s, False)
     s.set_defaults(fn=cmd_states)
 
@@ -291,6 +293,7 @@ def build_parser():
     s.add_argument("path", nargs="?", default=".")
     s.add_argument("--mode", default="create", choices=sorted(validate.MODES))
     s.add_argument("--stack", choices=["flutter", "swiftui", "compose", "react-native", "web", "mixed"])
+    s.add_argument("--name", help="product name (default: folder name)")
     s.add_argument("--force", action="store_true")
     common(s, False)
     s.set_defaults(fn=cmd_init)

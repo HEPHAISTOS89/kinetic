@@ -588,7 +588,12 @@ class Validator:
             for k, mv in enumerate(mot if isinstance(mot, list) else []):
                 if not isinstance(mv, dict):
                     continue
-                motion_moments += 1
+                mkind = mv.get("kind", "transition")
+                if mkind not in ("feedback", "transition", "signature"):
+                    self.add("K18", "I", "minor", f"{base}.motion.{k}.kind", f"unknown motion kind {mkind!r}",
+                             "feedback | transition | signature", self.line(f"{base}.motion.{k}"))
+                if mkind == "signature":
+                    motion_moments += 1
                 mbase = f"{base}.motion.{k}"
                 for f in ("trigger", "change", "reduce"):
                     if not mv.get(f):
@@ -601,9 +606,11 @@ class Validator:
                     self.add("K13", "D", "major", f"{mbase}", f"motion `{mv.get('id', k)}` has no spring or duration",
                              "reference a system spring ($spring.x) or duration", self.line(mbase))
         budget = BUDGET.get(level, BUDGET[3])[2]
-        if motion_moments > budget * max(1, len(screens)) and level <= 3:
-            self.add("D18", "D", "minor", "screens", f"{motion_moments} motion moments for expression {level}",
-                     "animate what changes; keep the rest still", self.line("screens"))
+        if motion_moments > budget:
+            self.add("D18", "D", "minor", "screens",
+                     f"{motion_moments} signature motion moments exceed the budget ({budget}) for expression {level}",
+                     "keep signature motion for the moments that carry the spine; feedback and transitions don't count",
+                     self.line("screens"))
 
     def _resolve_color(self, ref: str, theme_roles: dict):
         m = REF.fullmatch(ref.strip())

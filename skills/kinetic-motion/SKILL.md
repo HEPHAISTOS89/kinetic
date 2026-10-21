@@ -17,7 +17,10 @@ Read `knowledge/motion.md`. Implementation details per stack: `knowledge/stacks/
    an action · follow the hand · direct attention · signature). No yes → no motion.
 3. **Personality** from the thesis (`system.motion.personality`) and 2–4
    springs + durations in KDL. One personality per product.
-4. **Spec every animation in KDL** (`screens[].motion`): `trigger`, `change`
+4. **Spec every animation in KDL** (`screens[].motion`) with its `kind`:
+   `feedback` (press, toggle, symbol swap), `transition` (state/screen change) or
+   `signature` (the spine made visible). Only `signature` counts against the
+   expression budget. Then: `trigger`, `change`
    (what moves, from where to where, amplitude), `spring` or `duration`,
    `haptic` if any, `reduce`, `interruptible`. The validator rejects incomplete specs.
 5. **Choreograph**: the meaningful element leads; others follow by 20–40ms or

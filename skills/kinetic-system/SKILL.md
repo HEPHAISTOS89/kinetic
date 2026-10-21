@@ -13,9 +13,9 @@ up fighting typography and radii fight density.
 ## Order (write each into KDL `system`, then `kinetic validate`)
 1. **Type** (`knowledge/typography.md`): families (system first on iOS), a
    5–8 step ramp anchored on body 17 (iOS) / 16 (Android), ratio from the
-   expression level, line heights, em tracking, numerals. Platform ramps:
+   expression level, line heights, em tracking, numerals, width (condensed numerals for dense figures, typography.md §8b). Platform ramps:
    `knowledge/platform-ios.md`, `knowledge/platform-android.md`.
-2. **Color** (`knowledge/color.md`): seed from brand or thesis →
+2. **Color** (`knowledge/color.md`; data colors such as transit lines or categories go in `system.color.data`, §8b): seed from brand or thesis →
    `kinetic palette "#seed" --kdl` → edit roles for atmosphere (warm/cool
    neutrals, accent restraint) → keep every pair passing. Dark theme designed:
    tonal surfaces, desaturated accent, near-white text.

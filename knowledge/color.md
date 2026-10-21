@@ -86,6 +86,16 @@ The violet→pink "AI gradient" with no product meaning is D01.
 - Data color: sequential ramps from one hue for magnitude; diverging (two hues
   through neutral) for above/below; categorical ≤ 6 hues with similar L.
 
+## 8b. Data colors are not accents
+Transit lines, categories, calendar colors and chart series are **data**: they
+come from the domain (a network's official line colors) or encode categories.
+- Keep them in `system.color.data`, outside the role set and the accent budget.
+- Each needs a foreground that passes on it (badge text) in both themes; dark mode may need a lifted variant.
+- Never let data hues collide with status: if a line is officially red, closures
+  still need an icon + word, not just "more red". Pick status hues that stay
+  distinguishable from the data palette (e.g. a vermilion danger next to a crimson line + icon).
+- With many data colors, the UI chrome must go quieter (neutral + one accent or no accent).
+
 ## 9. Brand colors
 - `brand.status: strict` → keep the exact brand hex for logo/brand moments;
   derive UI roles from it (the brand hex may fail as text — derive a darker

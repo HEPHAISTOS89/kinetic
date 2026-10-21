@@ -161,3 +161,13 @@ Pick the sector of the **riskiest moment**, not the most common one. A
 social fitness app that also takes payments needs fintech rigor on the payment
 screens and sport energy elsewhere. State this split in KDL `screens[].job`
 and keep the system shared.
+
+## Transit / timetables / departures
+- **Need**: in 1–2 seconds, walking, one hand: "when is my next departure, can I make it, is anything broken on my line?". Trust in the data's freshness matters as much as the data.
+- **Expression**: 1–3. Density medium. The map is *not* the canvas for departures (a walking rider doesn't need it); board/list first, map as a secondary action.
+- **Legitimate trust**: live vs timetable distinguished per departure; "updated hh:mm" always visible; offline = last board kept, clearly marked estimated; official line colors and names.
+- **Fabricated trust (refuse)**: fake "on time" when no realtime data exists; hiding staleness.
+- **Signature opportunities**: walk-aware minutes (only departures you can reach), condensed tabular numerals, mode shapes for line badges (shape + color, not color alone).
+- **Sector slop**: map-first home for a departures app; disruption banners for the whole network (filter to lines on screen); red line colors confused with closures; centered spinners on every refresh (keep the board, update in place).
+- **Critical states**: no realtime (timetable only), last departure / end of service, closure with alternative, stop moved, location denied (saved stops first), offline underground, stale data, first run with no saved stops, very long stop names.
+- **Colors**: line colors are data (color.md §8b); chrome neutral; status hues chosen to stay distinguishable from the network palette.

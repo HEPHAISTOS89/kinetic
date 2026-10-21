@@ -44,6 +44,16 @@ existing `.kinetic/design.kdl` → `kinetic validate` it and continue from it.
 | D2 screen / flow | redesign checkout, a new settings flow | think (short) → direct → states → system → motion → code → critique |
 | D3 product | new app, full redesign, design system | the full pipeline, KDL complete, critic loop |
 
+**Minimum reading per depth** (read more only when a decision needs it):
+| Depth | Always | Plus, per task |
+|---|---|---|
+| D0 | `knowledge/anti-slop.md` (F + D tables) | the stack file `knowledge/stacks/<stack>.md` §slop |
+| D1 | + `knowledge/states.md` §2, the stack file | `typography.md` / `color.md` / `iconography-svg.md` for the component's concern |
+| D2 | + module skills think, direct, states, system, craft, critique; `states.md`; `copy.md`; `platform-ios.md` or `platform-android.md` | `sectors.md` (your sector only), `directions.md` (skim the table, read 3 candidates), `motion.md` if anything moves |
+| D3 | everything relevant above + `exemplars.md`, `taste-rubric.md`, docs/KDL.md | — |
+Don't read the whole library "to be safe": the router, the module you are in
+and the files it names are enough.
+
 ## 2. The operating loop (D2–D3)
 1. **Understand** (`kinetic-think`): product truth, user moment, thesis,
    anti-thesis, spine, expression level, journeys. Write them to

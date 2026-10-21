@@ -99,11 +99,74 @@ thesis:
 expression:
   level: 3
   because: TODO stakes, frequency, density, brand freedom
-{audit}
+{audit}{create}
 premortem:
   - risk: TODO
     rule: TODO
     fix: TODO
+"""
+
+CREATE = """
+directions:
+  - id: A
+    name: TODO
+    axes: {structure: TODO, density: TODO, color: TODO, type: TODO, motion: TODO}
+    scores: {product_fit: 3, distinctiveness: 3, usability: 3, feasibility: 3, risk_of_slop: 3}
+    verdict: chosen
+    because: TODO
+  - id: B
+    name: TODO
+    axes: {structure: TODO, density: TODO, color: TODO, type: TODO, motion: TODO}
+    verdict: rejected
+    because: TODO
+  - id: C
+    name: TODO
+    axes: {structure: TODO, density: TODO, color: TODO, type: TODO, motion: TODO}
+    verdict: rejected
+    because: TODO
+
+journeys:
+  - id: TODO
+    steps:
+      - {screen: TODO, intent: TODO, risk: TODO}
+
+system:
+  type:
+    families: {display: TODO, text: TODO}
+    scale:
+      title: {size: 22, line: 28, weight: 600, track: -0.01}
+      body: {size: 17, line: 24, weight: 400, track: 0}
+      caption: {size: 13, line: 18, weight: 400, track: 0.01}
+    dynamic: true
+  color:
+    seed: "TODO run: kinetic palette <seed> --kdl"
+  space:
+    unit: 4
+    scale: {xs: 4, s: 8, m: 12, l: 16, xl: 24, 2xl: 32}
+  shape:
+    corner: continuous
+    radius: {s: 8, m: 12, l: 20, full: 999}
+  elevation:
+    strategy: tonal
+  icon:
+    family: TODO
+    style: outline
+    selected: fill
+  motion:
+    personality: TODO
+    springs:
+      settle: {response: 0.4, damping: 0.9}
+    durations: {quick: 150, standard: 250}
+    reduce: crossfade
+  haptics:
+    select: selection
+
+screens: []   # add screens with: kinetic states template <id> --block
+
+signature:
+  what: TODO
+  where: [TODO]
+  because: TODO
 """
 
 AUDIT = """
@@ -117,7 +180,8 @@ audit:
 """
 
 
-def init(path: str = ".", mode: str = "create", stack: str | None = None, force: bool = False) -> dict:
+def init(path: str = ".", mode: str = "create", stack: str | None = None, force: bool = False,
+         name: str | None = None) -> dict:
     path = os.path.abspath(path)
     kdir = os.path.join(path, ".kinetic")
     os.makedirs(kdir, exist_ok=True)
@@ -136,8 +200,11 @@ def init(path: str = ".", mode: str = "create", stack: str | None = None, force:
     if os.path.exists(kdl_path) and not force:
         kept.append(kdl_path)
     else:
-        text = SKELETON.format(mode=mode, name=os.path.basename(path), stack=stack, platforms=", ".join(plats),
-                               audit=AUDIT if mode in ("redesign", "improve", "audit", "code-to-design", "evolve") else "")
+        if stack in ("swiftui",):
+            plats = ["ios"]
+        text = SKELETON.format(mode=mode, name=name or os.path.basename(path), stack=stack, platforms=", ".join(plats),
+                               audit=AUDIT if mode in ("redesign", "improve", "audit", "code-to-design", "evolve") else "",
+                               create=CREATE if mode in ("create", "redesign") else "")
         with open(kdl_path, "w", encoding="utf-8") as fh:
             fh.write(text)
         created.append(kdl_path)

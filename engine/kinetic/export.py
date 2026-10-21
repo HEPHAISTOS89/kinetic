@@ -229,7 +229,14 @@ def to_flutter(doc, src="design.kdl") -> str:
 
 
 # ---------------------------------------------------------------- swiftui
-def _relative(size: float) -> str:
+IOS_STYLE_NAMES = {"largetitle": "largeTitle", "large-title": "largeTitle", "title": "title", "title2": "title2",
+                   "title3": "title3", "headline": "headline", "body": "body", "callout": "callout",
+                   "subheadline": "subheadline", "footnote": "footnote", "caption": "caption", "caption2": "caption2"}
+
+
+def _relative(size: float, name: str = "") -> str:
+    if name.lower() in IOS_STYLE_NAMES:
+        return IOS_STYLE_NAMES[name.lower()]
     for lim, name in ((34, "largeTitle"), (28, "title"), (22, "title2"), (20, "title3"), (17, "body"),
                       (16, "callout"), (15, "subheadline"), (13, "footnote"), (12, "caption")):
         if size >= lim:
@@ -245,6 +252,8 @@ def _swift_design(fam: str):
         return "serif", None
     if "mono" in f and f.startswith("sf"):
         return "monospaced", None
+    if re.match(r"^sf pro( (text|display))?( (condensed|compressed|expanded))?$", f):
+        return "default", None
     if not f or SYSTEM_FONTS.match(f):
         return "default", None
     return "default", fam
@@ -308,6 +317,7 @@ def to_swiftui(doc, src="design.kdl") -> str:
     L.append("struct KTextStyle {")
     L.append("    let size: CGFloat, line: CGFloat, weight: Font.Weight, tracking: CGFloat")
     L.append("    let relativeTo: Font.TextStyle, design: Font.Design, family: String?, tabular: Bool")
+    L.append("    var width: Font.Width = .standard")
     L.append("}\n")
     fams = _sys(doc, "type", "families", default={}) or {}
     L.append("enum KType {")
@@ -321,9 +331,14 @@ def to_swiftui(doc, src="design.kdl") -> str:
         fam = fams.get("display" if size >= 28 else "numeric" if st.get("numerals") == "tabular" and "numeric" in fams else "text") or fams.get("text")
         design, custom = _swift_design(fam)
         fam_s = f'"{custom}"' if custom else "nil"
+        width = str(st.get("width") or ("condensed" if "condensed" in str(fam).lower() else
+                                         "compressed" if "compressed" in str(fam).lower() else
+                                         "expanded" if "expanded" in str(fam).lower() else "standard"))
+        if width not in ("standard", "condensed", "compressed", "expanded"):
+            width = "standard"
         L.append(f"    static let {ident(name)} = KTextStyle(size: {size}, line: {line}, weight: .{wmap[_weight(st.get('weight'))]}, "
-                 f"tracking: {_num(st.get('track'))}, relativeTo: .{_relative(size)}, design: .{design}, family: {fam_s}, "
-                 f"tabular: {'true' if st.get('numerals') == 'tabular' else 'false'})")
+                 f"tracking: {_num(st.get('track'))}, relativeTo: .{_relative(size, str(name))}, design: .{design}, family: {fam_s}, "
+                 f"tabular: {'true' if st.get('numerals') == 'tabular' else 'false'}, width: .{width})")
     L.append("}\n")
     L.append("/// Applies a KDL type style with Dynamic Type scaling, em-based tracking and line height.")
     L.append("struct KTextModifier: ViewModifier {")
@@ -335,7 +350,7 @@ def to_swiftui(doc, src="design.kdl") -> str:
     L.append("    }")
     L.append("    private var font: Font {")
     L.append("        let base: Font = style.family.map { Font.custom($0, size: size).weight(style.weight) }")
-    L.append("            ?? .system(size: size, weight: style.weight, design: style.design)")
+    L.append("            ?? .system(size: size, weight: style.weight, design: style.design).width(style.width)")
     L.append("        return style.tabular ? base.monospacedDigit() : base")
     L.append("    }")
     L.append("    func body(content: Content) -> some View {")
@@ -554,6 +569,8 @@ def to_css(doc, src="design.kdl") -> str:
         fam = fams.get("display" if size >= 28 else "text") or fams.get("text") or "system-ui"
         stack = "system-ui, -apple-system, sans-serif" if SYSTEM_FONTS.match(str(fam)) else f"'{fam}', system-ui, sans-serif"
         num = "\n  font-variant-numeric: tabular-nums;" if st.get("numerals") == "tabular" else ""
+        if st.get("width") in ("condensed", "compressed", "expanded"):
+            num += "\n  font-stretch: " + {"condensed": "75%", "compressed": "62.5%", "expanded": "125%"}[st["width"]] + ";"
         L.append(f".k-{name} {{\n  font-family: {stack};\n  font-size: {round(size / 16, 4)}rem;\n"
                  f"  line-height: {round(_num(st.get('line'), size * 1.3) / size, 4)};\n  font-weight: {_weight(st.get('weight'))};\n"
                  f"  letter-spacing: {_num(st.get('track'))}em;{num}\n}}")

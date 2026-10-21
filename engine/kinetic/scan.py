@@ -198,6 +198,8 @@ EXTRACT = {
              _frac(m.group(1)), _frac(m.group(2)), _frac(m.group(3)))),
         ("color", r"(?:Color|UIColor)\(\s*hex\s*:\s*\"?#?(?:0x)?([0-9A-Fa-f]{6})", lambda m: "#" + m.group(1).upper()),
         ("color", r"(?:Color|UIColor)\(\s*\"#?([0-9A-Fa-f]{6})\"", lambda m: "#" + m.group(1).upper()),
+        ("color", r"(?:Color|UIColor)\([^)\n]*?\b(?:kLight|light|hex|rgb)\s*:\s*0x([0-9A-Fa-f]{6})", lambda m: "#" + m.group(1).upper()),
+        ("color", r"(?:Color|UIColor)\([^)\n]*?\b(?:kDark|dark)\s*:\s*0x([0-9A-Fa-f]{6})", lambda m: "#" + m.group(1).upper()),
         ("color", r"(?:Color\.|foregroundStyle\(\.|foregroundColor\(\.|tint\(\.|background\(\.|fill\(\.)\b(blue|purple|indigo|pink|red|orange|yellow|green|mint|teal|cyan|brown|gray|black|white)\b",
          lambda m: SWIFT_COLORS.get(m.group(1))),
         ("font_size", r"\.system\(\s*size\s*:\s*([\d.]+)", lambda m: _num(m.group(1))),
@@ -264,6 +266,7 @@ EXTRACT["tsx"] = [e for e in EXTRACT["tsx"] if e]
 # direct signals: (rule, tier, severity, evidence, regex, message, fix)
 SIG = {
     "flutter": [
+        ("D17", "D", "minor", "inferred", r"\bKSpace\.\w+\s*[-+]\s*\d+(?:\.\d+)?\b|\bKSpace\.\w+\s*/\s*\d", "spacing token arithmetic (often lands off the grid)", "use a scale step; add one to the scale if it is genuinely missing"),
         ("F02", "F", "major", "observed", r"\bon(?:Pressed|Tap|LongPress|Changed|Submitted)\s*:\s*\(\s*\w?\s*\)\s*(?:\{\s*\}|=>\s*\{\s*\})", "empty handler: the control looks active but does nothing", "wire the action; while loading/unavailable pass null so it renders disabled"),
         ("F10", "F", "block", "observed", r"TextScaler\.noScaling|textScaleFactor\s*:\s*1(?:\.0)?\b|TextScaler\.linear\(\s*1(?:\.0)?\s*\)", "user text size is locked", "support text scaling; reflow at large sizes (withClampedTextScaling only with a stated maximum ≥ 2.0)"),
         ("F05", "F", "major", "observed", r"MaterialTapTargetSize\.shrinkWrap", "tap target shrunk below 48dp", "keep the padded tap target; shrink the glyph instead"),
@@ -286,6 +289,8 @@ SIG = {
         ("D03", "D", "info", "observed", r"\bCard\(", "Card container", "cards for equivalent records only"),
     ],
     "swiftui": [
+        ("D17", "D", "minor", "inferred", r"\bKSpace\.\w+\s*[-+]\s*\d+(?:\.\d+)?\b|\bKSpace\.\w+\s*/\s*\d", "spacing token arithmetic (often lands off the grid)", "use a scale step; add one to the scale if it is genuinely missing"),
+        ("D29", "D", "info", "observed", r"\.frame\(\s*width\s*:\s*\d{3,}\s*,\s*height\s*:\s*\d{2,}", "literal frame size", "derive from content, tokens or the container"),
         ("F02", "F", "block", "observed", r"Button\(\s*\"[^\"]*\"\s*\)\s*\{\s*\}|action\s*:\s*\{\s*\}|Button\s*\{\s*\}\s*label", "empty button action", "wire the action or remove the control"),
         ("F10", "F", "block", "observed", r"\.dynamicTypeSize\(\s*\.(?:xSmall|small|medium|large|xLarge|xxLarge)\s*\)|\.custom\([^)]*fixedSize\s*:", "Dynamic Type locked", "use relativeTo:/text styles; restrict with a range only per view and with a reason"),
         ("D28", "D", "major", "observed", r"\.minimumScaleFactor\(", "text shrinks to fit", "reflow (ViewThatFits, wrapping) instead of shrinking"),

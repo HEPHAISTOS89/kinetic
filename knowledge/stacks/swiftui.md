@@ -197,3 +197,16 @@ Previews as a state matrix:
 ```
 
 Devices to cover: iPhone SE (375×667 pt, smallest current), iPhone 16 / 16 Pro, iPhone 16 Pro Max; light/dark; Large and AX3 text; Reduce Motion on (Settings → Accessibility → Motion).
+
+## Rendering for review (macOS `ImageRenderer` harnesses)
+Kinetic's A/B harness and quick reviews render SwiftUI to PNG on macOS. Know its limits so a blank render isn't mistaken for a broken screen:
+- `ScrollView`, `List` and navigation bars render **empty** with `ImageRenderer`; for review renders, put the content in a `VStack` behind a `#if os(macOS)`/gallery flag and keep the real `ScrollView`/`List`/`NavigationStack` for the app.
+- Dynamic Type does not scale (`@ScaledMetric`, text styles stay at Large): XXL evidence needs the iOS Simulator. A gallery entry that forces the accessibility *layout* branch is useful but must be labelled "layout only, text not scaled".
+- `ProgressView` may draw as a solid square; mark loading renders as approximate.
+- Dark mode: pass `.environment(\.colorScheme, .dark)` and render inside `NSAppearance(named: .darkAqua)!.performAsCurrentDrawingAppearance { }` so dynamic `NSColor`s resolve.
+
+## Locale-correct formatting
+`Date.formatted()` and `Measurement.formatted()` use `Locale.current`, not the SwiftUI `\.locale` environment. Read `@Environment(\.locale)` and pass it: `date.formatted(.dateTime.hour().minute().locale(locale))`, `distance.formatted(.measurement(width: .abbreviated, usage: .road).locale(locale))` (en_GB road distances use yards/miles; fr_FR uses metres). Previews should set `.environment(\.locale, Locale(identifier: "fr_FR"))` to test.
+
+## Font width
+`Font.system(size:weight:design:).width(.condensed)` (iOS 16+) or `.fontWidth(.condensed)` on Text. `kinetic export` emits it from KDL `width:`.
