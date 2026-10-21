@@ -1,0 +1,17 @@
+{
+  "description": "Kinetic continuous design lint: after an edit to a UI source file in a project that contains .kinetic/, report new F/D design findings for that file. Silent everywhere else.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I \"${CLAUDE_PLUGIN_ROOT}/hooks/post_edit.py\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

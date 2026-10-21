@@ -1,0 +1,226 @@
+# Lune — a complete KDL decision record (mode: create).
+# Read it as a worked example of how Kinetic thinks: every visual decision
+# below can be traced back to the moment in `product` and the line in `thesis`.
+kdl: 1
+mode: create
+
+product:
+  name: Lune
+  stack: flutter
+  platforms: [ios, android]
+  users: adults with irregular sleep who want to understand it, not optimise it
+  moment: in bed, lights off, half-awake, one hand, 20–60 seconds
+  frequency: daily
+  stakes: low
+  density: low
+  brand:
+    status: none
+    colors: []
+    fonts: []
+  facts:
+    - sleep data comes from HealthKit / Health Connect, synced locally
+    - users open it twice a day - at night to wind down, in the morning to look back
+  unknowns:
+    - whether a partner mode is planned (would change the home hierarchy)
+
+thesis:
+  statement: The app you open half-asleep that tells you how you slept without waking you up.
+  feel: [calm, held, unhurried]
+  never: [performance dashboard, gamified streaks, bright clinical white, sleep-score anxiety]
+  spine: the light goes down
+  spine_expressions:
+    layout: content sinks toward the bottom third as bedtime approaches - the thumb zone
+    color: palette shifts warmer and darker with the real clock; nothing pure white after 21:00
+    motion: everything slows and softens at night; no bounce, ever
+
+expression:
+  level: 2
+  because: low stakes but used in a fragile state at night; calm beats spectacle, identity lives in one numeral
+  factors: {stakes: low, frequency: daily, density: low, brand_freedom: high}
+
+directions:
+  - id: A
+    name: Night paper
+    axes: {structure: single-column narrative, density: airy, color: warm dark monochrome,
+           type: large light numerals with a quiet serif voice, motion: slow breath}
+    scores: {product_fit: 5, distinctiveness: 4, usability: 5, feasibility: 5, risk_of_slop: 1}
+    verdict: chosen
+    because: the half-asleep moment needs one glanceable number and a sentence of meaning, not charts
+  - id: B
+    name: Sky instrument
+    axes: {structure: dashboard of tiles, density: medium, color: cool blue night gradient,
+           type: grotesk with tabular data, motion: crisp snaps}
+    scores: {product_fit: 2, distinctiveness: 2, usability: 4, feasibility: 5, risk_of_slop: 4}
+    verdict: rejected
+    because: precise but cold; it is the performance dashboard named in thesis.never
+  - id: C
+    name: Soft garden
+    axes: {structure: illustrated scenes, density: low, color: pastel botanicals,
+           type: rounded friendly sans, motion: playful growth}
+    scores: {product_fit: 3, distinctiveness: 4, usability: 3, feasibility: 2, risk_of_slop: 4}
+    verdict: rejected
+    because: depends on illustration (out of v1 scope) and drifts into whimsy at 1 a.m.
+
+journeys:
+  - id: check-last-night
+    steps:
+      - {screen: tonight, intent: glance at last night on waking, risk: bright screen in a dark room}
+      - {screen: night, intent: understand why it was a bad night, risk: data without meaning}
+  - id: wind-down
+    steps:
+      - {screen: tonight, intent: see bedtime and set the alarm, risk: notification guilt}
+      - {screen: tonight, intent: put the phone down, risk: anything that invites scrolling}
+
+system:
+  type:
+    families: {display: New York, text: SF Pro Text, numeric: SF Pro Rounded}
+    scale:
+      display: {size: 40, line: 44, weight: 300, track: -0.02, numerals: tabular}
+      title:   {size: 22, line: 28, weight: 600, track: -0.01}
+      body:    {size: 17, line: 24, weight: 400, track: 0}
+      callout: {size: 15, line: 20, weight: 400, track: 0}
+      caption: {size: 13, line: 18, weight: 500, track: 0.01}
+    dynamic: true
+  color:
+    seed: "#C9A27E"
+    strategy: monochrome-warm
+    roles:
+      light:
+        bg: "#F6F1EA"
+        surface: "#FFFFFF"
+        text: "#1E1A16"
+        text-2: "#5C5249"
+        border: "#E4DAD0"
+        accent: "#8A5A2B"
+        on-accent: "#FFFFFF"
+        danger: "#B3261E"
+      dark:
+        bg: "#0F0D0B"
+        surface: "#1A1714"
+        text: "#EDE6DE"
+        text-2: "#A89C90"
+        border: "#2C2722"
+        accent: "#D9A877"
+        on-accent: "#1E1408"
+        danger: "#F2B8B5"
+  space:
+    unit: 4
+    scale: {xs: 4, s: 8, m: 12, l: 16, xl: 24, 2xl: 32, 3xl: 48}
+    margins: {compact: 20, regular: 24}
+  shape:
+    corner: continuous
+    radius: {s: 8, m: 14, l: 22, full: 999}
+  elevation:
+    strategy: tonal
+  icon:
+    family: sf-symbols
+    style: outline
+    selected: fill
+    sizes: [17, 22]
+    weight: regular
+  motion:
+    personality: unhurried, damped, never bouncy
+    springs:
+      gentle: {response: 0.55, damping: 1.0}
+      settle: {response: 0.4, damping: 0.9}
+    durations: {fade: 220, slow: 600}
+    reduce: crossfade
+  haptics:
+    select: selection
+    confirm: soft
+    error: warning
+
+screens:
+  - id: tonight
+    job: tell me at a glance whether last night was ok, and get out of the way
+    network: false
+    primary: last night's duration as a single numeral
+    secondary: one sentence that interprets it
+    reading_order: [numeral, interpretation, week strip, bedtime]
+    components:
+      - id: duration
+        kind: numeral
+        type: $type.display
+        fg: $color.text
+        bg: $color.bg
+      - id: interpretation
+        kind: text
+        type: $type.body
+        fg: $color.text-2
+        bg: $color.bg
+      - id: week-strip
+        kind: chart
+        role: compare tonight with the last 7 nights without numbers
+        env: {on: $color.surface, near: [interpretation], density: low}
+      - id: bedtime-button
+        kind: button
+        type: $type.callout
+        fg: $color.on-accent
+        bg: $color.accent
+        target: 48
+        variants: [default, pressed, disabled, loading]
+        haptic: $haptic.confirm
+    states:
+      content: numeral + interpretation + week strip; bedtime button in the thumb zone
+      loading: n/a - data is read locally and synchronously on open
+      empty: first night - "Your first night appears here tomorrow." No fake zeros, no placeholder chart
+      error: Health permission revoked - say what happened and offer one button to reconnect
+      overflow: Dynamic Type XXL - the numeral wraps hours and minutes onto two lines, never shrinks
+    motion:
+      - id: numeral-enter
+        trigger: screen appears after unlock
+        change: numeral settles 8pt upward while fading in; nothing else moves
+        spring: $spring.gentle
+        reduce: crossfade
+        interruptible: true
+
+  - id: night
+    job: explain one night in plain language
+    network: false
+    primary: the sentence that explains the night (e.g. "You woke three times after 4 a.m.")
+    secondary: a phase band showing when, not how much
+    reading_order: [explanation, phase band, details]
+    components:
+      - id: explanation
+        kind: text
+        type: $type.title
+        fg: $color.text
+        bg: $color.bg
+      - id: phase-band
+        kind: chart
+        role: when you were awake, light, deep - time on x, no y axis
+        env: {on: $color.bg, density: low}
+      - id: share
+        kind: icon-button
+        fg: $color.text-2
+        bg: $color.bg
+        target: 44
+        variants: [default, pressed, disabled]
+    states:
+      content: explanation + phase band + three details
+      loading: n/a - local data
+      empty: night with no data - "No sleep data for this night." and why it can happen
+      error: corrupted sample - show what is known, flag the gap in the band
+    motion:
+      - id: band-reveal
+        trigger: screen appears
+        change: band draws left to right once, 600ms
+        duration: $duration.slow
+        reduce: crossfade
+        interruptible: true
+
+signature:
+  what: the background tint follows the real clock between 20:00 and 02:00 - warmer and darker as night deepens
+  where: [tonight]
+  because: makes the spine (the light goes down) literal without adding a single decorative element
+
+premortem:
+  - risk: warm dark palette reads as generic "luxury" brown
+    rule: D14
+    fix: keep chroma low, no gold, let the numeral carry identity
+  - risk: week strip turns into a dashboard
+    rule: D04
+    fix: no numbers on the strip, no averages, no rings - only relative height
+  - risk: night mode too dim to read for low-vision users
+    rule: F03
+    fix: every text role passes 4.5:1 in both themes; validated by kinetic validate

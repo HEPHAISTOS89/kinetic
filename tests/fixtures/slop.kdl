@@ -1,0 +1,69 @@
+kdl: 1
+mode: create
+product:
+  name: FitPro
+  stack: flutter
+  platforms: [ios, android]
+  stakes: high
+thesis:
+  statement: A modern, clean and intuitive app
+  feel: [premium, modern]
+expression:
+  level: 5
+directions:
+  - id: A
+    axes: {structure: cards, density: medium, color: purple gradient, type: inter, motion: fade}
+    verdict: chosen
+  - id: B
+    axes: {structure: cards, density: medium, color: blue gradient, type: inter, motion: fade}
+    verdict: chosen
+system:
+  type:
+    families: {display: Poppins, text: Inter, numeric: Roboto Mono, accent: Playfair}
+    scale:
+      hero: {size: 120, line: 100, weight: 850, track: 2}
+      body: {size: 13, line: 30, weight: 400, track: -0.02}
+      tiny: {size: 9, line: 11, weight: 400}
+      small: {size: 9.5, line: 12}
+  color:
+    roles:
+      light:
+        bg: "#FFFFFF"
+        surface: "#FFFFFF"
+        text: "#999999"
+        text-2: "#BBBBBB"
+        border: "#EEEEEE"
+        accent: "#7C3AED"
+        on-accent: "#A78BFA"
+        pop: "#22C55E"
+        pop2: "#F97316"
+        pop3: "#06B6D4"
+  space:
+    unit: 4
+    scale: {a: 4, b: 13, c: 17, d: 23}
+  shape:
+    corner: circular
+    radius: {a: 4, b: 6, c: 10, d: 14, e: 22, f: 30}
+  motion:
+    springs:
+      boing: {response: 0.4, damping: 0.3}
+screens:
+  - id: home
+    network: true
+    components:
+      - id: cta
+        kind: button
+        fg: $color.on-accent
+        bg: $color.accent
+        target: 32
+      - id: fab
+        kind: icon-button
+        fg: $color.nope
+    states:
+      content: Good morning Sam, unlock your potential
+    motion:
+      - id: enter
+        trigger: appear
+signature:
+  what: confetti
+premortem: []
