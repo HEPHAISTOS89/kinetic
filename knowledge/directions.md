@@ -94,7 +94,7 @@ Compose `spring(dampingRatio, stiffness)` (stiffness ≈ (2π/response)²).
 ## 4. Quiet Native
 **Essence:** the platform itself, perfectly tuned. Invisible design that feels "of course".
 **Range:** 1. **Fits:** utilities, settings-heavy apps, productivity, enterprise. **Misfits:** brand-led consumer launches that need to be remembered.
-**Type:** system only: SF Pro with the platform Dynamic Type styles; Roboto Flex / the M3 type scale on Android. Ramp (iOS defaults): `largeTitle 34/41 700 0.01` · `title2 22/28 700 -0.01` · `headline 17/22 600 -0.02` · `body 17/22 400 -0.02` · `subheadline 15/20 400 -0.01` · `footnote 13/18 400 -0.01` · `caption 12/16 400 0`. Numerals: tabular in lists.
+**Type:** system only: SF Pro with the platform Dynamic Type styles; Roboto Flex / the M3 type scale on Android. Ramp (iOS defaults, size/line weight): `largeTitle 34/41 700` · `title2 22/28 700` · `headline 17/22 600` · `body 17/22 400` · `subheadline 15/20 400` · `footnote 13/18 400` · `caption 12/16 400`. Tracking: write `track: 0` in KDL — SF applies its own optical tracking per size (≈ +0.01em at 34pt, ≈ −0.025em at 17pt); adding it again doubles it. Numerals: tabular in lists.
 **Color (strategy: system neutrals + one chosen tint, never the default blue untouched, D30):**
 - light: bg `#F2F2F7` · surface `#FFFFFF` · text `#000000` · text-2 `#6C6C70` · border `#D8D8DD` · accent `#1F6F5C` · on-accent `#FFFFFF`
 - dark: bg `#000000` · surface `#1C1C1E` · text `#FFFFFF` · text-2 `#AEAEB2` · border `#38383A` · accent `#4FC3A6` · on-accent `#00261C`

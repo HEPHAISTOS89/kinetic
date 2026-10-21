@@ -71,6 +71,7 @@ REF_TARGETS = {
     "spring": ("system.motion.springs",),
     "duration": ("system.motion.durations",),
     "haptic": ("system.haptics",),
+    "data": ("system.color.data",),
 }
 
 
@@ -433,6 +434,7 @@ class Validator:
                              "keep it only if it comes from the brand or the thesis; say so in `because`",
                              self.line(f"system.color.roles.{theme}"))
                     break
+        self._check_data_colors(c.get("data"), roles)
         for rep in color.check_roles({k: v for k, v in roles.items() if isinstance(v, dict)}):
             if not rep["ok"]:
                 self.add("F03", "F", "block", f"system.color.roles.{rep['theme']}",
@@ -440,6 +442,46 @@ class Validator:
                          "adjust lightness of the foreground role; `kinetic contrast` shows passing values",
                          self.line(f"system.color.roles.{rep['theme']}"))
         self.contrast = color.check_roles({k: v for k, v in roles.items() if isinstance(v, dict)})
+
+    def _check_data_colors(self, data, roles):
+        """Data colors (transit lines, categories): text on them must pass; they must not mimic danger."""
+        if not isinstance(data, dict):
+            return
+        danger = [str(r.get("danger")) for r in roles.values() if isinstance(r, dict) and color.is_hex(str(r.get("danger")))]
+        for name, v in data.items():
+            path = f"system.color.data.{name}"
+            entries = []
+            if color.is_hex(str(v)):
+                entries.append(("fill", str(v), None))
+            elif isinstance(v, dict):
+                for fk, ok in (("fill", "on"), ("fill_dark", "on_dark")):
+                    if color.is_hex(str(v.get(fk))):
+                        entries.append((fk, str(v[fk]), str(v.get(ok)) if color.is_hex(str(v.get(ok))) else None))
+            else:
+                self.add("K08", "D", "minor", path, f"data color `{name}` must be a hex or {{fill, on}}",
+                         "{fill: \"#2E7D4F\", on: \"#FFFFFF\"}", self.line(path))
+                continue
+            for fk, fill, on in entries:
+                if on:
+                    ratio = color.wcag(on, fill)
+                    if ratio < 4.5:
+                        self.add("F03", "F", "block", path, f"`{name}` text {on} on {fill} = {ratio:.2f}:1 < 4.5:1",
+                                 "pick the passing text color (white or near-black) or adjust the fill", self.line(path))
+                else:
+                    best = max(("#FFFFFF", "#111111"), key=lambda t: color.wcag(t, fill))
+                    if color.wcag(best, fill) < 4.5:
+                        self.add("F03", "D", "major", path,
+                                 f"no readable label color on `{name}` {fill} (best {best} = {color.wcag(best, fill):.2f}:1)",
+                                 "badge text needs 4.5:1: adjust the fill or enlarge the label to ≥ 3:1 large-text use", self.line(path))
+                    else:
+                        self.add("K25", "I", "info", path, f"`{name}` has no `on` color; {best} passes ({color.wcag(best, fill):.1f}:1)",
+                                 f"declare `on: \"{best}\"` so the export carries it", self.line(path))
+                for d in danger:
+                    if color.delta_e_ok(fill, d) < 0.08:
+                        self.add("K26", "C", "minor", path, f"data color `{name}` {fill} is close to danger {d}",
+                                 "pair status with icon + word, or move the danger hue away from the data palette (color.md §8b)",
+                                 self.line(path))
+                        break
 
     def _check_space(self, sp):
         if not isinstance(sp, dict):
@@ -588,6 +630,10 @@ class Validator:
                         self.add("F05", "F", "block", f"{cbase}.target", f"`{sid}/{cid}` target {tgt} < 44",
                                  "expand the hit area; the glyph can stay small", cln)
                 fg, bg = cp.get("fg"), cp.get("bg")
+                if isinstance(fg, str) and fg.strip() == "$color.text-3" and kind in ("text", "numeral", "label", None) \
+                        and not cp.get("decorative"):
+                    self.add("K27", "D", "minor", f"{cbase}.fg", f"`{sid}/{cid}` uses tertiary text for content",
+                             "text-3 is for placeholders/disabled/decoration only; information needs text or text-2 (4.5:1)", cln)
                 if isinstance(fg, str) and isinstance(bg, str) and isinstance(roles, dict):
                     for theme, r in roles.items():
                         if not isinstance(r, dict):
@@ -633,6 +679,10 @@ class Validator:
 
     def _resolve_color(self, ref: str, theme_roles: dict):
         m = REF.fullmatch(ref.strip())
+        if m and m.group(1) == "data":
+            v = (_get(self.doc, "system.color.data") or {}).get(m.group(2))
+            v = v.get("fill") if isinstance(v, dict) else v
+            return v if color.is_hex(str(v)) else None
         if m and m.group(1) == "color":
             v = theme_roles.get(m.group(2))
             return v if color.is_hex(str(v)) else None

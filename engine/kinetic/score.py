@@ -180,6 +180,7 @@ def run(kdl_path=None, code_paths=None, judged_path=None, platforms=("ios", "and
         "formulas": formulas,
         "judged": {k: d["score"] for k, d in judged_scores.items()},
         "judged_mean": jmean,
+        "self_judged": bool(meta.get("self_judged")),
         "judged_problems": problems,
         "next": nxt,
         "to_confirm": [f"[{f['rule']}] {f.get('file', '')}: {f['message']}" for f in to_confirm],
@@ -198,7 +199,8 @@ def render(r: dict) -> str:
     for k, v in r["measured"].items():
         bar = "█" * int(round(v / 10)) + "·" * (10 - int(round(v / 10)))
         out.append(f"  {k:<20} {v:>3} {bar}   {r['formulas'].get(k, '')}")
-    out.append("judged (independent critic):" if r["judged"] else "judged: none")
+    out.append(("judged (SELF — not independent, cannot ship):" if r.get("self_judged") else "judged (independent critic):")
+               if r["judged"] else "judged: none")
     for k, v in r["judged"].items():
         out.append(f"  {k:<20} {v}/5  {'●' * v}{'○' * (5 - v)}")
     if r["judged_mean"] is not None:

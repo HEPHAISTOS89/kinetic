@@ -212,10 +212,15 @@ def derive_roles(seed: str, strategy: str = "neutral+accent", neutral_chroma: fl
     The neutrals borrow the seed hue at very low chroma (tinted greys), which is
     the single biggest difference between a designed palette and default greys."""
     L0, C0, H = hex_to_oklch(seed)
+    if C0 < 0.03 and strategy != "brand-led":
+        strategy = "monochrome"  # an ink/grey seed means a monochrome system, not a grey accent
     nc = neutral_chroma
     if nc is None:
         nc = {"monochrome": 0.018, "brand-led": 0.010}.get(strategy, 0.008)
     nh = H
+    if C0 < 0.03:  # achromatic seed: its hue is noise; neutrals follow the requested temperature
+        nh = 250.0
+        nc = min(nc, 0.006)
     if temperature == "warm":
         nh = 70.0
     elif temperature == "cool":
@@ -266,7 +271,10 @@ def derive_roles(seed: str, strategy: str = "neutral+accent", neutral_chroma: fl
     dtext = _solve_l(nh, nc, dbg, 13.0, 1, 0.90)
     dtext2 = _solve_l(nh, nc * 1.4, dsurface, 5.2, 1, 0.70)
     dtext3 = _solve_l(nh, nc * 1.2, dbg, 3.2, 1, 0.55)
-    dacc = _solve_l(H, C0 * 0.85, dbg, 5.0, 1, max(L0, 0.72))
+    if C0 < 0.03:  # monochrome: the accent is the ink itself, inverted for dark
+        dacc = _solve_l(nh, nc, dbg, 12.0, 1, 0.90)
+    else:
+        dacc = _solve_l(H, C0 * 0.85, dbg, 5.0, 1, max(L0, 0.72))
     d_on = _solve_l(H, 0.03, dacc, 4.6, -1, 0.22)
     roles["dark"] = {
         "bg": dbg, "surface": dsurface, "surface-2": dsurface2, "border": dborder,

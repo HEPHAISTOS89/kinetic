@@ -189,6 +189,8 @@ def init(path: str = ".", mode: str = "create", stack: str | None = None, force:
     kdir = os.path.join(path, ".kinetic")
     os.makedirs(kdir, exist_ok=True)
     detected, plats = detect_stack(path)
+    if stack and stack != detected:
+        plats = {"swiftui": ["ios"], "compose": ["android"], "web": ["web"]}.get(stack, ["ios", "android"])
     stack = stack or detected
     created, kept = [], []
     cfg_path = os.path.join(kdir, CONFIG)
@@ -203,8 +205,6 @@ def init(path: str = ".", mode: str = "create", stack: str | None = None, force:
     if os.path.exists(kdl_path) and not force:
         kept.append(kdl_path)
     else:
-        if stack in ("swiftui",):
-            plats = ["ios"]
         text = SKELETON.format(mode=mode, name=name or os.path.basename(path), stack=stack, platforms=", ".join(plats),
                                audit=AUDIT if mode in ("redesign", "improve", "audit", "code-to-design", "evolve") else "",
                                create=CREATE if mode in ("create", "redesign") else "")

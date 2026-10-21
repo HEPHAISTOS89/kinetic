@@ -29,6 +29,13 @@ LANG_BY_EXT = {
 }
 SKIP_FILE = re.compile(r"(\.g\.dart|\.freezed\.dart|\.mocks\.dart|\.min\.js|\.d\.ts|\.test\.|\.spec\.|_test\.dart|Tests?\.swift|Test\.kt)$")
 FIXTURE_PATH = re.compile(r"(fixture|mock|fake|preview|gallery|sample|demo|stub|storybook|golden)s?", re.I)
+_DATA_WORDS = ['line', 'route', 'lane', 'category', 'categories', 'series', 'chart', 'data', 'status', 'severity', 'danger', 'error', 'warning', 'success', 'delay', 'closure', 'closed', 'alert', 'info', 'badge', 'tag', 'mode', 'network']
+DATA_CONTEXT = re.compile(
+    r"(?:(?<![A-Za-z])(?:" + "|".join(_DATA_WORDS) + r")|(?<=[a-z])(?:" + "|".join(w.capitalize() for w in _DATA_WORDS) + r"))"
+    r"(?![a-z])")
+DATA_PATH = re.compile(r"(line|route|category|chart|data|status|severity)[_-]?colou?rs?", re.I)
+BLOCK_THEME = re.compile(r"(?i)(?:\b(?:let|var|val|const|final|static)\s+\w*?(dark|night|light)\w*\s*(?::[^=]+)?=\s*[\w.]*\s*[\(\{\[]\s*$"
+                         r"|case\s+\.(dark|light)\s*:|\b(dark|light)\w*\s*:\s*[\w.]*\(\s*$)")
 THEME_PATH = re.compile(r"(theme|tokens?|colou?rs?|palette|design[_-]?system|styles?|appearance|brand)", re.I)
 
 MATERIAL_COLORS = {
@@ -70,6 +77,8 @@ class Fact:
     line: int
     raw: str = ""
     themed: bool = False
+    context: str = ""
+    theme: str = "light"
 
 
 @dataclass
@@ -405,6 +414,13 @@ class Scanner:
         fs.fixture = bool(FIXTURE_PATH.search(os.path.basename(path)))
         themed = self.is_theme(path)
         lines = list(_code_lines(text))
+        themes, current = {}, "light"
+        for no, line in lines:  # which theme block each line belongs to (`static let dark = Palette(`, `case .dark:`)
+            m = BLOCK_THEME.search(line)
+            if m:
+                word = next(g for g in m.groups() if g)
+                current = "dark" if word.lower() in ("dark", "night") else "light"
+            themes[no] = current
         for kind, rx, conv in EXTRACT.get(lang, []):
             cre = re.compile(rx)
             for no, line in lines:
@@ -418,7 +434,14 @@ class Scanner:
                     except (ValueError, TypeError, ZeroDivisionError):
                         v = None
                     if v is not None:
-                        fs.facts.append(Fact(kind, v, path, no, m.group(0)[:80], themed))
+                        th = themes.get(no, "light")
+                        if kind == "color":
+                            hx = str(v)[1:7]
+                            if re.search(rf"(?i)\b(?:k?dark\w*)\s*[:=]\s*[^,)]*?{hx}", line):
+                                th = "dark"
+                            elif re.search(rf"(?i)\b(?:k?light\w*)\s*[:=]\s*[^,)]*?{hx}", line):
+                                th = "light"
+                        fs.facts.append(Fact(kind, v, path, no, m.group(0)[:80], themed, line.strip()[:200], th))
         for rule, tier, sev, ev, rx, msg, fix in SIG.get(lang, []):
             cre = re.compile(rx)
             for no, line in lines:
@@ -687,22 +710,35 @@ class Scanner:
                                     message=f"{raw_sizes} literal font sizes vs {styled} semantic text-style uses",
                                     fix="route text through theme styles so Dynamic Type and consistency follow"))
         # colors
-        uniq = []
-        for f in by_kind["color"]:
-            h = str(f.value)[:7]
-            if not color.is_hex(h):
-                continue
-            if all(color.delta_e_ok(h, u) > 0.02 for u in uniq):
-                uniq.append(h)
-        neutrals = [h for h in uniq if color.hex_to_oklch(h)[1] < 0.03]
+        def dedupe(hexes):
+            out = []
+            for h in hexes:
+                if color.is_hex(h) and all(color.delta_e_ok(h, u) > 0.02 for u in out):
+                    out.append(h)
+            return out
+
+        def is_data(f):
+            return bool(DATA_PATH.search(os.path.basename(f.file)) or DATA_CONTEXT.search(f.context))
+
+        def is_dark(f):
+            return f.theme == "dark"
+
+        ui_colors = [f for f in by_kind["color"] if not is_data(f)]
+        uniq = dedupe([str(f.value)[:7] for f in by_kind["color"]])
+        light_n = [h for h in dedupe([str(f.value)[:7] for f in ui_colors if not is_dark(f)]) if color.hex_to_oklch(h)[1] < 0.03]
+        dark_n = [h for h in dedupe([str(f.value)[:7] for f in ui_colors if is_dark(f)]) if color.hex_to_oklch(h)[1] < 0.03]
+        neutrals = dedupe(light_n + dark_n)
         hues = Counter(color.hue_family(color.hex_to_oklch(h)[2], color.hex_to_oklch(h)[1])
-                       for h in uniq if color.hex_to_oklch(h)[1] >= 0.06)
-        # light + dark themes each legitimately hold ~6 neutrals; status/data hues are legitimate roles
-        if len(neutrals) > 6:
-            findings.append(Finding(rule="D13", tier="D", severity="major" if len(neutrals) > 12 else "minor",
+                       for h in dedupe([str(f.value)[:7] for f in ui_colors]) if color.hex_to_oklch(h)[1] >= 0.06)
+        data_hues = len(uniq) - len(dedupe([str(f.value)[:7] for f in ui_colors]))
+        # each theme legitimately holds ~6–8 neutral roles; status/data hues are separate, legitimate roles
+        worst = max(len(light_n), len(dark_n))
+        if worst > 8:
+            findings.append(Finding(rule="D13", tier="D", severity="major" if worst > 11 else "minor",
                                     evidence="derived", file="", line=0,
-                                    message=f"{len(neutrals)} distinct neutrals across all themes: {', '.join(neutrals[:10])}",
-                                    fix="one neutral ramp per theme (≈6 roles each), tinted from the seed; roles, not values"))
+                                    message=f"{worst} distinct neutrals in one theme (light {len(light_n)}, dark {len(dark_n)}): "
+                                            f"{', '.join((light_n if len(light_n) >= len(dark_n) else dark_n)[:10])}",
+                                    fix="one neutral ramp per theme (≈6–8 roles), tinted from the seed; roles, not values"))
         if len(hues) > 3:
             findings.append(Finding(rule="D13", tier="D", severity="major" if len(hues) > 5 else "minor",
                                     evidence="derived", file="", line=0,
@@ -787,6 +823,8 @@ class Scanner:
         summary = {
             "colors": [color.describe(h) for h in uniq[:40]],
             "neutral_count": len(neutrals),
+            "neutrals_per_theme": {"light": len(light_n), "dark": len(dark_n)},
+            "data_or_status_colors": data_hues,
             "hue_families": dict(hues),
             "font_sizes": dict(sorted(sizes.items())),
             "text_styles": dict(Counter(f.value for f in by_kind["text_style"])),
@@ -813,7 +851,8 @@ class Scanner:
                          "skipped": dict(skipped), "unknown": unknown},
             "summary": summary,
             "findings": [f.as_dict() for f in findings],
-            "facts": [{"kind": f.kind, "value": f.value, "file": f.file, "line": f.line, "themed": f.themed}
+            "facts": [{"kind": f.kind, "value": f.value, "file": f.file, "line": f.line, "themed": f.themed,
+                       "data": f.kind == "color" and is_data(f)}
                       for f in facts if f.kind != "animation"],
             "limitations": [
                 "lexical scan: no AST; values built at runtime or behind helpers are not seen",

@@ -72,6 +72,24 @@ def _roles(doc):
     return names, light, dark
 
 
+def _data(doc):
+    """[(name, fill_light, on_light, fill_dark, on_dark)] from system.color.data."""
+    out = []
+    for name, v in ((((doc.get("system") or {}).get("color") or {}).get("data")) or {}).items():
+        if isinstance(v, dict):
+            fill = v.get("fill")
+            on = v.get("on")
+            fd, od = v.get("fill_dark") or fill, v.get("on_dark") or on
+        else:
+            fill, on, fd, od = v, None, v, None
+        if not color.is_hex(str(fill)):
+            continue
+        on = on if color.is_hex(str(on)) else _on(_hex(fill))
+        od = od if color.is_hex(str(od)) else _on(_hex(fd))
+        out.append((str(name), _hex(fill), _hex(on), _hex(fd), _hex(od)))
+    return out
+
+
 def _sys(doc, *path, default=None):
     cur = doc.get("system") or {}
     for p in path:
@@ -141,6 +159,14 @@ def to_flutter(doc, src="design.kdl") -> str:
     L.append("    if (other is! KColors) return this;")
     L.append("    return KColors(" + ", ".join(f"{i}: Color.lerp({i}, other.{i}, t)!" for _, i in fields) + ");")
     L.append("  }\n}\n")
+    data = _data(doc)
+    if data:
+        L.append("/// Data colors (lines, categories): not roles, not accents. `on` = label color on the fill.")
+        L.append("abstract final class KData {")
+        for n, f, o, fd, od in data:
+            L.append(f"  static Color {ident(n)}(Brightness b) => b == Brightness.dark ? const Color(0xFF{fd[1:]}) : const Color(0xFF{f[1:]});")
+            L.append(f"  static Color {ident(n)}On(Brightness b) => b == Brightness.dark ? const Color(0xFF{od[1:]}) : const Color(0xFF{o[1:]});")
+        L.append("}\n")
     space = _sys(doc, "space", "scale", default={}) or {}
     L.append("abstract final class KSpace {")
     for k, v in space.items():
@@ -272,6 +298,10 @@ def to_swiftui(doc, src="design.kdl") -> str:
     for n in names:
         lh, dh = _hex(light.get(n, dark.get(n))), _hex(dark.get(n, light.get(n)))
         L.append(f"    static let k{ident(n, 'pascal')} = Color(kLight: 0x{lh[1:]}, kDark: 0x{dh[1:]})")
+    for n, f, o, fd, od in _data(doc):
+        L.append(f"    /// data color `{n}` (not a role, not an accent)")
+        L.append(f"    static let kData{ident(n, 'pascal')} = Color(kLight: 0x{f[1:]}, kDark: 0x{fd[1:]})")
+        L.append(f"    static let kData{ident(n, 'pascal')}On = Color(kLight: 0x{o[1:]}, kDark: 0x{od[1:]})")
     L.append("")
     L.append("    init(kLight: UInt32, kDark: UInt32) {")
     L.append("        #if canImport(UIKit)")
@@ -432,6 +462,14 @@ def to_compose(doc, src="design.kdl", package="app.design") -> str:
         L.append(f"val K{tname}Colors = KColors(" + ", ".join(
             f"{ident(n)} = Color(0xFF{_hex(r.get(n, light.get(n)))[1:]})" for n in names) + ")")
     L.append("\nval LocalKColors = staticCompositionLocalOf { KLightColors }\n")
+    data = _data(doc)
+    if data:
+        L.append("/** Data colors (lines, categories): not roles, not accents. */")
+        L.append("object KData {")
+        for n, f, o, fd, od in data:
+            L.append(f"    fun {ident(n)}(dark: Boolean) = if (dark) Color(0xFF{fd[1:]}) else Color(0xFF{f[1:]})")
+            L.append(f"    fun {ident(n)}On(dark: Boolean) = if (dark) Color(0xFF{od[1:]}) else Color(0xFF{o[1:]})")
+        L.append("}\n")
 
     def scheme(fn, r, var):
         args = [f"primary = {var}.{ident('accent')}", f"onPrimary = {var}.{ident('on-accent')}",
@@ -498,6 +536,13 @@ def to_rn(doc, src="design.kdl") -> str:
             L.append(f"  {ident(n)}: '{_hex(r.get(n, light.get(n)))}',")
         L.append("} as const;\n")
     L.append("export const palette = { light, dark } as const;\n")
+    data = _data(doc)
+    if data:
+        L.append("/** Data colors (lines, categories): not roles, not accents. */")
+        L.append("export const dataColors = {")
+        for n, f, o, fd, od in data:
+            L.append(f"  {ident(n)}: {{ light: {{ fill: '{f}', on: '{o}' }}, dark: {{ fill: '{fd}', on: '{od}' }} }},")
+        L.append("} as const;\n")
     L.append("export const space = {")
     for k, v in (_sys(doc, "space", "scale", default={}) or {}).items():
         L.append(f"  {ident(k)}: {v},")
@@ -545,6 +590,9 @@ def to_css(doc, src="design.kdl") -> str:
     L = [f"/* {HEADER.format(src=src)} */", ":root {", "  color-scheme: light dark;"]
     for n in names:
         L.append(f"  --k-{n}: {_hex(light.get(n, dark.get(n)))};")
+    for n, f, o, fd, od in _data(doc):
+        L.append(f"  --k-data-{n}: {f};")
+        L.append(f"  --k-data-{n}-on: {o};")
     for k, v in (_sys(doc, "space", "scale", default={}) or {}).items():
         L.append(f"  --k-space-{k}: {v}px;")
     for k, v in (_sys(doc, "shape", "radius", default={}) or {}).items():

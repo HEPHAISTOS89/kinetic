@@ -106,6 +106,19 @@ class TestValidate(unittest.TestCase):
         expected = {"F03", "F05", "F06", "F08", "K01", "K04", "K05", "K06", "K09", "D12", "D15", "D17", "D19", "K03", "D22"}
         self.assertTrue(expected <= rules(r), expected - rules(r))
 
+    def test_data_colors(self):
+        base = rd(LUNE)
+        doc = base.replace('  space:\n    unit: 4', '  space:\n    unit: 4', 1)
+        txt = base.replace("    strategy: monochrome-warm\n", "    strategy: monochrome-warm\n    data:\n      T2: {fill: \"#2E7D4F\", on: \"#FFFFFF\"}\n      M1: {fill: \"#FFD400\", on: \"#FFFFFF\"}\n      B3: \"#B5261C\"\n", 1)
+        r = validate.validate_text(txt)
+        msgs = [(f["rule"], f.get("path", "")) for f in r["findings"]]
+        self.assertIn(("F03", "system.color.data.M1"), msgs)       # white on yellow fails
+        self.assertIn(("K26", "system.color.data.B3"), msgs)       # too close to danger
+        self.assertNotIn(("F03", "system.color.data.T2"), msgs)
+        d = kdl.parse(txt)
+        for st in export.STACKS:
+            self.assertIn("2E7D4F", export.export(d, st).upper(), st)
+
     def test_todo_and_syntax(self):
         r = validate.validate_text("kdl: 1\nmode: audit\nproduct:\n  name: x\n  users: TODO who\n  moment: m\naudit:\n  keep: [a]\n")
         self.assertIn("K02", rules(r))
