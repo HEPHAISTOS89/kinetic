@@ -17,6 +17,7 @@ names. Review like a jeweller: one property at a time, across the whole screen.
 4. **Radii** — ≤ 4 radii; nested corners follow `inner = outer − padding`; continuous corners on iOS.
 5. **Hairlines** — 1 physical pixel (`1 / scale`) for separators on retina, in the `border` role, inset to the text edge on iOS lists.
 6. **Type details** — tabular numerals where values change or align; units smaller/lighter; no orphan words in titles; no truncated critical text; title vs sentence case consistent.
+6b. **Say it once** — each status/fact appears once where it can be acted on, with one consistent term (D32).
 7. **Color discipline** — accent only where it means "act / yours"; tertiary text never carries needed information; status colors only for status.
 8. **Icons** — one family, weight matched to adjacent text weight, optical size per text style (17pt body → 17–20pt glyph), filled = selected only.
 9. **Media** — consistent aspect ratios; focal point safe in every crop; scrims (≥ 4.5:1 for text) instead of text-shadow; placeholders the same size as the media.

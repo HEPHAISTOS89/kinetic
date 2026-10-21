@@ -68,6 +68,7 @@ render/critic can decide; **kdl** = `kinetic validate` checks the decision recor
 | D28 | **Layout patches** — `FittedBox`, `minimumScaleFactor`, `adjustsFontSizeToFitWidth`, ellipsis on critical text | APIs present | Reflow the layout; give critical text the space it needs | auto |
 | D29 | **Mockup sizes in code** — `width: 375`, `height: 812`, fixed screen-sized frames | literal device dimensions | Constraints and flexible layout; safe-area-aware | auto |
 | D31 | **Legend-dependent encoding** — meaning carried by size/color/position that needs a legend, coach tip or onboarding to be understood | a legend line or first-run tip explaining a visual rule | Put the meaning in the element itself (a word, an icon + word, a clear boundary): if it needs a legend, it isn't designed yet | judge |
+| D32 | **Status echo** — one fact said in 3+ places (header pill, banner, card footnote, row badge), each in different words | the same status in several components of one screen | Say it once, where it can be acted on; elsewhere at most a quiet marker using the *same* term | judge |
 | D30 | **Default theme untouched** — stock Material purple / iOS default blue with no decision | `Colors.deepPurple`, `seedColor: Colors.purple`, unmodified template | Make the palette a decision from the thesis | auto |
 
 ## C — conditional (judge against thesis and level)

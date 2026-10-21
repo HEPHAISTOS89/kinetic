@@ -13,7 +13,7 @@ the user at 200% text size, the subway with no signal.
 | **empty — first use** | why is it empty and what's the first step? | explain the value, one primary action; no fake data |
 | **empty — no results** | what was searched, how to widen it? | echo the query, suggest an alternative, offer to clear filters |
 | **empty — cleared** | did the user finish? | acknowledge (inbox zero) proportionally |
-| **error — recoverable** | what happened, what can I do? | plain cause + one recovery action (retry, edit, reconnect); keep user input |
+| **error — recoverable** | what happened, what can I do? | plain cause + one recovery action (retry, edit, reconnect); keep user input. When the error concerns one object (an expense that didn't sync, a message that failed), **show that object** — pinned or highlighted with its action — rather than a banner that describes it while the object is scrolled away |
 | **error — blocking** | what is unavailable and when will it be back? | say what still works; never a dead end without a way back |
 | **offline** | what still works, when does it sync? | cached content readable; actions queued and shown as pending; banner, not modal |
 | **partial** | some data loaded, some failed | show what you have, mark the gap |
@@ -58,6 +58,13 @@ Example:
   env: {on: $color.surface, near: [total, legal-note], zone: bottom thumb, keyboard: stays above, density: low}
 ```
 
+## 3b. Direction-aware actions
+The same control must not serve opposite situations. If the user owes, the
+action is to pay ("Pay Priya", prominent); if they are owed, it is to record
+("Record payment", quiet; never "Remind" in social money). Same for
+following/followed, sent/received, late/early: the state decides the verb and
+the weight.
+
 ## 4. Edge cases to design on purpose
 - **Text**: the longest name in the dataset, German/French (+30–40% length), Arabic/Hebrew (RTL mirroring), emoji in user names, 1-character names.
 - **Numbers**: 0, 1 (singular), 1,000,000+, negative, decimals, currencies with different symbol positions, missing values (show "—", not 0).
@@ -66,6 +73,13 @@ Example:
 - **Lists**: 0, 1, 2, 500 items; pagination end; pull-to-refresh while loading.
 - **System**: dark mode, increased contrast, bold text, reduce motion, reduce transparency, 200% text, VoiceOver/TalkBack order, small phone (SE), large phone, keyboard open, split view/foldable.
 - **Interruption**: phone call, app backgrounded mid-flow, process death (state restoration), double tap on submit.
+
+## 4b. Fixtures that add up
+Gallery and preview data are evidence: a precise product is judged on its
+numbers. Derive totals from the fixture items (balances from expenses, counts
+from lists) instead of hard-coding them, keep cross-screen facts consistent
+(a flag in one state must exist in the others), and include long names, large
+amounts (−€1,240.00) and a second locale (de_DE "38,40 €").
 
 ## 5. Copy per state
 See copy.md. Errors name the cause and the recovery ("Couldn't send — no
