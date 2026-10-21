@@ -34,43 +34,40 @@ Limits: N = 1 brief, one model, one critic; macOS `ImageRenderer` cannot show
 Dynamic Type scaling (XXL needs the iOS Simulator); a blind critic is still a
 model. Treat a result as evidence about this brief, not a universal ranking.
 
-## 4. Results so far (four blind A/B rounds, four briefs, five comparisons, twelve critic reads)
-| Round | Brief | Stack | Arms | Critics | Pooled judged mean (baseline / Kinetic) | Measured findings (baseline / Kinetic) |
-|---|---|---|---|---|---|---|
-| 1 | Courant (transit) | SwiftUI | model vs Kinetic v1.0 | 2 | 3.67 / 3.78 | 3 major / 0 |
-| 2 | Courant (transit) | SwiftUI | model vs Kinetic v1.1 | 2 | 3.78 / 3.56 | 3 major / 0 |
-| 3 | Tally (shared money) | SwiftUI | model + critic vs Kinetic v1.3 + Kinetic critic | 2 | 3.83 / 3.83 | 1 F + 6 D / 0 |
-| 4a | Prise (bouldering gym) | Flutter | model vs Kinetic v1.4 | 3 | 4.26 / 4.22 | 5 F (reduce-motion, 4 empty handlers) + 6 D / 1 minor |
-| 4b | Petit Jour (daycare, French UI) | React Native | model vs Kinetic v1.4 | 3 | 3.81 / 3.96 | 1 F (reduce-motion) + 8 D / 0 |
+## 4. Results so far (six blind rounds, eight briefs, 30 critic reads)
+| Round | Brief | Stack | Arms | Critics | Judged mean (baseline / Kinetic) | Clean (baseline / Kinetic) | Verdicts |
+|---|---|---|---|---|---|---|---|
+| 1 | Courant (transit) | SwiftUI | model vs v1.0 | 2 | 3.67 / 3.78 | — | split |
+| 2 | Courant (transit) | SwiftUI | model vs v1.1 | 2 | 3.78 / 3.56 | — | split |
+| 3 | Tally (shared money) | SwiftUI | model + critic vs v1.3 + critic | 2 | 3.83 / 3.83 | — | split |
+| 4a | Prise (bouldering gym) | Flutter | model vs v1.4 | 3 | 4.26 / 4.22 | — | K slight, tie, A slight |
+| 4b | Petit Jour (daycare, FR) | React Native | model vs v1.4 | 3 | 3.81 / 3.96 | — | K slight, tie, tie |
+| 5a | Prise (re-run) | Flutter | same baseline vs v1.5 | 3 | 4.04 / 4.22 | — | K slight ×3 |
+| 5b | Petit Jour (re-run) | React Native | same baseline vs v1.5 | 3 | 3.74 / 4.11 | — | K clear ×3 |
+| 6a | Officine (pharmacy) — fresh | Flutter | model vs v1.6 | 3 | **4.00 / 3.44** | 4.0 / 3.0 | A clear ×3 |
+| 6b | The Rialto (cinema) — fresh | React Native | model vs v1.6 | 3 | **4.11 / 3.74** | 3.7 / 2.7 | A clear ×2, A slight |
 
-Round 4 verdicts: Prise — Kinetic slight, tie, baseline slight; Petit Jour — Kinetic slight, tie, tie.
-Per dimension, the six critics agreed completely (round-4 means, baseline → Kinetic):
-- **Kinetic ahead**: anticipation (Prise 4.0 → 5.0, Petit Jour 3.7 → 4.7: loading, unreachable server,
-  queued offline actions, true XXL, an in-session mode), native fidelity (3.0 → 4.0 on both: platform
-  chrome rendered per OS), product fit on Prise (4.0 → 5.0), layout craft on Petit Jour.
-- **Baseline ahead**: distinctiveness in **6 of 6** reads (Prise 5.0 → 4.0, Petit Jour 4.0 → 3.0),
-  hierarchy on Prise (a display-size verdict sentence, "Busy, not packed.", over a numeral), and the
-  frightening moment on Petit Jour (fever alert as an event with the missed call and the number).
-
-Honest reading:
-- On blind judged design quality, Kinetic **matches** a strong frontier model (pooled over the 12 reads:
-  baseline 3.90, Kinetic 3.91); it does not beat it. Every gap is inside critic variance.
-- The **trade is stable across 4 briefs and 3 stacks**: Kinetic is more complete, more native and more
-  rigorous; the bare model is more distinctive. The v1.4 identity floor ("at least one ownable element")
-  did **not** close the gap. Round 4 shows why: the winning designs build a drawn *vocabulary* from the
-  domain's real material (holds, tape, tally marks, pegboard; moon/sun/house per child state) and use it in
-  place of generic parts, where Kinetic asked for one signature detail. v1.5 rewrites the rule accordingly
-  (kinetic-direct §4b: domain vocabulary, ownable-hero gate) and adds verdict-first heroes, high-stakes
-  moment rules and craft checks — **not yet re-measured**.
-- Measured rigor: the baselines shipped real defects in every round (3 major D findings in rounds 1–2,
-  no reduce-motion path in rounds 3 and 4, four `onTap: () {}` handlers in round 4); Kinetic arms shipped none. Caveat unchanged: the engine is
-  Kinetic's own and the arms could run it, so this gap is partly by construction.
-- Self-critique calibration improved: round-4 self-judged means were within 0.1 of the critics' (4.11 vs
-  4.22; 4.0 vs 3.96), but self-judged distinctiveness was still +1 on Petit Jour. `ship` still requires an
-  independent critic.
-- The round-4 arms also found 20 engine/knowledge issues (false positives on data palettes and theme
-  accessors, an RN export that failed strict TypeScript, no place for accepted exceptions…); all fixed
-  in v1.5 with regression tests.
-
-Next evaluation step: re-run two briefs with v1.5 against the same baselines (renders already archived)
-to test the vocabulary rule on distinctiveness specifically, with ≥ 3 critics.
+Honest reading, round by round:
+- **Rounds 1–4**: Kinetic matched a strong frontier model (pooled 3.90 / 3.91). Stable trade: Kinetic more
+  complete, native and rigorous; the bare model more distinctive (6/6 reads in round 4).
+- **Round 5 (v1.5, the identity-as-vocabulary rule)**: Kinetic won all 6 reads (pooled 4.17 / 3.89) and
+  closed the identity gap on Petit Jour (3 → 4). **Caveat**: same briefs as round 4, and v1.5's knowledge
+  was written after seeing them (brief-specific examples were neutralised before the run; a few traces
+  remained). Encouraging, not proof.
+- **Round 6 (v1.6, directions dealt from a library)** — the clean test on fresh briefs — Kinetic **lost all
+  6 reads** (pooled 3.59 / 4.06; cleanness 2.85 / 3.83). It tied or led on distinctiveness (4.0 / 3.83) and
+  anticipation, and lost on typography, colour, layout craft and calm. Cause, from the critics' evidence:
+  the dealt slots were adopted whole and fought the briefs — a cool navy for "a warm local shop" and
+  "a warm cinephile cinema", engraved 9pt capitals, a ruled line under every line of text, staggered
+  two-up cards, a permanent CTA competing with each state's action. The bare model chose warm paper,
+  serif voices and one loud object per screen — exactly what those briefs asked for. Kinetic's
+  self-judgment was 0.5 too high.
+- What v1.7 changes because of it: directions are **authored first** from the thesis, the deal supplies
+  two **challengers** (tone-weighted, redrawn when they contradict the thesis), priors are spent only as
+  defaults, decorative faces need the brief's world, ruled engines rule between entries, a measured
+  **clarity** gate (`kinetic clarity`: words, lines, sizes, quiet space, loud colour areas — it ranks round
+  6's pair the way the critics did), and the **studio**: three directors, a rival, an editor and a
+  three-critic panel in separate contexts. Measured next in round 7 against the bare model *and*
+  ui-ux-pro-max.
+- Measured rigor still holds: baselines keep shipping engine-detectable defects; Kinetic arms ship none
+  (caveat: Kinetic's own engine).

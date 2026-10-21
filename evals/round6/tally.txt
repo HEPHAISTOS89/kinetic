@@ -1,0 +1,18 @@
+== flutter
+  A: mean 4.00  per critic [4, 4, 4]
+     clean 4.00
+     produ 4.00  hiera 4.00  disti 4.00  typog 4.00  color 4.00  layou 4.00  nativ 3.00  antic 4.00  copy 5.00
+  K: mean 3.44  per critic [3.44, 3.44, 3.44]
+     clean 3.00
+     produ 4.00  hiera 3.00  disti 4.00  typog 3.00  color 3.00  layou 3.00  nativ 3.00  antic 4.00  copy 4.00
+  verdicts: [('c1', 'A', 'clear'), ('c2', 'A', 'clear'), ('c3', 'A', 'clear')]
+== rn
+  A: mean 4.11  per critic [4, 4.11, 4.22]
+     clean 3.67
+     produ 4.00  hiera 4.00  disti 3.67  typog 4.00  color 4.33  layou 4.00  nativ 4.00  antic 4.00  copy 5.00
+  K: mean 3.74  per critic [3.56, 3.67, 4]
+     clean 2.67
+     produ 4.00  hiera 4.00  disti 4.00  typog 3.00  color 3.00  layou 3.33  nativ 3.33  antic 4.67  copy 4.33
+  verdicts: [('c1', 'A', 'clear'), ('c2', 'A', 'clear'), ('c3', 'A', 'slight')]
+pooled A: 4.06  distinctiveness 3.83
+pooled K: 3.59  distinctiveness 4.00
