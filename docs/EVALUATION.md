@@ -33,3 +33,23 @@ Protocol used for v1 (`evals/ab-courant/`):
 Limits: N = 1 brief, one model, one critic; macOS `ImageRenderer` cannot show
 Dynamic Type scaling (XXL needs the iOS Simulator); a blind critic is still a
 model. Treat a result as evidence about this brief, not a universal ranking.
+
+## 4. Results so far (three blind A/B rounds, six independent critics)
+| Round | Brief | Arms | Pooled judged mean (baseline / Kinetic) | Measured findings (baseline / Kinetic) |
+|---|---|---|---|---|
+| 1 | Courant (transit) | model vs Kinetic v1.0 | 3.67 / 3.78 | 3 major / 0 |
+| 2 | Courant (transit) | model vs Kinetic v1.1 | 3.78 / 3.56 | 3 major / 0 |
+| 3 | Tally (shared money) | model + critic vs Kinetic v1.3 + Kinetic critic | 3.83 / 3.83 | 1 F + 6 D / 0 |
+
+Honest reading:
+- On blind judged design quality, Kinetic currently **matches** a strong frontier model; it does not beat it.
+  Differences are within critic variance: in two of three rounds the two critics picked different winners.
+- Kinetic **robustly** wins on what the engine measures (system coherence, grid, contrast, reduce-motion,
+  state coverage: 0 findings in every round) and on copy/tone faithful to the brief.
+- Its recurring weakness was identity, traced to our own guidance favouring quiet system typography; fixed in v1.4
+  but **not yet re-measured**.
+- Self-critique was more lenient than independent critics every time (+0.3 to +0.6): `ship` therefore requires an
+  independent critic.
+- Each round's arm feedback produced concrete engine and knowledge fixes (logged in each round's folder).
+
+Next evaluation step: ≥3 new briefs across sectors and stacks, ≥3 critics each, to separate signal from variance.

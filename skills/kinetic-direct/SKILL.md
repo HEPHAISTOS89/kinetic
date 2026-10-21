@@ -57,6 +57,15 @@ rejected direction (it is evidence of judgment and helps the user disagree).
 
 Hybrid is allowed only as "A with B's structure" etc., stated explicitly.
 
+## 4b. Identity floor (all expression levels)
+The expression level sets the **volume** of identity, never its presence. Every
+product needs at least one ownable element in the first viewport of its main
+screen: a voiced display or numeral treatment, a motif tied to the name or the
+spine, or a signature component. Run the swap test on the chosen direction
+before building — if renaming the app breaks nothing, add the voice now. (A/B
+evidence: quiet level-2 Kinetic designs lost "distinctiveness" to bolder
+baselines in rounds 2 and 3.)
+
 ## 5. The signature detail
 One memorable decision derived from the spine that improves understanding or
 feeling — a hero numeral, a time-aware tint, a gesture that matches the

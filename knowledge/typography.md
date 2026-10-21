@@ -78,10 +78,15 @@ small text wants *air* — the most common slop is the reverse.
   (proximity: the heading belongs to what follows).
 
 ## 8. Choosing typefaces
-**Start with the system.** On iOS, SF Pro (+ SF Pro Rounded, New York, SF Mono)
-is optically tuned, supports Dynamic Type for free and reads native. It is
-very often the premium choice, not the lazy one (C01). Custom type earns its
-place when the thesis needs a voice the system cannot give.
+**System text, owned voice.** On iOS, SF Pro (+ SF Pro Rounded, New York, SF Mono)
+is optically tuned, supports Dynamic Type for free and reads native — use it for
+text. But "SF everywhere" fails the swap test: blind critics marked all-SF
+designs "competent template" three rounds in a row, and preferred designs with
+**one voiced element**: a New York display title, a tuned hero numeral (superscript
+currency, dimmed decimals, condensed or rounded figures), or a product motif in
+type. The pattern that wins: system text + one display/numeral voice chosen from
+the thesis. Custom families earn their place only when the system can't give
+that voice.
 
 Free, high-quality families and what they are for:
 | Role | Families | Notes |

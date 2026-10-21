@@ -22,6 +22,11 @@ trust state, not a page label. A 34pt large title there costs the primary
 element its place (blind critics penalised exactly this). Use large titles for
 browse/list hubs; use a compact contextual header for glance screens.
 
+**Secondary blocks stay compact.** A chart or list that supports the primary
+answer uses single-line rows (label, inline bar, value ≈ 44pt), so the action
+and the first content item stay in the first viewport. Two-line rows for a
+secondary chart pushed "Settle up" and "Recent" below the fold in the A/B tests.
+
 ## 2. Spacing scale (4pt grid)
 Use a named scale and nothing else (D17):
 

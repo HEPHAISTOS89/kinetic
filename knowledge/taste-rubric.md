@@ -25,8 +25,16 @@ Most first drafts are 2–3. Don't grade on effort; grade the artefact.
 ## Gates (engine-enforced in `kinetic score`)
 - Any F(block) finding → **blocked**, whatever the judged scores.
 - product_fit ≤ 2 or distinctiveness ≤ 2 or mean < 3 → **rethink** (direction problem, not polish).
-- **ship** requires: all 10 dimensions judged, mean ≥ 4.0, none < 3, product_fit ≥ 4, all measured scores ≥ 70.
+- **ship** requires: an independent critic, every dimension judged, mean ≥ 4.0, none < 3, product_fit ≥ 4, all measured scores ≥ 70.
+- **ship-pending**: the same gates, but self-judged or with dimensions declared unjudgeable (with a reason) — verify before shipping.
+- A judgment older than the current renders/code cannot decide (re-judge).
 - Otherwise **iterate**, fixing the lowest dimensions first.
+
+## Known critic variance
+Independent blind critics disagree: across three A/B rounds the two critics
+picked different winners in two rounds, with means within ±0.25. Treat a
+difference under ~0.3 between two designs as a tie, use at least two critics for
+decisions, and act on what they *agree* on rather than on either verdict.
 
 ## How to judge (critic procedure)
 1. Read the thesis, expression level and chosen direction in KDL first; judge

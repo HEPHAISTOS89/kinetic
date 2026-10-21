@@ -1,0 +1,324 @@
+# Tally — home screen. Kinetic decision record (mode: create, depth D2).
+kdl: 1
+mode: create
+
+product:
+  name: Tally
+  stack: swiftui
+  platforms: [ios]
+  users: 2-5 flatmates in their twenties and thirties sharing groceries, rent, bills and a cleaner; friends first, accountants never
+  moment: |
+    A) just paid at the till or walked out of the shop, bags in one hand, phone in the other, 5-10 seconds to log it before forgetting.
+    B) once or twice a month on the sofa or at the kitchen table, 1-2 minutes, checking who owes whom and settling up, sometimes with the others in the room.
+  frequency: daily
+  stakes: medium
+  density: medium
+  brand:
+    status: none
+    colors: []
+    fonts: []
+  facts:
+    - members have names and avatars or initials; one of them is the current user
+    - expenses carry payer, amount in EUR, split, date and category
+    - each member has a net balance; the app computes the simplest set of transfers
+    - expenses added offline are queued; a sync can fail; two people can edit the same expense
+    - a user can belong to several flats
+  unknowns:
+    - whether settling up moves real money (payment links) or only records a payment made elsewhere - designed as record-only, the label says so
+    - whether members can see each other’s per-expense shares (assumed yes - the flat is one shared ledger)
+
+requirements:
+  - {id: R1, need: "log an expense in seconds and one-handed from the home screen", priority: must, above_fold: true, element: add-expense}
+  - {id: R2, need: "see my own position - owed, owing or even - at a glance", priority: must, above_fold: true, element: position}
+  - {id: R3, need: see every member’s net balance, priority: must, above_fold: true, element: even-line}
+  - {id: R4, need: see the simplest set of transfers and start settling up, priority: must, above_fold: false, element: transfers}
+  - {id: R5, need: "recent expenses with payer, amount EUR, split, date and category", priority: must, above_fold: false, element: recent}
+  - {id: R6, need: queued offline expenses visibly pending, priority: must}
+  - {id: R7, need: sync failure explained with a recovery, priority: must}
+  - {id: R8, need: edit conflicts surfaced with a way to resolve, priority: must}
+  - {id: R9, need: switch between flats, priority: must}
+  - {id: R10, need: members shown with names and initials, priority: must}
+  - {id: R11, need: "feel fair, precise and calm - never like a debt collector", priority: must}
+
+thesis:
+  statement: The flat’s shared tally you open in the checkout queue to log a receipt one-handed, and that shows where everyone stands as distance from even, never as debts to chase.
+  feel: [even-handed, exact, unhurried]
+  never: [debt collector, red-and-green scoreboard, banking dashboard, nagging reminders, gamified streaks]
+  spine: back to even
+  spine_expressions:
+    layout: every balance is drawn from one central zero line - owing leans left, getting back leans right - and settling returns everyone to the line
+    color: owing and getting back wear the same neutral ink (same fact, two sides); the single petrol accent means only "yours / act here"; no red or green on money
+    motion: values glide back toward the zero line with a critically damped spring; nothing jumps, nothing celebrates a debt paid
+
+expression:
+  level: 2
+  because: money between friends is medium stakes and used daily in a hurry; identity lives in one signature (the even line) and the copy, not in chrome
+  factors: {stakes: medium, frequency: daily, density: medium, brand_freedom: high}
+
+directions:
+  - id: A
+    name: Even-line ledger
+    axes: {structure: "single-column hub - position, even line, transfers, recent - with a docked add bar", density: balanced, color: warm paper neutrals with one petrol accent, type: SF Pro with SF Pro Rounded tabular numerals, motion: native calm critically damped}
+    scores: {product_fit: 5, distinctiveness: 4, usability: 5, feasibility: 5, risk_of_slop: 2}
+    verdict: chosen
+    because: answers both moments on one screen - the add bar sits under the thumb for the queue, the even line answers who owes whom without a debt list - and its signature makes fairness visible
+  - id: B
+    name: Fridge note
+    axes: {structure: one written sentence that states the settle plan with a ledger below, density: airy, color: cream paper with an ink-red accent, type: New York serif display over SF text, motion: unhurried page-like fades}
+    scores: {product_fit: 3, distinctiveness: 4, usability: 3, feasibility: 4, risk_of_slop: 2}
+    verdict: rejected
+    because: warm and human, but a sentence is slow to scan in a queue, becomes unreadable with 5 people and 4 transfers, and serif figures lose precision
+  - id: C
+    name: Shared table
+    axes: {structure: canvas of flatmate tokens around a table with arrows for who pays whom, density: low, color: dominant per-person pastel colors, type: rounded friendly display, motion: lively springy tokens}
+    scores: {product_fit: 2, distinctiveness: 4, usability: 2, feasibility: 2, risk_of_slop: 3}
+    verdict: rejected
+    because: the arrow graph tangles at 5 people, the playful tone trivialises rent, and logging an expense gets pushed off the first screen
+
+journeys:
+  - id: log-in-the-queue
+    steps:
+      - {screen: home, intent: open the app and hit Add expense with the thumb, risk: the button is out of reach or behind a menu}
+      - {screen: add-sheet, intent: type the amount and save with the default split, risk: too many fields before saving}
+      - {screen: home, intent: see the row appear and my position update, risk: no signal in the shop - the entry must queue visibly and never fail}
+  - id: settle-up-sunday
+    steps:
+      - {screen: home, intent: see where everyone stands and how few payments would even it out, risk: reads as an accusation - red or overdue language}
+      - {screen: settle-sheet, intent: record that I paid Lea, risk: unclear whether money actually moved}
+      - {screen: home, intent: see the bars return to the even line, risk: the flat looks unbalanced until others sync}
+  - id: fix-a-sync-problem
+    steps:
+      - {screen: home, intent: notice that my entry didn’t reach the others, risk: silent failure - flatmates see a different balance}
+      - {screen: home, intent: retry or review a conflicting edit from the thumb zone, risk: losing my edit}
+
+system:
+  type:
+    families: {display: SF Pro Rounded, text: SF Pro}
+    scale:
+      display: {size: 40, line: 44, weight: 600, track: -0.01, numerals: tabular}
+      title: {size: 22, line: 28, weight: 600, track: 0}
+      section: {size: 20, line: 25, weight: 600, track: 0}
+      headline: {size: 17, line: 22, weight: 600, track: 0}
+      body: {size: 17, line: 22, weight: 400, track: 0}
+      subheadline: {size: 15, line: 20, weight: 400, track: 0}
+      footnote: {size: 13, line: 18, weight: 400, track: 0}
+      caption: {size: 12, line: 16, weight: 500, track: 0.01}
+    dynamic: true
+  color:
+    seed: "#17656A"
+    strategy: neutral+accent
+    roles:
+      light:
+        bg: "#F7F5F1"
+        surface: "#FFFFFF"
+        surface-2: "#EFEBE5"
+        border: "#E3DED6"
+        text: "#1F1C18"
+        text-2: "#625C54"
+        text-3: "#8F8A82"
+        accent: "#17656A"
+        on-accent: "#FFFFFF"
+        action: "#17656A"
+        on-action: "#FFFFFF"
+        accent-soft: "#DDEDEA"
+        warning: "#8A5A00"
+        warning-soft: "#F5EAD6"
+        danger: "#B3261E"
+        focus: "#17656A"
+      dark:
+        bg: "#131210"
+        surface: "#1D1B18"
+        surface-2: "#282622"
+        border: "#34312C"
+        text: "#ECE8E1"
+        text-2: "#B0A99F"
+        text-3: "#7F796F"
+        accent: "#6CC0BB"
+        on-accent: "#062321"
+        action: "#2E7C78"
+        on-action: "#FFFFFF"
+        accent-soft: "#173734"
+        warning: "#E3AD52"
+        warning-soft: "#352A17"
+        danger: "#F2B8B5"
+        focus: "#6CC0BB"
+    data:
+      # flatmate avatar fills carry initials; `bar` is a graphic (no label, ≥3:1 vs bg); the axis uses $color.text-3
+      sand: {light: "#EADFCF", dark: "#3B3329", on: "#1F1C18", on_dark: "#ECE8E1"}
+      sage: {light: "#D7E5DA", dark: "#2C3A30", on: "#1F1C18", on_dark: "#ECE8E1"}
+      sky: {light: "#D8E2EE", dark: "#2B3442", on: "#1F1C18", on_dark: "#ECE8E1"}
+      rose: {light: "#EFDCDC", dark: "#3E2D2E", on: "#1F1C18", on_dark: "#ECE8E1"}
+      lilac: {light: "#E2DCEC", dark: "#352F40", on: "#1F1C18", on_dark: "#ECE8E1"}
+      ochre: {light: "#EFE3C2", dark: "#3D3522", on: "#1F1C18", on_dark: "#ECE8E1"}
+      bar: {light: "#8C857A", dark: "#6F695F"}
+  space:
+    unit: 4
+    scale: {xs: 4, s: 8, m: 12, l: 16, xl: 24, 2xl: 32, 3xl: 48}
+    margins: {compact: 20, regular: 24}
+  shape:
+    corner: continuous
+    radius: {s: 8, m: 12, l: 16, full: 999}
+  elevation:
+    strategy: tonal
+  icon:
+    family: sf-symbols
+    style: outline
+    selected: fill
+    sizes: [15, 17, 20]
+    weight: regular
+  motion:
+    personality: native calm, critically damped - values glide, never bounce
+    springs:
+      press: {response: 0.25, damping: 1.0}
+      settle: {response: 0.45, damping: 1.0}
+      insert: {response: 0.35, damping: 0.95}
+    durations: {fade: 150, notice: 220}
+    reduce: crossfade
+  haptics:
+    select: selection
+    saved: success
+    retry: soft
+    problem: warning
+
+screens:
+  - id: home
+    job: get me to "Add expense" in one tap, and tell me - and everyone - how far each of us is from even
+    serves: [R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11]
+    thumb: [add-expense, dock notice action (retry / review / undo), mark-paid]
+    network: true
+    primary: my distance from even as one rounded tabular numeral with words (to get back / to put in / all square)
+    secondary: the even line - every flatmate on one continuous zero axis, full-width bars, one term per direction
+    reading_order: [position, even-line, add-expense, transfers, recent]
+    components:
+      - id: flat-switcher
+        kind: button
+        type: $type.headline
+        fg: $color.text
+        bg: $color.bg
+        target: 44
+        variants: [default, pressed, disabled]
+        env: {on: $color.bg, near: [flatmates-button], zone: navigation bar - stays reachable when scrolled, changes: long flat names truncate in the bar (system behaviour) and show in full in the sheet}
+      - id: flatmates-button
+        kind: icon-button
+        fg: $color.accent
+        bg: $color.bg
+        target: 44
+        variants: [default, pressed, disabled]
+      - id: position
+        kind: numeral
+        type: $type.display
+        fg: $color.text
+        bg: $color.bg
+        env: {on: $color.bg, near: [even-line], changes: "amounts up to €99,999.99 on one line at default size"}
+      - id: even-line
+        kind: chart
+        role: "per flatmate one text line (name left; amount + 'to get back' or 'to put in' right) over a full-width bar track whose zero is the content centre; one continuous axis labelled 'even'; nothing printed for zero"
+        fg: $color.text
+        bg: $color.bg
+        env: {on: $color.bg, near: [position, transfers], density: medium, changes: "one layout at every name length and text size - only the text line wraps"}
+      - id: mark-paid
+        kind: button
+        type: $type.subheadline
+        fg: $color.accent
+        bg: $color.accent-soft
+        target: 44
+        variants: [default, pressed, disabled]
+        haptic: $haptic.select
+      - id: expense-row
+        kind: row
+        type: $type.body
+        fg: $color.text
+        bg: $color.surface
+        target: 60
+        variants: [default, pressed, disabled, waiting, not-synced, conflict]
+      - id: add-expense
+        kind: button
+        type: $type.headline
+        fg: $color.on-action
+        bg: $color.action
+        target: 52
+        variants: [default, pressed, disabled]
+        haptic: $haptic.select
+        env: {on: $color.bg, near: [dock-notice], zone: bottom thumb, keyboard: n/a - opens a sheet, changes: a notice stacks 12pt above it and never covers it}
+      - id: dock-notice
+        kind: button
+        type: $type.subheadline
+        fg: $color.text
+        bg: $color.warning-soft
+        target: 44
+        variants: [default, pressed, disabled, loading]
+        haptic: $haptic.retry
+        env: {on: $color.bg, near: [add-expense], zone: bottom thumb}
+    states:
+      content: "nav bar: flat name + chevron (sheet) and flatmates; first row '4 flatmates · up to date'; position; the even line; the fewest payments (yours first) each with Mark paid; recent expenses as two-line rows; Add expense docked above the home indicator"
+      loading: "first open of a newly joined flat only (local-first otherwise): one message in the sync row ('fetching expenses…'); position, even line and rows are still placeholders in the known layout; Add expense stays enabled"
+      empty: "new flat: 'Nothing shared yet - everyone starts even', every flatmate as a dot on the line, the pending invite; the guidance sits in the dock right above Add expense"
+      error: "sync failed: each fact said once - the dock says 'Groceries isn’t synced' with the cause and Retry; the row says 'Not synced'; the hero adds 'includes 1 expense not synced'; the sync row stays neutral ('last synced 18:31')"
+      offline: "dock: 'Offline - 2 expenses waiting to sync'; rows say 'Waiting to sync'; the hero says it includes them; sync row neutral; adding still works"
+      partial: "conflict: Mia and you edited the same expense; the row says 'Mia edited this too'; the dock offers Review; balances use the synced version until you choose"
+      stale: n/a: local-first - shown values are the device’s own ledger; the sync row always says when it last synced
+      first-run: covered by empty (a new flat with members and no expenses)
+      overflow: "5 flatmates, double-barrelled names, €1,840.00 rent, a long German flat name: the even line keeps one layout (only its text line wraps); place names join titles with a non-breaking dot so a line never starts with '·'; amounts never truncate"
+      success: "after saving, the new row is highlighted in accent-soft and the dock says 'Added Groceries · €46.80 - You paid · 4 ways · you get back €35.10' with Undo for 5 s; the position rolls to the new value"
+      cleared: "everyone even after settling: 'All square' with the date it happened; every flatmate is a dot on the line and nothing else is printed; transfers disappear; no confetti"
+    motion:
+      - id: press
+        kind: feedback
+        trigger: finger down on add-expense, mark-paid, dock action
+        change: scale 0.97 and opacity 0.85
+        spring: $spring.press
+        reduce: keep-feedback-only
+        interruptible: true
+      - id: row-insert
+        kind: transition
+        trigger: an expense is saved locally
+        change: row height opens from 0, content fades in with an 8pt rise; accent-soft highlight fades out over 2 s
+        spring: $spring.insert
+        haptic: $haptic.saved
+        reduce: crossfade
+        interruptible: true
+      - id: back-to-even
+        kind: signature
+        trigger: a balance changes (expense saved, payment marked paid, sync merged)
+        change: each bar glides along its track to the new length and amounts roll digit by digit; when the flat settles every bar retracts into a dot on the axis
+        spring: $spring.settle
+        reduce: crossfade
+        interruptible: true
+      - id: notice
+        kind: transition
+        trigger: sync state changes (offline, not synced, conflict, back online)
+        change: dock notice rises 8pt and fades in above Add expense; leaves faster (75%)
+        duration: $duration.notice
+        reduce: crossfade
+        interruptible: true
+
+signature:
+  what: "the even line - one continuous zero axis labelled 'even' at the centre of the content; under each flatmate's name a full-width track where the bar leans left (to put in) or right (to get back) in the same neutral ink (≥3:1), yours thicker and in petrol; when the flat settles every bar glides back into a dot on the line"
+  where: [home]
+  because: makes the spine (back to even) literal and fair - owing and being owed are drawn as the same fact from two sides, with no red, no green and no debt list
+
+premortem:
+  - risk: "'owes' on every row reads as a debt list - the thing the thesis forbids (independent critic, v1)"
+    rule: F07
+    fix: "one term per direction for everyone, you included: 'to put in' / 'to get back'; nothing printed for zero"
+  - risk: the signature drawn too small and faint to be the second voice (v1 bars max 52pt in 2.4:1 ink)
+    rule: D31
+    fix: full-width tracks (up to ~170pt per side), bar ink ≥3:1, one continuous axis, same layout at every size
+  - risk: position + even line + transfers + list read as a fintech dashboard of widgets
+    rule: D04
+    fix: the even line has no axes, ticks or totals - only the zero line, words and amounts; one surface for transfers, one for recent; the hero sits on the background
+  - risk: owing drifts into red/green scoreboard language and the app feels like a debt collector
+    rule: F07
+    fix: no status hues on money; direction is carried by words (owes / gets back), sign-free amounts and bar side; copy never says overdue, remind or chase
+  - risk: every section wears the same rounded white card
+    rule: D03
+    fix: only two grouped surfaces (transfers, recent); position and even line sit directly on the warm background
+  - risk: sync problems become alarming red banners or alerts that interrupt logging
+    rule: D10
+    fix: one dock notice above Add expense in warning-soft with cause + one recovery; amber only for the glyph and the action
+  - risk: long names and four-digit rent amounts clip in the even line
+    rule: F04
+    fix: names wrap to two lines; amount column hugs its content; at accessibility sizes the row stacks name and amount over a full-width bar
+  - risk: warm paper neutrals with a petrol accent read as a generic "calm" template
+    rule: D14
+    fix: identity comes from the even line and the copy, not from colour; the accent is used on four things only
