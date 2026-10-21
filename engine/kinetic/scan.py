@@ -36,6 +36,7 @@ DATA_CONTEXT = re.compile(
 DATA_PATH = re.compile(r"(line|route|category|chart|data|status|severity)[_-]?colou?rs?", re.I)
 BLOCK_THEME = re.compile(r"(?i)(?:\b(?:let|var|val|const|final|static)\s+\w*?(dark|night|light)\w*\s*(?::[^=]+)?=\s*[\w.]*\s*[\(\{\[]\s*$"
                          r"|case\s+\.(dark|light)\s*:|\b(dark|light)\w*\s*:\s*[\w.]*\(\s*$)")
+INLINE_THEME = re.compile(r"(?i)\b(?:let|var|val|const|final|static)\s+(?:const\s+|final\s+)?\w*?(dark|night|light)\w*\s*(?::[^=]+)?=\s*[\w.]*\s*[\(\{\[]")
 _TYPE_ROLES = r"(?:display|headline|heading|title|subtitle|body|label|caption|footnote|callout|subhead|kicker|eyebrow|overline|numeral|lead|meta)\w*"
 TYPE_ROLE = r"\b(?:textTheme|typography|type|text|fonts?|t|ts|k\w*)\.(" + _TYPE_ROLES + r")\b"
 # a color keyed by an enum value (`Circuit.yellow: Color(…)`, `[Category.Food]: '#…'`) is a categorical data palette
@@ -448,7 +449,10 @@ class Scanner:
             if m:
                 word = next(g for g in m.groups() if g)
                 current = "dark" if word.lower() in ("dark", "night") else "light"
-            themes[no] = current
+                themes[no] = current
+                continue
+            one = INLINE_THEME.search(line)  # `static const dark = KColors(bg: …, text: …);` on one line (kinetic export)
+            themes[no] = ("dark" if one.group(1).lower() in ("dark", "night") else "light") if one else current
         for kind, rx, conv in EXTRACT.get(lang, []):
             cre = re.compile(rx)
             for no, line in lines:

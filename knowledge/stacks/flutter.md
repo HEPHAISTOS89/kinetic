@@ -191,3 +191,6 @@ Golden/gallery gotchas:
 - Display numerals built with a fixed `fontSize` ignore `textScaler`; scale them with `MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.6)` so the hero still leads at XXL.
 
 Golden matrix (one test, parameterised): sizes 320×568, 390×844, 430×932; `textScaler` 1.0 and 2.0; light and dark. Wrap with `MediaQuery(data: MediaQueryData(size:, textScaler: TextScaler.linear(2), platformBrightness: Brightness.dark))`. Device checks: iOS Settings → Accessibility → Larger Text; Android `adb shell settings put system font_scale 2.0`; dark via `xcrun simctl ui booted appearance dark` / `adb shell cmd uimode night yes`.
+
+## Bundling dealt faces
+macOS ships most native display faces as `.ttc` collections (Charter, Avenir Next, Didot, Copperplate…), which neither Flutter nor React Native can load. Run `kinetic font split /System/Library/Fonts/Supplemental/<Face>.ttc --out fonts/` and declare the faces you use (one file per weight).

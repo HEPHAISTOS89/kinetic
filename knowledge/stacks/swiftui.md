@@ -27,7 +27,7 @@ extension Color {
     init(light: UInt32, dark: UInt32) {
         self.init(uiColor: UIColor { $0.userInterfaceStyle == .dark ? UIColor(hex: dark) : UIColor(hex: light) })
     }
-    static let kBg      = Color(light: 0xF6F1EA, dark: 0x0F0D0B)
+    static let kBg      = Color(light: 0xF2F1EE, dark: 0x0F0D0B)
     static let kSurface = Color(light: 0xFFFFFF, dark: 0x1A1714)
     static let kText    = Color(light: 0x1E1A16, dark: 0xEDE6DE)
     static let kText2   = Color(light: 0x5C5249, dark: 0xA89C90)

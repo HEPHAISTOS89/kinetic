@@ -18,7 +18,7 @@ Run `kinetic dna src --json` (or `app/`), read the theme module and 2–3 screen
 ```ts
 // design/tokens.ts
 export const palette = {
-  light: { bg: '#F6F1EA', surface: '#FFFFFF', text: '#1E1A16', text2: '#5C5249', border: '#E4DAD0', accent: '#8A5A2B', onAccent: '#FFFFFF', danger: '#B3261E' },
+  light: { bg: '#F2F1EE', surface: '#FFFFFF', text: '#1E1A16', text2: '#5C5249', border: '#E4DAD0', accent: '#8A5A2B', onAccent: '#FFFFFF', danger: '#B3261E' },
   dark:  { bg: '#0F0D0B', surface: '#1A1714', text: '#EDE6DE', text2: '#A89C90', border: '#2C2722', accent: '#D9A877', onAccent: '#1E1408', danger: '#F2B8B5' },
 } as const;
 export type Roles = typeof palette.light;
@@ -132,3 +132,6 @@ adb exec-out screencap -p > shots/android.png
 Static previews (react-native-web, Storybook) ignore the OS font scale: to show the XXL layout, render an entry inside a preview-only context that multiplies the type tokens (e.g. ×1.6 and ×2) — label it as a simulation and keep `allowFontScaling` on in the real components.
 
 E2E/screenshot flows: Maestro (`maestro test flow.yaml`, `takeScreenshot`) or Detox, if already present. Matrix: iPhone SE + Pro Max, small Android (360 dp), light/dark, font scale 1 and 2, Reduce Motion on.
+
+## Bundling dealt faces
+macOS ships most native display faces as `.ttc` collections (Charter, Avenir Next, Didot, Copperplate…), which neither Flutter nor React Native can load. Run `kinetic font split /System/Library/Fonts/Supplemental/<Face>.ttc --out fonts/` and declare the faces you use (one file per weight).

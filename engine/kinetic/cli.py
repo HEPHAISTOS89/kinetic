@@ -10,7 +10,7 @@ import os
 import sys
 
 from . import __version__
-from . import clarity, color, deal, dna, export, panel, project, report, score, sheet, states, svg, validate
+from . import clarity, color, deal, dna, export, fonts, panel, project, report, score, sheet, states, svg, validate
 from .kdl import KDLError, parse_file
 from .scan import scan
 
@@ -276,6 +276,12 @@ def cmd_panel(a):
     return 0
 
 
+def cmd_font(a):
+    files = fonts.split(a.file, a.out)
+    _out({"tool": "font", "written": files}, a.json, "\n".join(f"wrote {f}" for f in files))
+    return 0
+
+
 def cmd_sheet(a):
     r = sheet.contact_sheet(a.images, a.out, a.cols, a.width)
     _out(r, a.json, f"contact sheet {r['out']}  ({r['count']} renders, {r['cols']} columns)\n" +
@@ -396,6 +402,13 @@ def build_parser():
     s.add_argument("--out", default=".kinetic/critique.json")
     common(s, False)
     s.set_defaults(fn=cmd_panel)
+
+    s = sub.add_parser("font", help="split a .ttc font collection into standalone .ttf/.otf files")
+    s.add_argument("action", choices=["split"])
+    s.add_argument("file")
+    s.add_argument("--out", default="fonts")
+    common(s, False)
+    s.set_defaults(fn=cmd_font)
 
     s = sub.add_parser("sheet", help="contact sheet of renders (one PNG) for judging the system at once")
     s.add_argument("images", nargs="+", help="PNG files or folders")

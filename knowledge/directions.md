@@ -90,7 +90,7 @@ Compose `spring(dampingRatio, stiffness)` (stiffness ≈ (2π/response)²).
 **Range:** 2. **Fits:** sleep, meditation, journaling, evening reading, reflection. **Misfits:** daytime productivity, finance, anything that needs urgency.
 **Type:** New York or Fraunces (opsz soft) for numerals and display; SF Pro Rounded / Manrope for UI. Ramp: `display 40/44 300 -0.02` · `title 22/28 600 -0.01` · `body 17/24 400 0` · `callout 15/21 400 0` · `caption 13/18 500 0.01`. Numerals: proportional for display, tabular in data.
 **Color (strategy: monochrome warm, dark-first):**
-- light: bg `#F6F1EA` · surface `#FFFDF9` · text `#1E1A16` · text-2 `#5C5249` · border `#E4DAD0` · accent `#8A5A2B` · on-accent `#FFFFFF`
+- light: bg `#F2F1EE` · surface `#FFFDF9` · text `#1E1A16` · text-2 `#5C5249` · border `#E4DAD0` · accent `#8A5A2B` · on-accent `#FFFFFF`
 - dark: bg `#0F0D0B` · surface `#1A1714` · text `#EDE6DE` · text-2 `#A89C90` · border `#2C2722` · accent `#D9A877` · on-accent `#1E1408`
 **Space:** unit 4, margins 24, density low; content gravitates to the lower half of the screen (thumb and lying-down posture). **Shape:** radius s 10 · m 16 · l 24, continuous. **Elevation:** tonal only (surface steps of about 3% lightness).
 **Icons:** SF Symbols regular, rounded where available, 22pt. **Motion:** slow, heavily damped: `gentle {0.55, 1.0}`, `breath {1.2, 1.0}`, fade 300ms; nothing faster than 250ms. **Haptics:** `soft` only, low intensity.

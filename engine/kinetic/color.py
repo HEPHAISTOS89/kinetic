@@ -336,6 +336,8 @@ def hue_family(H: float, C: float) -> str:
 
 
 def is_ai_purple(value: str) -> bool:
-    """The default 'AI gradient' family: violet/indigo/magenta with real chroma."""
+    """The default 'AI gradient' family: indigo/violet/magenta with real chroma.
+    OKLCH hue ≥ 272 starts at indigo (#6366F1 ≈ 277, #7C3AED ≈ 293); true blues (#3B82F6 ≈ 259,
+    cobalt #2340C2 ≈ 267, navy ink) sit below it and are not the AI default."""
     _, C, H = hex_to_oklch(value)
-    return C >= 0.08 and 250 <= H <= 330
+    return C >= 0.08 and 272 <= H <= 330

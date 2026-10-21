@@ -22,7 +22,7 @@ Run `kinetic dna app/src/main --json`, read the theme files, then 2–3 screens;
 // KDL roles → Material 3 ColorScheme
 private val LightColors = lightColorScheme(
     primary = Color(0xFF8A5A2B), onPrimary = Color.White,
-    background = Color(0xFFF6F1EA), surface = Color(0xFFF6F1EA),
+    background = Color(0xFFF2F1EE), surface = Color(0xFFF2F1EE),
     surfaceContainerLow = Color(0xFFFFFFFF),
     onSurface = Color(0xFF1E1A16), onSurfaceVariant = Color(0xFF5C5249),
     outlineVariant = Color(0xFFE4DAD0), error = Color(0xFFB3261E),

@@ -14,7 +14,7 @@ gamut-maps by reducing chroma (hue and lightness preserved).
 ```
 kinetic palette "#C9A27E"            # roles for light + dark, contrast checked
 kinetic palette "#C9A27E" --kdl      # paste-ready KDL `color` block
-kinetic contrast "#5C5249" "#F6F1EA"  # WCAG 2 + APCA
+kinetic contrast "#5C5249" "#F2F1EE"  # WCAG 2 + APCA
 ```
 
 ## 2. Roles (what every KDL theme defines)

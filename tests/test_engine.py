@@ -104,6 +104,8 @@ class TestColor(unittest.TestCase):
 
     def test_ai_purple(self):
         self.assertTrue(color.is_ai_purple("#7C3AED"))
+        self.assertTrue(color.is_ai_purple("#6366F1") and color.is_ai_purple("#4F46E5"))
+        self.assertFalse(color.is_ai_purple("#3B82F6") or color.is_ai_purple("#1F4FD8") or color.is_ai_purple("#1A2B6D"))
         self.assertFalse(color.is_ai_purple("#3D5AFE") and color.is_ai_purple("#C9A27E"))
 
 
@@ -601,6 +603,13 @@ class TestV16Identity(unittest.TestCase):
                 self.assertTrue(all(c["ok"] for c in color.check_roles({theme: {k: v for k, v in r.items()
                                                                                   if not k.startswith(("field", "on-field", "state-", "on-state-"))}})), p["id"])
 
+    def test_library_never_deals_a_spent_colour(self):
+        for p in deal.load_library()["palette"]:
+            for hx in [p["seed"], p["field"]["light"], p["field"]["dark"]]:
+                self.assertFalse(color.is_ai_purple(hx), (p["id"], hx))
+                L, C, H = color.hex_to_oklch(hx)
+                self.assertFalse(0.93 <= L <= 0.99 and 0.007 <= C <= 0.05 and 55 <= H <= 100, (p["id"], hx, "cream"))
+
     def test_redraw_needs_a_reason_and_is_logged(self):
         st = deal.deal("library", seed=3)
         with self.assertRaises(ValueError):
@@ -727,6 +736,28 @@ class TestV17Studio(unittest.TestCase):
         self.assertFalse(r["self_judged"])
         with self.assertRaises(ValueError):
             panel.merge([c((4, 4), "x")])
+
+
+class TestFonts(unittest.TestCase):
+    def test_split_ttc_writes_parsable_fonts(self):
+        src = "/System/Library/Fonts/Supplemental/Charter.ttc"
+        if not os.path.exists(src):
+            self.skipTest("no system Charter.ttc")
+        import struct
+        from kinetic import fonts
+        d = tempfile.mkdtemp()
+        try:
+            out = fonts.split(src, d)
+            self.assertGreaterEqual(len(out), 2)
+            for f in out:
+                b = open(f, "rb").read()
+                n = struct.unpack(">H", b[4:6])[0]
+                for t in range(n):
+                    tag, _, off, ln = struct.unpack(">4sIII", b[12 + 16 * t: 28 + 16 * t])
+                    self.assertLessEqual(off + ln, len(b), tag)
+                self.assertIn(b"glyf", [b[12 + 16 * t: 16 + 16 * t] for t in range(n)])
+        finally:
+            shutil.rmtree(d)
 
 
 class TestPluginStructure(unittest.TestCase):

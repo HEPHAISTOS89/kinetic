@@ -212,7 +212,7 @@ system:
     strategy: monochrome-warm        # monochrome | analogous | complementary | brand-led | neutral+accent
     roles:
       light:
-        bg: "#F6F1EA"
+        bg: "#F2F1EE"
         surface: "#FFFFFF"
         text: "#1E1A16"
         text-2: "#5C5249"

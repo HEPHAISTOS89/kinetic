@@ -18,7 +18,7 @@ Run `kinetic dna src --json`, read the token source and 2–3 screens, fill KDL 
 ```css
 :root {
   color-scheme: light dark;
-  --k-bg: #F6F1EA; --k-surface: #FFFFFF; --k-text: #1E1A16; --k-text-2: #5C5249;
+  --k-bg: #F2F1EE; --k-surface: #FFFFFF; --k-text: #1E1A16; --k-text-2: #5C5249;
   --k-border: #E4DAD0; --k-accent: #8A5A2B; --k-on-accent: #FFFFFF; --k-danger: #B3261E;
   --k-space-xs: 4px; --k-space-s: 8px; --k-space-m: 12px; --k-space-l: 16px; --k-space-xl: 24px; --k-space-2xl: 32px;
   --k-radius-s: 8px; --k-radius-m: 14px; --k-radius-l: 22px;

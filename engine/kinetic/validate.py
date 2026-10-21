@@ -570,7 +570,8 @@ class Validator:
                              self.line(f"system.color.roles.{theme}.{role}"))
             accents = set()
             for role, v in r.items():
-                if _is_status_role(role) or not color.is_hex(str(v)):
+                # a palette's colour field and its state fields are proportion, not accents (knowledge/library/palettes.json)
+                if _is_status_role(role) or not color.is_hex(str(v)) or re.match(r"^(on-)?(field|state-[\w-]+)$", role):
                     continue
                 L, C, H = color.hex_to_oklch(str(v))
                 if C >= 0.06:

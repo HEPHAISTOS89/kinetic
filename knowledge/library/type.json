@@ -1,85 +1,441 @@
 {
-  "about": "Type systems for native apps. Text stays the platform face (SF Pro / Roboto) so Dynamic Type, accessibility and native controls keep working; the voice lives in the display role (titles, verdicts, numerals, the vocabulary's labels). iOS display faces listed here ship with iOS (no bundling, licence-free on Apple platforms). Apple faces may not be bundled into Android builds: the android column names an OFL/free face to bundle there (cross-platform stacks bundle that face for Android and may bundle it for iOS too). Spent faces (knowledge/priors.md) are deliberately absent.",
-  "systems": [
-    {"id": "expanded-grotesk", "name": "Wide signage", "voice": "confident, civic, wayfinding",
-     "display": {"ios": "SF Pro, width Expanded (.expanded) 700-800", "android": "Roboto Flex wdth 125-151, wght 700"},
-     "text": "system", "ramp": {"display": "36/40 800 -0.02", "title": "22/28 700 -0.01", "label": "13/16 600 0.02"},
-     "fits": ["transit", "venues", "civic", "logistics"], "rule": "expanded only at >= 22pt; body never expanded"},
-    {"id": "condensed-numerals", "name": "Condensed numerals", "voice": "scoreboard, timetable, exact",
-     "display": {"ios": "DIN Condensed Bold (numerals) / SF Pro Condensed 700", "android": "Barlow Condensed 600-700"},
-     "text": "system", "ramp": {"display": "56/56 700 0 tabular", "title": "22/28 600 0", "label": "13/16 600 0.04 caps-free"},
-     "fits": ["sport", "departures", "counts", "scores"], "rule": "condensed for numerals and short labels only; sentences stay in the text face"},
-    {"id": "rounded-system", "name": "Rounded native", "voice": "friendly but exact",
-     "display": {"ios": "SF Pro Rounded 600-700 (.rounded)", "android": "Nunito 700 (bundle)"},
-     "text": "system", "ramp": {"display": "34/40 700 -0.01", "title": "22/28 600 0", "label": "15/20 600 0"},
-     "fits": ["family", "health habits", "education"], "rule": "rounded for display and numerals; avoid for dense data"},
-    {"id": "charter-text", "name": "Charter voice", "voice": "plain-spoken, bookish, trustworthy",
-     "display": {"ios": "Charter Bold / Roman", "android": "Charter (Bitstream, free licence) or XCharter"},
-     "text": "system", "ramp": {"display": "32/38 700 -0.01", "title": "22/28 700 0", "label": "15/20 400 0"},
-     "fits": ["records", "care", "civic", "libraries", "notebooks"], "rule": "sentences and titles in Charter; UI labels in system"},
-    {"id": "iowan-oldstyle", "name": "Old-style book", "voice": "warm, literary, unhurried",
-     "display": {"ios": "Iowan Old Style Bold / Roman", "android": "Source Serif 4 (opsz) 600"},
-     "text": "system", "ramp": {"display": "34/40 600 -0.01", "title": "22/28 600 0", "label": "15/22 400 0"},
-     "fits": ["reading", "food", "journals", "slow rituals"], "rule": "old-style figures only in prose; tabular lining figures for data"},
-    {"id": "didone-fashion", "name": "Didone contrast", "voice": "precise, elegant, high-contrast",
-     "display": {"ios": "Didot Bold / Bodoni 72 Book", "android": "Bodoni Moda 600-700 (opsz)"},
-     "text": "system", "ramp": {"display": "40/44 700 -0.01", "title": "24/30 400 0", "label": "13/16 500 0.02"},
-     "fits": ["beauty", "fashion", "luxury", "galleries"], "rule": "display >= 28pt only (hairlines vanish below); never for numerals in tables"},
-    {"id": "baskerville-ledger", "name": "Ledger serif", "voice": "established, financial, formal",
-     "display": {"ios": "Baskerville SemiBold", "android": "Libre Baskerville 700"},
-     "text": "system", "ramp": {"display": "34/40 600 0", "title": "22/28 600 0", "label": "15/20 400 0"},
-     "fits": ["accounts", "legal", "ledgers", "membership"], "rule": "amounts in system tabular; Baskerville for headings and the running position label"},
-    {"id": "geometric-futura", "name": "Geometric poster", "voice": "modernist, graphic, bold",
-     "display": {"ios": "Futura Bold / Condensed ExtraBold", "android": "Jost 700"},
-     "text": "system", "ramp": {"display": "38/40 700 0", "title": "22/26 600 0.01", "label": "13/16 500 0.06"},
-     "fits": ["events", "transport", "design-led retail", "museums"], "rule": "short words only; generous tracking on small labels; never paragraphs"},
-    {"id": "avenir-humanist", "name": "Humanist geometric", "voice": "clear, calm, mid-century",
-     "display": {"ios": "Avenir Next Demi Bold / Heavy", "android": "Nunito Sans 700"},
-     "text": "system", "ramp": {"display": "34/40 700 -0.01", "title": "22/28 600 0", "label": "15/20 500 0"},
-     "fits": ["travel", "health", "home"], "rule": "Avenir Next Condensed for dense labels; weights 500-800 only"},
-    {"id": "gill-humanist", "name": "Railway humanist", "voice": "British civic, characterful, practical",
-     "display": {"ios": "Gill Sans SemiBold", "android": "Cabin 600"},
-     "text": "system", "ramp": {"display": "34/40 600 0", "title": "22/28 600 0", "label": "15/20 400 0.01"},
-     "fits": ["clubs", "rail", "outdoors", "community"], "rule": "Gill's quirky figures: use system tabular for data"},
-    {"id": "optima-flare", "name": "Flared sans", "voice": "graceful, humane, spa-quiet without cream",
-     "display": {"ios": "Optima Bold / Regular", "android": "Marcellus (display) / nearest flared OFL face"},
-     "text": "system", "ramp": {"display": "32/38 600 0", "title": "22/28 600 0.01", "label": "13/16 500 0.04"},
-     "fits": ["wellness", "gardens", "hospitality"], "rule": "pair with a cool or green ground, not cream (priors)"},
-    {"id": "palatino-humanist-serif", "name": "Calligraphic serif", "voice": "classic, humane, scholarly",
-     "display": {"ios": "Palatino Bold / Italic", "android": "TeX Gyre Pagella or Domine 700"},
-     "text": "system", "ramp": {"display": "32/38 700 0", "title": "22/28 700 0", "label": "15/20 400 0"},
-     "fits": ["education", "heritage", "faith", "music"], "rule": "italic for the one human sentence on a screen, not for emphasis words (frontend tell)"},
-    {"id": "slab-industrial", "name": "Slab industrial", "voice": "sturdy, workshop, tools",
-     "display": {"ios": "Rockwell Bold / American Typewriter Semibold", "android": "Zilla Slab 700 / Roboto Slab 700"},
-     "text": "system", "ramp": {"display": "34/38 700 0", "title": "22/28 700 0", "label": "13/16 600 0.02"},
-     "fits": ["trades", "repair", "workshops", "inventory", "coffee roasters"], "rule": "slab for headings and stamps; system for everything read in sentences"},
-    {"id": "typewriter-record", "name": "Typed record", "voice": "documentary, procedural, honest",
-     "display": {"ios": "American Typewriter Medium (titles) + Menlo (codes)", "android": "Courier Prime 700"},
-     "text": "system", "ramp": {"display": "28/34 600 0", "title": "20/26 600 0", "label": "13/16 400 0"},
-     "fits": ["forms", "inspections", "logs", "tickets"], "rule": "only for the artefact's typed fields; never body copy; no mono for decoration (priors)"},
-    {"id": "hand-annotation", "name": "Margin hand", "voice": "personal, notebook, human trace",
-     "display": {"ios": "Noteworthy Bold (annotations) / Marker Felt Wide", "android": "Patrick Hand / Kalam (bundle)"},
-     "text": "system", "ramp": {"display": "22/28 700 0", "title": "22/28 600 0 (system)", "label": "15/20 400 0"},
-     "fits": ["care logs", "learning", "family", "craft"], "rule": "handwriting only for marks and short annotations (<= 6 words); titles and body stay system"},
-    {"id": "copperplate-signage", "name": "Engraved signage", "voice": "institutional, engraved, small caps",
-     "display": {"ios": "Copperplate Bold (short labels)", "android": "Cinzel 600 (bundle)"},
-     "text": "system", "ramp": {"display": "24/28 700 0.04", "title": "20/26 600 0", "label": "13/16 600 0.08"},
-     "fits": ["members clubs", "wine", "venues with heritage"], "rule": "max 3 words per use; never for numbers that change"},
-    {"id": "new-york-compact", "name": "Native serif, tight", "voice": "editorial, system-native",
-     "display": {"ios": "New York (.serif) 600-800, large optical size", "android": "Noto Serif Display 700 / Source Serif 4 opsz 60"},
-     "text": "system", "ramp": {"display": "36/40 700 -0.02", "title": "22/28 600 -0.01", "label": "15/20 400 0"},
-     "fits": ["news", "reading", "culture"], "rule": "common choice for Kinetic arms (priors): only with a non-paper ground and a heavy weight, never 400 on warm paper"},
-    {"id": "system-heavy", "name": "System, heavy contrast", "voice": "native, utilitarian, loud by weight",
-     "display": {"ios": "SF Pro 800-900, tight tracking -0.03", "android": "Roboto Flex wght 800, opsz 144"},
-     "text": "system", "ramp": {"display": "40/42 900 -0.03", "title": "22/28 700 -0.01", "label": "13/16 600 0"},
-     "fits": ["tools", "utilities", "finance", "anything that must feel native"], "rule": "the voice is the weight contrast (900 vs 400) and size jumps (>= 1.8x)"},
-    {"id": "mono-data", "name": "Data mono", "voice": "technical, engineered",
-     "display": {"ios": "SF Mono 600 (data) + SF Pro", "android": "Roboto Mono 600 / JetBrains Mono"},
-     "text": "system", "ramp": {"display": "34/40 600 -0.02", "title": "20/26 600 0", "label": "13/16 500 0"},
-     "fits": ["developer tools", "infrastructure", "lab instruments"], "rule": "only when the data is code-like (IDs, hashes, readings); small mono labels as decoration are a prior"},
-    {"id": "cochin-garden", "name": "Garden serif", "voice": "botanical, seasonal, gentle",
-     "display": {"ios": "Cochin Bold / Italic", "android": "EB Garamond 600"},
-     "text": "system", "ramp": {"display": "34/40 700 0", "title": "22/28 600 0", "label": "15/20 400 0"},
-     "fits": ["gardens", "plants", "seasonal food", "florists"], "rule": "pair with a field colour from nature (moss, sky), never cream + terracotta"}
-  ]
+ "about": "Type systems for native apps. Text stays the platform face (SF Pro / Roboto) so Dynamic Type, accessibility and native controls keep working; the voice lives in the display role (titles, verdicts, numerals, the vocabulary's labels). iOS display faces listed here ship with iOS (no bundling, licence-free on Apple platforms). Apple faces may not be bundled into Android builds: the android column names an OFL/free face to bundle there (cross-platform stacks bundle that face for Android and may bundle it for iOS too). Spent faces (knowledge/priors.md) are deliberately absent. Bundling for renders and builds: on macOS most of these faces sit in /System/Library/Fonts(/Supplemental) as .ttc collections — `kinetic font split <file.ttc> --out fonts/` writes one .ttf per face. When the Android face has no offline source in a sandbox, render with the iOS face and name the Android face in KDL `system.type.families` for the build.",
+ "systems": [
+  {
+   "id": "expanded-grotesk",
+   "name": "Wide signage",
+   "voice": "confident, civic, wayfinding",
+   "display": {
+    "ios": "SF Pro, width Expanded (.expanded) 700-800",
+    "android": "Roboto Flex wdth 125-151, wght 700"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "36/40 800 -0.02",
+    "title": "22/28 700 -0.01",
+    "label": "13/16 600 0.02"
+   },
+   "fits": [
+    "transit",
+    "venues",
+    "civic",
+    "logistics"
+   ],
+   "rule": "expanded only at >= 22pt; body never expanded"
+  },
+  {
+   "id": "condensed-numerals",
+   "name": "Condensed numerals",
+   "voice": "scoreboard, timetable, exact",
+   "display": {
+    "ios": "DIN Condensed Bold (numerals) / SF Pro Condensed 700",
+    "android": "Barlow Condensed 600-700"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "56/56 700 0 tabular",
+    "title": "22/28 600 0",
+    "label": "13/16 600 0.04 caps-free"
+   },
+   "fits": [
+    "sport",
+    "departures",
+    "counts",
+    "scores"
+   ],
+   "rule": "condensed for numerals and short labels only; sentences stay in the text face"
+  },
+  {
+   "id": "rounded-system",
+   "name": "Rounded native",
+   "voice": "friendly but exact",
+   "display": {
+    "ios": "SF Pro Rounded 600-700 (.rounded)",
+    "android": "Nunito 700 (bundle)"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "34/40 700 -0.01",
+    "title": "22/28 600 0",
+    "label": "15/20 600 0"
+   },
+   "fits": [
+    "family",
+    "health habits",
+    "education"
+   ],
+   "rule": "rounded for display and numerals; avoid for dense data"
+  },
+  {
+   "id": "charter-text",
+   "name": "Charter voice",
+   "voice": "plain-spoken, bookish, trustworthy",
+   "display": {
+    "ios": "Charter Bold / Roman",
+    "android": "Charter (Bitstream, free licence) or XCharter"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "32/38 700 -0.01",
+    "title": "22/28 700 0",
+    "label": "15/20 400 0"
+   },
+   "fits": [
+    "records",
+    "care",
+    "civic",
+    "libraries",
+    "notebooks"
+   ],
+   "rule": "sentences and titles in Charter; UI labels in system"
+  },
+  {
+   "id": "iowan-oldstyle",
+   "name": "Old-style book",
+   "voice": "warm, literary, unhurried",
+   "display": {
+    "ios": "Iowan Old Style Bold / Roman",
+    "android": "Source Serif 4 (opsz) 600"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "34/40 600 -0.01",
+    "title": "22/28 600 0",
+    "label": "15/22 400 0"
+   },
+   "fits": [
+    "reading",
+    "food",
+    "journals",
+    "slow rituals"
+   ],
+   "rule": "old-style figures only in prose; tabular lining figures for data"
+  },
+  {
+   "id": "didone-fashion",
+   "name": "Didone contrast",
+   "voice": "precise, elegant, high-contrast",
+   "display": {
+    "ios": "Didot Bold / Bodoni 72 Book",
+    "android": "Bodoni Moda 600-700 (opsz)"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "40/44 700 -0.01",
+    "title": "24/30 400 0",
+    "label": "13/16 500 0.02"
+   },
+   "fits": [
+    "beauty",
+    "fashion",
+    "luxury",
+    "galleries"
+   ],
+   "rule": "display >= 28pt only (hairlines vanish below); never for numerals in tables"
+  },
+  {
+   "id": "baskerville-ledger",
+   "name": "Ledger serif",
+   "voice": "established, financial, formal",
+   "display": {
+    "ios": "Baskerville SemiBold",
+    "android": "Libre Baskerville 700"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "34/40 600 0",
+    "title": "22/28 600 0",
+    "label": "15/20 400 0"
+   },
+   "fits": [
+    "accounts",
+    "legal",
+    "ledgers",
+    "membership"
+   ],
+   "rule": "amounts in system tabular; Baskerville for headings and the running position label"
+  },
+  {
+   "id": "geometric-futura",
+   "name": "Geometric poster",
+   "voice": "modernist, graphic, bold",
+   "display": {
+    "ios": "Futura Bold / Condensed ExtraBold",
+    "android": "Jost 700"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "38/40 700 0",
+    "title": "22/26 600 0.01",
+    "label": "13/16 500 0.06"
+   },
+   "fits": [
+    "events",
+    "transport",
+    "design-led retail",
+    "museums"
+   ],
+   "rule": "short words only; generous tracking on small labels; never paragraphs"
+  },
+  {
+   "id": "avenir-humanist",
+   "name": "Humanist geometric",
+   "voice": "clear, calm, mid-century",
+   "display": {
+    "ios": "Avenir Next Demi Bold / Heavy",
+    "android": "Nunito Sans 700"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "34/40 700 -0.01",
+    "title": "22/28 600 0",
+    "label": "15/20 500 0"
+   },
+   "fits": [
+    "travel",
+    "health",
+    "home"
+   ],
+   "rule": "Avenir Next Condensed for dense labels; weights 500-800 only"
+  },
+  {
+   "id": "gill-humanist",
+   "name": "Railway humanist",
+   "voice": "British civic, characterful, practical",
+   "display": {
+    "ios": "Gill Sans SemiBold",
+    "android": "Cabin 600"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "34/40 600 0",
+    "title": "22/28 600 0",
+    "label": "15/20 400 0.01"
+   },
+   "fits": [
+    "clubs",
+    "rail",
+    "outdoors",
+    "community"
+   ],
+   "rule": "Gill's quirky figures: use system tabular for data"
+  },
+  {
+   "id": "optima-flare",
+   "name": "Flared sans",
+   "voice": "graceful, humane, spa-quiet without cream",
+   "display": {
+    "ios": "Optima Bold / Regular",
+    "android": "Marcellus (display) / nearest flared OFL face"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "32/38 600 0",
+    "title": "22/28 600 0.01",
+    "label": "13/16 500 0.04"
+   },
+   "fits": [
+    "wellness",
+    "gardens",
+    "hospitality"
+   ],
+   "rule": "pair with a cool or green ground, not cream (priors)"
+  },
+  {
+   "id": "palatino-humanist-serif",
+   "name": "Calligraphic serif",
+   "voice": "classic, humane, scholarly",
+   "display": {
+    "ios": "Palatino Bold / Italic",
+    "android": "TeX Gyre Pagella or Domine 700"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "32/38 700 0",
+    "title": "22/28 700 0",
+    "label": "15/20 400 0"
+   },
+   "fits": [
+    "education",
+    "heritage",
+    "faith",
+    "music"
+   ],
+   "rule": "italic for the one human sentence on a screen, not for emphasis words (frontend tell)"
+  },
+  {
+   "id": "slab-industrial",
+   "name": "Slab industrial",
+   "voice": "sturdy, workshop, tools",
+   "display": {
+    "ios": "Rockwell Bold / American Typewriter Semibold",
+    "android": "Zilla Slab 700 / Roboto Slab 700"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "34/38 700 0",
+    "title": "22/28 700 0",
+    "label": "13/16 600 0.02"
+   },
+   "fits": [
+    "trades",
+    "repair",
+    "workshops",
+    "inventory",
+    "coffee roasters"
+   ],
+   "rule": "slab for headings and stamps; system for everything read in sentences"
+  },
+  {
+   "id": "typewriter-record",
+   "name": "Typed record",
+   "voice": "documentary, procedural, honest",
+   "display": {
+    "ios": "American Typewriter Medium (titles) + Menlo (codes)",
+    "android": "Courier Prime 700"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "28/34 600 0",
+    "title": "20/26 600 0",
+    "label": "13/16 400 0"
+   },
+   "fits": [
+    "forms",
+    "inspections",
+    "logs",
+    "tickets"
+   ],
+   "rule": "only for the artefact's typed fields; never body copy; no mono for decoration (priors)"
+  },
+  {
+   "id": "hand-annotation",
+   "name": "Margin hand",
+   "voice": "personal, notebook, human trace",
+   "display": {
+    "ios": "Noteworthy Bold (annotations) / Marker Felt Wide",
+    "android": "Patrick Hand / Kalam (bundle)"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "22/28 700 0",
+    "title": "22/28 600 0 (system)",
+    "label": "15/20 400 0"
+   },
+   "fits": [
+    "care logs",
+    "learning",
+    "family",
+    "craft"
+   ],
+   "rule": "handwriting only for marks and short annotations (<= 6 words); titles and body stay system"
+  },
+  {
+   "id": "copperplate-signage",
+   "name": "Engraved signage",
+   "voice": "institutional, engraved, small caps",
+   "display": {
+    "ios": "Copperplate Bold (short labels)",
+    "android": "Cinzel 600 (bundle)"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "24/28 700 0.04",
+    "title": "20/26 600 0",
+    "label": "13/16 600 0.08"
+   },
+   "fits": [
+    "members clubs",
+    "wine",
+    "venues with heritage"
+   ],
+   "rule": "max 3 words per use; never for numbers that change"
+  },
+  {
+   "id": "new-york-compact",
+   "name": "Native serif, tight",
+   "voice": "editorial, system-native",
+   "display": {
+    "ios": "New York (.serif) 600-800, large optical size",
+    "android": "Noto Serif Display 700 / Source Serif 4 opsz 60"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "36/40 700 -0.02",
+    "title": "22/28 600 -0.01",
+    "label": "15/20 400 0"
+   },
+   "fits": [
+    "news",
+    "reading",
+    "culture"
+   ],
+   "rule": "common choice for Kinetic arms (priors): only with a non-paper ground and a heavy weight, never 400 on warm paper"
+  },
+  {
+   "id": "system-heavy",
+   "name": "System, heavy contrast",
+   "voice": "native, utilitarian, loud by weight",
+   "display": {
+    "ios": "SF Pro 800-900, tight tracking -0.03",
+    "android": "Roboto Flex wght 800, opsz 144"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "40/42 900 -0.03",
+    "title": "22/28 700 -0.01",
+    "label": "13/16 600 0"
+   },
+   "fits": [
+    "tools",
+    "utilities",
+    "finance",
+    "anything that must feel native"
+   ],
+   "rule": "the voice is the weight contrast (900 vs 400) and size jumps (>= 1.8x)"
+  },
+  {
+   "id": "mono-data",
+   "name": "Data mono",
+   "voice": "technical, engineered",
+   "display": {
+    "ios": "SF Mono 600 (data) + SF Pro",
+    "android": "Roboto Mono 600 / JetBrains Mono"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "34/40 600 -0.02",
+    "title": "20/26 600 0",
+    "label": "13/16 500 0"
+   },
+   "fits": [
+    "developer tools",
+    "infrastructure",
+    "lab instruments"
+   ],
+   "rule": "only when the data is code-like (IDs, hashes, readings); small mono labels as decoration are a prior"
+  },
+  {
+   "id": "cochin-garden",
+   "name": "Garden serif",
+   "voice": "botanical, seasonal, gentle",
+   "display": {
+    "ios": "Cochin Bold / Italic",
+    "android": "EB Garamond 600"
+   },
+   "text": "system",
+   "ramp": {
+    "display": "34/40 700 0",
+    "title": "22/28 600 0",
+    "label": "15/20 400 0"
+   },
+   "fits": [
+    "gardens",
+    "plants",
+    "seasonal food",
+    "florists"
+   ],
+   "rule": "pair with a field colour from nature (moss, sky), never cream + terracotta"
+  }
+ ]
 }
