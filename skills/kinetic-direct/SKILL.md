@@ -25,9 +25,9 @@ local shop", engraved 9pt capitals for tired readers, lines under every line
    thesis: a slot that contradicts `thesis.feel`/`never` or the brief's tone
    is redrawn with that reason (`--redraw 2.palette --reason "thesis.never: cold portal"`).
 3. **Fuse, don't copy.** The best result often takes A's voice with a
-   challenger's engine (composition) or vocabulary idea. Write a fusion as its
-   own direction with `source: author` replaced by the fused option's engine
-   id, and say what came from where in `because`.
+   challenger's engine (composition) or vocabulary idea. A fusion is marked
+   `source: author` and also carries the `engine:` it borrows; say what came
+   from where in `because`.
 - The category standard is always available as an exit if the *user* asks
   for it. Never recommend it.
 
