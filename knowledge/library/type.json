@@ -131,7 +131,8 @@
     "luxury",
     "galleries"
    ],
-   "rule": "display >= 28pt only (hairlines vanish below); never for numerals in tables; legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)"
+   "rule": "display >= 28pt only (hairlines vanish below); never for numerals in tables; legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)",
+   "risk": "high"
   },
   {
    "id": "baskerville-ledger",
@@ -284,7 +285,8 @@
     "inventory",
     "coffee roasters"
    ],
-   "rule": "slab for headings and stamps; system for everything read in sentences"
+   "rule": "slab for headings and stamps; system for everything read in sentences",
+   "risk": "high"
   },
   {
    "id": "typewriter-record",
@@ -306,7 +308,8 @@
     "logs",
     "tickets"
    ],
-   "rule": "only for the artefact's typed fields; never body copy; no mono for decoration (priors); legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)"
+   "rule": "only for the artefact's typed fields; never body copy; no mono for decoration (priors); legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)",
+   "risk": "high"
   },
   {
    "id": "hand-annotation",
@@ -328,7 +331,8 @@
     "family",
     "craft"
    ],
-   "rule": "handwriting only for marks and short annotations (<= 6 words); titles and body stay system; legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)"
+   "rule": "handwriting only for marks and short annotations (<= 6 words); titles and body stay system; legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)",
+   "risk": "high"
   },
   {
    "id": "copperplate-signage",
@@ -349,7 +353,8 @@
     "wine",
     "venues with heritage"
    ],
-   "rule": "max 3 words per use; never for numbers that change; legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)"
+   "rule": "max 3 words per use; never for numbers that change; legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)",
+   "risk": "high"
   },
   {
    "id": "new-york-compact",
@@ -413,7 +418,8 @@
     "infrastructure",
     "lab instruments"
    ],
-   "rule": "only when the data is code-like (IDs, hashes, readings); small mono labels as decoration are a prior"
+   "rule": "only when the data is code-like (IDs, hashes, readings); small mono labels as decoration are a prior",
+   "risk": "high"
   },
   {
    "id": "cochin-garden",

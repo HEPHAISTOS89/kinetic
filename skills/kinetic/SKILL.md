@@ -70,10 +70,11 @@ Agent tool exists — then you play each role in order and mark judgments
 1. **Understand** (`kinetic-think`): product truth, user moment, thesis,
    anti-thesis, spine, expression level, journeys. Write them to
    `.kinetic/design.kdl` (`kinetic init` creates it).
-2. **Decide** (`kinetic-direct`): `kinetic deal` deals three directions from
-   the library; fuse each with the inventory (idea sentence + competitor
-   test); choose the **most distinctive viable** one; draw its vocabulary;
-   write the ≤ 200-word `contract`.
+2. **Decide** (`kinetic-direct`): author your thesis-led direction first, then
+   `kinetic deal --options 2` deals two challengers; meet each with the
+   inventory (idea sentence + competitor test); fuse where it helps; choose
+   the **most distinctive viable** one (viable = fits the thesis and its tone,
+   reachable clarity); draw its vocabulary; write the ≤ 200-word `contract`.
 3. **Anticipate** (`kinetic-states`): every screen × state, every interactive
    component × variant, the environment of each important element.
 4. **Systemise** (`kinetic-system`): type → color → space → shape → elevation
@@ -125,7 +126,7 @@ If you catch yourself writing an adjective, replace it with the value it implies
 ## 7. Engine quick reference
 ```
 kinetic init [path] --mode create|redesign|…      # .kinetic/ with config + KDL skeleton
-kinetic deal --brief-file BRIEF.md                 # 3 dealt directions (engine, type, palette, motion)
+kinetic deal --brief-file BRIEF.md --options 2     # 2 dealt challengers to your authored direction
 kinetic deal --redraw 2.type --reason "…"          # replace one slot, logged; --show to reprint
 kinetic sheet .kinetic/shots                        # all renders on one contact sheet
 kinetic clarity .kinetic/shots                      # clutter per render: words, lines, sizes, quiet space

@@ -3,42 +3,36 @@ name: kinetic-direct
 description: "Kinetic's creative direction step for mobile apps: deal three directions from Kinetic's library (composition engine, native type system, palette with a colour field, motion personality), fuse the chosen one with the product's inventory into an idea and a drawn vocabulary, and pick the most distinctive viable direction. Use after kinetic-think for create/redesign, or when a mobile UI looks generic, templated or interchangeable."
 ---
 
-# Deal, fuse, choose the most distinctive viable
+# Author, deal, choose the most distinctive viable
 
 > Paths are relative to the Kinetic plugin root (two directories above this file). The engine is `<root>/bin/kinetic`, written `kinetic` here.
 
-Directions you generate yourself come from your prior: the category's average
-and your own habits (`knowledge/priors.md`). In four blind rounds that prior
-made Kinetic correct and forgettable. So the first draw comes from outside you:
+Two failure modes, both measured in blind rounds. Directions you generate
+alone come from your prior: correct and forgettable (rounds 1–4). Directions
+dealt at random and adopted whole fight the brief: a cool navy for "a warm
+local shop", engraved 9pt capitals for tired readers, lines under every line
+(round 6 lost 6/6). So Kinetic does both, in this order:
 
-## 1. Deal (before you imagine anything)
-```
-kinetic deal --brief-file <brief or PRODUCT.md>        # writes .kinetic/deal.json
-```
-You get three options, each an **engine** (how something of the product's
-world becomes the screen's device, with first-viewport geometry), a native
-**type system**, a **palette** with a colour field and proportions
-(contrast-checked roles), and a **motion personality**. Read the sheet; read
-`knowledge/library/*.json` only for the dealt ids if you need more.
+## 1. Author first, then deal two challengers
+1. **A — yours, from the thesis.** Before seeing any deal, write the direction
+   the brief itself asks for: its tone words, `thesis.feel`, the inventory.
+   It may be warm paper and a serif when the brief asks for warmth — make it
+   *this* product's paper and type, never the generic cream (priors.md).
+   Mark it `source: author`.
+2. **B, C — dealt challengers.** `kinetic deal --brief-file <brief> --options 2`.
+   The deal weights the palette by the brief's tone (warm and calm briefs are
+   not dealt cool or loud palettes). Each challenger must still pass the
+   thesis: a slot that contradicts `thesis.feel`/`never` or the brief's tone
+   is redrawn with that reason (`--redraw 2.palette --reason "thesis.never: cold portal"`).
+3. **Fuse, don't copy.** The best result often takes A's voice with a
+   challenger's engine (composition) or vocabulary idea. Write a fusion as its
+   own direction with `source: author` replaced by the fused option's engine
+   id, and say what came from where in `because`.
+- The category standard is always available as an exit if the *user* asks
+  for it. Never recommend it.
 
-Rules:
-- Choose **among the dealt options**. Do not blend them back toward what you
-  would have done anyway.
-- **A slot that contradicts the thesis must be redrawn.** Check each dealt
-  type, palette and engine against `thesis.feel`, `thesis.never` and the
-  brief's own tone words: a cool navy palette for "the counter of a warm local
-  shop", 9pt engraved small caps for tired older readers, a pinned board for a
-  calm one-glance answer — each is a reason (`--reason "thesis.never: cold
-  portal"`). The deal exists to escape your priors, not to overrule the brief.
-- Otherwise replace a slot only with `kinetic deal --redraw N.slot --reason "…"`, and
-  only for a **product fact or brand constraint** ("brand colour is #0A7A3E",
-  "the venue has no printed artefact"). "I prefer…" is not a reason. Redraws
-  are logged; the validator rejects a chosen engine that was never dealt (K29).
-- The category standard is always available as an exit if the *user* asks for
-  it. Never recommend it.
-
-## 2. Fuse each option with the inventory
-For each dealt option, write the **idea sentence** with an item from
+## 2. Each direction meets the inventory
+For each direction (yours and the challengers), write the **idea sentence** with an item from
 `inventory` (kinetic-think writes 8–12):
 
 > In this app, **[inventory item]** becomes **[the engine's device]**.
@@ -47,8 +41,8 @@ Then the **competitor test**: name the nearest competitor and say why the
 sentence fails for them. If it fits them too, it is the category's idea — pick
 another inventory item. Sketch the home's first viewport in five lines using
 the engine's geometry (primary, proof, vocabulary object, next decision, thumb
-action). Write the three as KDL `directions` with `engine:` set to the dealt id
-and all six axes (structure, density, color, type, motion, material).
+action). Write the three as KDL `directions` (`source: author` on yours, `engine:` set
+to the dealt id on the challengers) with all six axes (structure, density, color, type, motion, material).
 
 ## 3. Score honestly (1–5)
 `product_fit` (thesis + moment), `usability` (task speed, accessibility, the

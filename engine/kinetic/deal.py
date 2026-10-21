@@ -81,6 +81,8 @@ def _pick(rng, pool, words, taken, slot, engine=None):
     weights = []
     for p in cand:
         w = 1.0 + 1.5 * _hits(p.get("fits"), words)
+        if slot == "type" and p.get("risk") == "high" and not _hits(p.get("fits"), words):
+            w *= 0.25  # decorative faces only when the brief's own world calls for them
         if slot == "palette":
             tn = tone(words)
             if "warm" in tn and p.get("temperature") == "cool":

@@ -30,9 +30,10 @@ Give each agent file paths, not your opinions: the value is the fresh context.
 1. **Brief** (you): kinetic-think → `product`, `requirements`, `thesis`,
    `inventory`, `expression`, `journeys` in `.kinetic/design.kdl`. Then
    `kinetic deal --brief-file <brief>`.
-2. **Diverge** (parallel): 3 × kinetic-director, each told "develop dealt
-   option N only" + paths to the brief, KDL and `.kinetic/deal.json`; and
-   1 × kinetic-rival. Save their outputs to `.kinetic/studio/director-N.md`
+2. **Diverge** (parallel): 3 × kinetic-director — director 1 develops **your
+   authored direction A** (you wrote its thesis-led sketch in the KDL), directors
+   2 and 3 each "develop dealt challenger N only" (`kinetic deal --options 2`) —
+   with paths to the brief, KDL and `.kinetic/deal.json`; and 1 × kinetic-rival. Save their outputs to `.kinetic/studio/director-N.md`
    and `.kinetic/studio/rival.md`.
 3. **Choose** (you): put the three developed directions in KDL `directions`,
    apply the rule (most distinctive viable, K30), write `vocabulary` and the

@@ -670,8 +670,8 @@ class Scanner:
             ctx = (f.context or f.raw or "").lower()
             ground = re.search(r"\b(bg|background|ground|scaffold|canvas|paper|base|surface|page)", ctx)
             if ground and 0.93 <= L <= 0.99 and 0.007 <= C <= 0.05 and 55 <= H <= 100:
-                fs.findings.append(Finding(rule="D34", tier="D", severity="minor", evidence="inferred", file=fs.path,
-                                           line=f.line, message=f"cream/parchment ground {hx} (the most common generated look)",
+                fs.findings.append(Finding(rule="D34", tier="D", severity="info", evidence="inferred", file=fs.path,
+                                           line=f.line, message=f"cream/parchment ground {hx} (the most common generated look — fine when the brief asks for warmth, then make it this product's paper)",
                                            fix="a dealt palette's ground; warmth belongs in a field or the accent, not the paper",
                                            snippet=(f.context or f.raw or "")[:120]))
             elif color.delta_e_ok(hx, "#D97757") < 0.04 and not re.search(r"danger|error|alert|warning|destructive", ctx):

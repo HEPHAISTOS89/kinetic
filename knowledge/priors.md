@@ -44,6 +44,14 @@ Plus Jakarta Sans, Outfit, Sora, Geist. The scanner flags them (D33). The
 platform text faces (SF Pro, Roboto) are *not* spent: native text is a virtue;
 the voice belongs in the display role (knowledge/library/type.json).
 
+## When a prior is right
+A prior is spent as a *default*, not as a choice. When the brief's own tone
+words ask for it — warm, local, bookish, heritage, cinephile, handmade — a
+paper ground and a serif voice can be exactly right (blind critics rewarded
+them in round 6). Then make them specific: this shop's bag paper, this
+cinema's programme type, this studio's clay — not the generic cream and
+terracotta. The test is the swap test, not the palette.
+
 ## How to use this file
 1. Before converging, compare each dealt option with the lists above: an option
    that lands back on a prior after your mutations has been averaged — undo the
