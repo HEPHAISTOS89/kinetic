@@ -54,7 +54,8 @@ VOCAB_ROLES = {"progress_bar", "status_dot", "chip", "badge", "tab_icon", "empty
                "input_control", "card", "banner", "map", "chart", "thumbnail", "header", "avatar", "background"}
 CONTRACT_KEYS = ("thesis", "idea", "own_world", "first_viewport", "vocabulary", "signature_move", "live_thing")
 STYLE_KEYS = {"size", "line", "weight", "track", "numerals", "width", "family", "case", "use"}
-STATUS = ("danger", "success", "warning", "error", "info", "caution", "critical", "positive", "negative")
+STATUS = ("danger", "success", "warning", "error", "info", "caution", "critical", "positive", "negative",
+          "alert", "urgent", "attention")
 MOTION_KINDS = ("feedback", "transition", "signature", "ambient")
 LONG_DURATION = re.compile(r"(ambient|loop|breath|pulse|idle|shimmer)", re.I)
 
@@ -621,7 +622,8 @@ class Validator:
         """Data colors (transit lines, categories): text on them must pass; they must not mimic danger."""
         if not isinstance(data, dict):
             return
-        danger = [str(r.get("danger")) for r in roles.values() if isinstance(r, dict) and color.is_hex(str(r.get("danger")))]
+        # compare each data fill with the danger of its own theme (light fills vs light danger, dark vs dark)
+        danger_by = {t: str(r.get("danger")) for t, r in roles.items() if isinstance(r, dict) and color.is_hex(str(r.get("danger")))}
         for name, v in data.items():
             path = f"system.color.data.{name}"
             entries = []
@@ -659,7 +661,8 @@ class Validator:
                     else:
                         self.add("K25", "I", "info", path, f"`{name}` has no `on` color; {best} passes ({color.wcag(best, fill):.1f}:1)",
                                  f"declare `on: \"{best}\"` so the export carries it", self.line(path))
-                for d in danger:
+                theme = "dark" if fk in ("fill_dark", "dark") else "light"
+                for d in ([danger_by[theme]] if theme in danger_by else list(danger_by.values())):
                     if color.delta_e_ok(fill, d) < 0.08:
                         self.add("K26", "C", "minor", path, f"data color `{name}` {fill} is close to danger {d}",
                                  "pair status with icon + word, or move the danger hue away from the data palette (color.md §8b)",
@@ -1000,6 +1003,22 @@ class Validator:
                          self.line(f"premortem.{i}"))
 
 
+def _waive(findings, exceptions):
+    """KDL `exceptions` with `where` matching a finding's KDL path (or no `where`) accept a D/C finding of that rule;
+    F findings and the exception checks themselves are never waived."""
+    ex = [e for e in (exceptions or []) if isinstance(e, dict) and e.get("rule")
+          and len(str(e.get("reason") or "").split()) >= 4]
+    keep, waived = [], []
+    for f in findings:
+        hit = next((e for e in ex if str(e["rule"]).upper() == f.rule and f.tier != "F" and f.rule not in ("K08", "K02")
+                    and (not e.get("where") or str(e["where"]) in (f.path or "") or (f.path or "") in str(e["where"]))), None)
+        if hit:
+            waived.append({"rule": f.rule, "path": f.path, "message": f.message, "reason": str(hit.get("reason"))})
+        else:
+            keep.append(f)
+    return keep, waived
+
+
 def validate_text(text: str, path="design.kdl", deal=None, root=None) -> dict:
     try:
         doc = parse(text)
@@ -1009,7 +1028,8 @@ def validate_text(text: str, path="design.kdl", deal=None, root=None) -> dict:
         return {"tool": "validate", "ok": False, "mode": None, "findings": [f.as_dict()],
                 "coverage": {"sections_checked": []}}
     v = Validator(doc, path, deal, root).run()
-    fs = sorted(v.findings, key=lambda f: (f.order(), f.line))
+    fs, waived = _waive(v.findings, doc.get("exceptions") if isinstance(doc, dict) else None)
+    fs = sorted(fs, key=lambda f: (f.order(), f.line))
     return {
         "tool": "validate",
         "ok": not any(f.tier == "F" for f in fs),
@@ -1023,6 +1043,7 @@ def validate_text(text: str, path="design.kdl", deal=None, root=None) -> dict:
                      "screens": len(doc.get("screens") or []) if isinstance(doc, dict) else 0,
                      "sections_absent": [s for s in REQUIRED.get(getattr(v, "mode", "create"), [])
                                          if s not in (doc or {})]},
+        "waived": waived,
         "limitations": ["checks decisions written in KDL; it cannot see the render or the code"],
     }
 

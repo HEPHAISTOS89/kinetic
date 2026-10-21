@@ -162,7 +162,8 @@ def cmd_export(a):
     kw = {"package": a.package} if stack == "compose" and a.package else {}
     text = export.export(doc, stack, os.path.relpath(a.file), **kw)
     if a.out:
-        is_dir = os.path.isdir(a.out) or a.out.endswith(("/", os.sep))
+        # a path without an extension is a folder (`--out design` → design/tokens.ts), whether or not it exists yet
+        is_dir = os.path.isdir(a.out) or a.out.endswith(("/", os.sep)) or not os.path.splitext(a.out)[1]
         out = os.path.join(a.out, export.FILENAMES[stack]) if is_dir else a.out
         os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
         if os.path.exists(out) and not a.force:

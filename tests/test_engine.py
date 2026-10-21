@@ -655,6 +655,31 @@ class TestV16Identity(unittest.TestCase):
             shutil.rmtree(d)
 
 
+class TestRound5Regressions(unittest.TestCase):
+    def test_validate_honours_exceptions_but_never_f(self):
+        text = rd(os.path.join(ROOT, "examples", "lune", "design.kdl"))
+        base = {f["rule"] for f in validate.validate_text(text)["findings"]}
+        self.assertIn("K29", base)
+        r = validate.validate_text(text + "\nexceptions:\n  - {rule: K29, reason: this example has no deal file on purpose}\n")
+        self.assertNotIn("K29", {f["rule"] for f in r["findings"]})
+        self.assertEqual(r["waived"][0]["rule"], "K29")
+
+    def test_export_out_without_extension_is_a_folder(self):
+        d = tempfile.mkdtemp()
+        try:
+            out = os.path.join(d, "design")
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = cli.main(["export", os.path.join(ROOT, "examples", "lune", "design.kdl"), "--stack", "react-native", "--out", out])
+            self.assertEqual(code, 0)
+            self.assertTrue(os.path.isdir(out))
+        finally:
+            shutil.rmtree(d)
+
+    def test_alert_role_is_a_status_role(self):
+        self.assertTrue(validate._is_status_role("alert"))
+        self.assertTrue(validate._is_status_role("on-alert"))
+
+
 class TestPluginStructure(unittest.TestCase):
     def test_skills_frontmatter_and_links(self):
         for name in os.listdir(os.path.join(ROOT, "skills")):
