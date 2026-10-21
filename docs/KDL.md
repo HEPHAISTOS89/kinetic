@@ -35,6 +35,7 @@ Design goals, in priority order:
 | `kdl` | Version, always `1` | all |
 | `mode` | create · improve · redesign · audit · system · design-to-code · code-to-design · evolve | all |
 | `product` | Product truth and usage context | all |
+| `requirements` | Every must-have of the brief, traced to screens | create, redesign |
 | `thesis` | The idea the design must embody | create, redesign, system, improve |
 | `expression` | Expression level 1–5 and its reasons | create, redesign, system |
 | `audit` | Existing design DNA and classification | redesign, audit, code-to-design, improve |
@@ -65,6 +66,17 @@ product:
   unknowns:
     - whether a partner mode is planned
 ```
+
+### `requirements` (brief coverage)
+```yaml
+requirements:
+  - {id: R1, need: see last night's sleep at a glance, priority: must, above_fold: true, element: numeral}
+  - {id: R3, need: set tonight's bedtime, priority: must}
+```
+Screens declare `serves: [R1, R3]`. The validator flags any `must` served by no
+screen (K21) and an `above_fold` element placed after #4 in `reading_order`.
+A strong idea never excuses a dropped requirement — the A/B evaluation showed
+exactly that failure (saved stops pushed below the fold).
 
 ### `thesis`
 ```yaml
@@ -220,6 +232,8 @@ screens:
     primary: last night's duration as a single numeral
     secondary: one sentence that interprets it
     reading_order: [numeral, interpretation, week strip, settings]
+    serves: [R1, R3]
+    thumb: [bedtime button]        # what the thumb reaches in the bottom third
     components:
       - id: duration
         kind: numeral                 # see component kinds below

@@ -20,8 +20,9 @@ names. Review like a jeweller: one property at a time, across the whole screen.
 7. **Color discipline** — accent only where it means "act / yours"; tertiary text never carries needed information; status colors only for status.
 8. **Icons** — one family, weight matched to adjacent text weight, optical size per text style (17pt body → 17–20pt glyph), filled = selected only.
 9. **Media** — consistent aspect ratios; focal point safe in every crop; scrims (≥ 4.5:1 for text) instead of text-shadow; placeholders the same size as the media.
-10. **Touch** — targets ≥ 44/48 with ≥ 8pt separation; pressed states visible within 100ms.
-11. **Both themes, both extremes** — check dark mode at low brightness and XXL text on the smallest phone before calling it done.
+10. **Structure** — home/hub screens keep a reachable way forward (search, tabs, toolbar) in the bottom third; titles reflect the state (not "Nearby" when location is off).
+11. **Touch** — targets ≥ 44/48 with ≥ 8pt separation; pressed states visible within 100ms.
+12. **Both themes, both extremes** — check dark mode at low brightness and XXL text on the smallest phone before calling it done.
 
 ## 2. Code-level detail review (pointilleux)
 Read the UI code like a reviewer who cares about pixels:

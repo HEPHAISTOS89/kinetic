@@ -16,6 +16,14 @@ Write the 3–6 most likely reasons into KDL `premortem` with the catalog rule
 and the fix (e.g. "warm dark palette reads as luxury brown — D14 — keep chroma
 low, no gold"). Re-read it before the critique.
 
+## 1b. Structure pass (before any taste judgment)
+Check these on the renders; any "no" is fixed before polishing:
+- Every `must` requirement visible where the brief needs it (`kinetic validate` K21 + the render).
+- A way forward from every screen in the thumb zone (search, primary action, navigation); recovery actions placed where the thumb is.
+- Platform-correct recovery (denied permission → Settings, not a re-prompt).
+- Neutrals tinted, accent with one meaning, dark theme designed.
+- Information density fits the moment: on glance screens, the first viewport answers the question without scrolling.
+
 ## 2. Measured evidence (engine)
 ```
 kinetic validate .kinetic/design.kdl

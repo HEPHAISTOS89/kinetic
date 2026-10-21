@@ -15,9 +15,9 @@ MODES = {"create", "improve", "redesign", "audit", "system", "design-to-code",
          "code-to-design", "evolve"}
 
 REQUIRED = {
-    "create": ["product", "thesis", "expression", "directions", "journeys", "system", "screens",
+    "create": ["product", "requirements", "thesis", "expression", "directions", "journeys", "system", "screens",
                "signature", "premortem"],
-    "redesign": ["product", "thesis", "expression", "audit", "directions", "journeys", "system",
+    "redesign": ["product", "requirements", "thesis", "expression", "audit", "directions", "journeys", "system",
                  "screens", "signature", "premortem"],
     "improve": ["product", "thesis", "audit", "screens", "premortem"],
     "system": ["product", "thesis", "expression", "system", "premortem"],
@@ -134,7 +134,8 @@ class Validator:
         for section in REQUIRED[mode]:
             if section not in doc or doc[section] in (None, ""):
                 self.add("K01", "D", "major", section, f"mode `{mode}` requires `{section}`",
-                         f"write the `{section}` section (see docs/KDL.md)")
+                         "list every must-have of the brief (id, need, priority) so the design can't silently drop one"
+                         if section == "requirements" else f"write the `{section}` section (see docs/KDL.md)")
         self.check_enums()
         self.check_product()
         self.check_thesis()
@@ -143,6 +144,7 @@ class Validator:
         self.check_directions()
         self.check_system(level)
         self.check_screens(level)
+        self.check_requirements()
         self.check_refs()
         self.check_signature()
         self.check_premortem()
@@ -402,6 +404,23 @@ class Validator:
                          f"{len(accents)} saturated hue families ({', '.join(sorted(accents))}) exceed the budget ({budget[0]})",
                          "one accent carries meaning; the rest are tinted neutrals",
                          self.line(f"system.color.roles.{theme}"))
+            neutrals = [str(r[k]) for k in ("bg", "surface", "text-2", "border") if color.is_hex(str(r.get(k)))]
+            if neutrals and all(color.hex_to_oklch(v)[1] < 0.004 for v in neutrals):
+                self.add("K23", "C", "minor", f"system.color.roles.{theme}",
+                         f"{theme} neutrals are untinted greys",
+                         "tint neutrals toward the seed (OKLCH C ≈ 0.005–0.02): the cheapest way to stop looking default (color.md §3)",
+                         self.line(f"system.color.roles.{theme}"))
+            acc, txt = str(r.get("accent", "")), str(r.get("text", ""))
+            if theme == "light" and color.is_hex(acc) and (acc.upper() == txt.upper() or color.hex_to_oklch(acc)[1] < 0.03) \
+                    and "monochrome" not in str(_get(self.doc, "system.color.strategy") or ""):
+                self.add("K24", "C", "minor", f"system.color.roles.{theme}.accent",
+                         "the accent is achromatic (same as text): nothing signals 'act here' by color",
+                         "give interactive elements one meaningful accent, or declare `strategy: monochrome` and carry affordance with shape and weight",
+                         self.line(f"system.color.roles.{theme}.accent"))
+            if theme == "light" and str(r.get("bg", "")).upper() in ("#FFFFFF", "#FFF"):
+                self.add("K23", "C", "info", f"system.color.roles.{theme}.bg",
+                         "pure white canvas", "an off-white tinted bg (L 0.97–0.99) lets white surfaces lift without shadows (color.md §6)",
+                         self.line(f"system.color.roles.{theme}.bg"))
             bg = r.get("bg")
             if theme == "dark" and color.is_hex(str(bg)) and color.parse_hex(str(bg))[:3] == (0, 0, 0):
                 self.add("C02", "C", "info", "system.color.roles.dark.bg", "pure black dark background",
@@ -665,6 +684,40 @@ class Validator:
                     self.add("D22", "D", "minor", path, f"copy slop in `{path}`: {value[:60]!r}",
                              "name the concrete thing and outcome (knowledge/copy.md)", self.line(path))
                     break
+
+    def check_requirements(self):
+        """Brief coverage: every `must` requirement is served by a screen, above the fold when asked."""
+        reqs = self.doc.get("requirements")
+        if reqs is None:
+            return  # K01 already reports it for create/redesign
+        self.checked.append("requirements")
+        served = {}
+        for i, sc in enumerate(self.doc.get("screens") or []):
+            if isinstance(sc, dict):
+                for rid in sc.get("serves") or []:
+                    served.setdefault(str(rid), []).append((sc.get("id", f"#{i}"), sc))
+                if not sc.get("thumb") and not sc.get("modal"):
+                    self.add("K22", "D", "minor", f"screens.{i}.thumb",
+                             f"screen `{sc.get('id', i)}` declares nothing in the thumb zone",
+                             "list the actions/navigation reachable in the bottom third (search, primary action, tabs)",
+                             self.line(f"screens.{i}"))
+        for j, r in enumerate(reqs if isinstance(reqs, list) else []):
+            if not isinstance(r, dict):
+                continue
+            rid, prio = str(r.get("id", j)), r.get("priority", "must")
+            if prio == "must" and rid not in served:
+                self.add("K21", "D", "major", f"requirements.{j}",
+                         f"must-have `{rid}` ({str(r.get('need', ''))[:60]}) is served by no screen",
+                         "add it to a screen's `serves`, or argue in `because` why the brief is wrong",
+                         self.line(f"requirements.{j}"))
+            if r.get("above_fold") and rid in served:
+                for sid, sc in served[rid]:
+                    order = [str(x) for x in (sc.get("reading_order") or [])]
+                    where = str(r.get("element", ""))
+                    if where and where in order and order.index(where) > 3:
+                        self.add("K21", "D", "minor", f"requirements.{j}",
+                                 f"`{rid}` must be above the fold but `{where}` is #{order.index(where) + 1} in `{sid}` reading order",
+                                 "move it up or make its first instance compact", self.line(f"requirements.{j}"))
 
     def check_signature(self):
         sig = self.doc.get("signature")

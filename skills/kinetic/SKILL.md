@@ -88,13 +88,21 @@ loading, empty, error (+ offline) (F06). Labels on icon-only controls (F07).
 Reduce-motion path for every animation (F08). Safe areas and keyboard (F09).
 Never lock text scaling (F10).
 
-## 5. Specificity beats adjectives
+## 5. Completeness before cleverness
+The concept, signature and spine come *after* the brief is fully served:
+every must-have visible where the brief needs it (saved items above the fold,
+search reachable), native structure in place (navigation, thumb-zone actions,
+platform recovery paths), tinted neutrals rather than default greys. Independent
+critics in the A/B evaluation preferred a plain, complete design over a
+distinctive one that hid half of the brief.
+
+## 6. Specificity beats adjectives
 "Clean, modern, premium" are not decisions. Decisions are numbers and reasons:
 `body 17/24, title 22/28 −0.01em`, `accent #8A5A2B only on the primary action`,
 `sheet spring 0.4/0.9`, `empty state: "Your first night appears here tomorrow."`.
 If you catch yourself writing an adjective, replace it with the value it implies.
 
-## 6. Engine quick reference
+## 7. Engine quick reference
 ```
 kinetic init [path] --mode create|redesign|…      # .kinetic/ with config + KDL skeleton
 kinetic validate .kinetic/design.kdl               # completeness + coherence (exit 1 on F)
@@ -111,20 +119,20 @@ kinetic score --kdl … --code … [--judged .kinetic/critique.json]
 Every result separates observed / derived / inferred. Report inferred findings
 as hypotheses, and unscanned areas as unknown.
 
-## 7. Working with an existing app
+## 8. Working with an existing app
 Preserve intent, upgrade execution. Classify existing choices KEEP / EVOLVE /
 REPLACE / REMOVE before changing them. Keep navigation contracts, analytics
 identifiers, accessibility labels, business logic and state management — a
 visual task does not authorise an architecture change. Change the brand only
 with permission when `brand.status` is `strict`.
 
-## 8. Reporting
+## 9. Reporting
 Follow docs/PROTOCOL.md §7: what I understood (if inferred) → what I decided
 and why (+ rejected alternatives in a line) → what changed → what I verified
 (engine results, renders actually inspected) → what is left or unknown. Speak
 like a design lead in the user's language; no KDL or finding dumps unless asked.
 
-## 9. Neighbours
+## 10. Neighbours
 Websites and landing pages → `prismora`. Small Flutter polish passes may also
 be handled by `native-polish`; when both apply, Kinetic owns thesis,
 direction, systems, motion and redesigns, and keeps native-polish's

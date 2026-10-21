@@ -20,6 +20,15 @@ brief, extract its nouns and verbs. Sort everything into:
   suggested solutions — "use a carousel" is a suggestion, not a requirement),
   **inferences** (yours, labelled), **unknowns** (material ones only).
 
+## Step 1b — Requirements: what the brief makes non-negotiable
+Before any idea, list every must-have of the brief as KDL `requirements`
+(`{id, need, priority: must|should, above_fold, element}`): each data type it
+names, each job, each state it mentions, each platform expectation (search,
+navigation). Later every screen declares which ones it `serves`, and the
+validator flags any `must` left unserved (K21). **Completeness before
+cleverness**: a strong concept that drops a requirement loses to a plain design
+that serves them all — this is the failure the Kinetic A/B evaluation measured.
+
 ## Step 2 — The user moment (the most important field)
 Answer concretely, as if filming it:
 - **Who** exactly (not "users"): role, expertise, emotional state.

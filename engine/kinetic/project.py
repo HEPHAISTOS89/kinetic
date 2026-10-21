@@ -107,6 +107,9 @@ premortem:
 """
 
 CREATE = """
+requirements:   # every must-have of the brief; screens reference them in `serves`
+  - {id: R1, need: TODO, priority: must, above_fold: false}
+
 directions:
   - id: A
     name: TODO
@@ -161,7 +164,7 @@ system:
   haptics:
     select: selection
 
-screens: []   # add screens with: kinetic states template <id> --block
+screens: []   # add screens with: kinetic states template <id> --block (set `serves` and `thumb`)
 
 signature:
   what: TODO

@@ -105,6 +105,8 @@ def template(screen_id: str, network: bool = True) -> str:
     lines = [
         f"  - id: {screen_id}",
         "    job: TODO one sentence — what this screen does for the user",
+        "    serves: [TODO requirement ids]",
+        "    thumb: [TODO actions and navigation reachable in the bottom third]",
         f"    network: {'true' if network else 'false'}",
         "    primary: TODO the one thing that must be seen first",
         "    secondary: TODO",

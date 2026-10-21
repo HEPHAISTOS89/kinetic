@@ -23,6 +23,12 @@ product:
   unknowns:
     - whether a partner mode is planned (would change the home hierarchy)
 
+requirements:
+  - {id: R1, need: see last night's sleep at a glance, priority: must, above_fold: true, element: numeral}
+  - {id: R2, need: understand why a night was bad, priority: must}
+  - {id: R3, need: set tonight's bedtime, priority: must}
+  - {id: R4, need: data stays private and local, priority: must}
+
 thesis:
   statement: The app you open half-asleep that tells you how you slept without waking you up.
   feel: [calm, held, unhurried]
@@ -133,6 +139,8 @@ system:
 screens:
   - id: tonight
     job: tell me at a glance whether last night was ok, and get out of the way
+    serves: [R1, R3, R4]
+    thumb: [bedtime button, week strip tap]
     network: false
     primary: last night's duration as a single numeral
     secondary: one sentence that interprets it
@@ -173,9 +181,12 @@ screens:
         spring: $spring.gentle
         reduce: crossfade
         interruptible: true
+        kind: signature
 
   - id: night
     job: explain one night in plain language
+    serves: [R2, R4]
+    thumb: [back swipe, share]
     network: false
     primary: the sentence that explains the night (e.g. "You woke three times after 4 a.m.")
     secondary: a phase band showing when, not how much
