@@ -1,5 +1,5 @@
 {
- "about": "Type systems for native apps. Text stays the platform face (SF Pro / Roboto) so Dynamic Type, accessibility and native controls keep working; the voice lives in the display role (titles, verdicts, numerals, the vocabulary's labels). iOS display faces listed here ship with iOS (no bundling, licence-free on Apple platforms). Apple faces may not be bundled into Android builds: the android column names an OFL/free face to bundle there (cross-platform stacks bundle that face for Android and may bundle it for iOS too). Spent faces (knowledge/priors.md) are deliberately absent. Bundling for renders and builds: on macOS most of these faces sit in /System/Library/Fonts(/Supplemental) as .ttc collections — `kinetic font split <file.ttc> --out fonts/` writes one .ttf per face. When the Android face has no offline source in a sandbox, render with the iOS face and name the Android face in KDL `system.type.families` for the build.",
+ "about": "Type systems for native apps. Text stays the platform face (SF Pro / Roboto) so Dynamic Type, accessibility and native controls keep working; the voice lives in the display role (titles, verdicts, numerals, the vocabulary's labels). iOS display faces listed here ship with iOS (no bundling, licence-free on Apple platforms). Apple faces may not be bundled into Android builds: the android column names an OFL/free face to bundle there (cross-platform stacks bundle that face for Android and may bundle it for iOS too). Spent faces (knowledge/priors.md) are deliberately absent. Bundling for renders and builds: on macOS most of these faces sit in /System/Library/Fonts(/Supplemental) as .ttc collections — `kinetic font split <file.ttc> --out fonts/` writes one .ttf per face. When the Android face has no offline source in a sandbox, render with the iOS face and name the Android face in KDL `system.type.families` for the build. Labels, kickers, meta and buttons always use the platform text face at ≥ 13pt (≥ 15pt when the audience is older or tired): a display face's voice belongs to sentences and numbers, not to 9pt small caps.",
  "systems": [
   {
    "id": "expanded-grotesk",
@@ -131,7 +131,7 @@
     "luxury",
     "galleries"
    ],
-   "rule": "display >= 28pt only (hairlines vanish below); never for numerals in tables"
+   "rule": "display >= 28pt only (hairlines vanish below); never for numerals in tables; legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)"
   },
   {
    "id": "baskerville-ledger",
@@ -175,7 +175,7 @@
     "design-led retail",
     "museums"
    ],
-   "rule": "short words only; generous tracking on small labels; never paragraphs"
+   "rule": "short words only; generous tracking on small labels; never paragraphs; legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)"
   },
   {
    "id": "avenir-humanist",
@@ -306,7 +306,7 @@
     "logs",
     "tickets"
    ],
-   "rule": "only for the artefact's typed fields; never body copy; no mono for decoration (priors)"
+   "rule": "only for the artefact's typed fields; never body copy; no mono for decoration (priors); legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)"
   },
   {
    "id": "hand-annotation",
@@ -328,7 +328,7 @@
     "family",
     "craft"
    ],
-   "rule": "handwriting only for marks and short annotations (<= 6 words); titles and body stay system"
+   "rule": "handwriting only for marks and short annotations (<= 6 words); titles and body stay system; legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)"
   },
   {
    "id": "copperplate-signage",
@@ -349,7 +349,7 @@
     "wine",
     "venues with heritage"
    ],
-   "rule": "max 3 words per use; never for numbers that change"
+   "rule": "max 3 words per use; never for numbers that change; legibility floor: this face only at ≥ 20pt and never for labels, kickers or meta (those stay in the text face at ≥ 13pt)"
   },
   {
    "id": "new-york-compact",

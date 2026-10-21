@@ -1,390 +1,708 @@
 {
-  "about": "Composition engines for app screens. An engine is not a look: it is how something that belongs to the product's world becomes the device the screen is built on. `kinetic deal` deals engines; the model chooses among them and fuses one with its inventory. Geometry is for a 393x852pt phone (iOS: content starts at y=59 under the status bar, home indicator band 818-852); scale bands proportionally on Android (412x915dp, top inset 24-48).",
-  "engines": [
-    {
-      "id": "verdict",
-      "name": "Verdict sentence",
-      "family": "voice",
-      "device": "a display-size sentence that answers the glance question in the product's voice, with the number as proof underneath",
-      "fits": ["glance", "monitor", "status", "decide"],
-      "misfits": ["browse", "catalogue", "creation tool"],
-      "shell": "native navigation untouched; compact contextual header instead of a large title",
-      "first_viewport": [
-        "59-103 context line: place / subject + data age, 15/20 text-2",
-        "103-251 verdict: 34-44pt display, 2 lines max, sentence case, the answer first",
-        "251-307 proof: the number + its basis ('62 left - usually gone by 15:00'), tabular 17/22",
-        "307-371 one drawn vocabulary object at 48-64pt beside or under the proof, carrying state",
-        "371-818 the next decision (one list or one action group); primary action in the thumb band 730-818"
-      ],
-      "vocabulary_slots": ["status_dot", "data_mark", "empty_illustration"],
-      "signature_move": "the sentence changes tense and wording with state and data age ('Was quiet at 11:40.') instead of a stale badge",
-      "live_thing": "pull down to re-ask: the sentence rewrites itself word by word when fresh data lands",
-      "risks": ["D31 if the sentence hides the number", "copy that sells instead of answers"]
-    },
-    {
-      "id": "object-control",
-      "name": "The object is the control",
-      "family": "object",
-      "device": "the product's real-world object, drawn large, is the primary input: you act on its parts instead of on a form",
-      "fits": ["log", "configure", "pick", "book"],
-      "misfits": ["reading", "feeds", "multi-entity dashboards"],
-      "shell": "native navigation; the object replaces the form, not the nav",
-      "first_viewport": [
-        "59-115 title of the object + its current state, 17/22 semibold",
-        "115-555 the drawn object, 280-440pt tall, every interactive part >= 44pt with a visible boundary",
-        "555-640 readout of what the touched part means, 20/26",
-        "640-818 confirm action docked in the thumb band; secondary as text button"
-      ],
-      "vocabulary_slots": ["input_control", "progress_bar", "data_mark"],
-      "signature_move": "parts of the object light, fill or mark as you act on them; the object is also the receipt",
-      "live_thing": "drag or tap directly on the object with haptic detents; a list fallback for VoiceOver/TalkBack",
-      "risks": ["F05 small parts", "F07 unlabeled parts", "needs a non-visual equivalent"]
-    },
-    {
-      "id": "ledger",
-      "name": "The ledger",
-      "family": "sheet",
-      "device": "entries typeset like a ledger or receipt: ruled lines, a running balance, totals that settle",
-      "fits": ["money", "inventory", "logs", "shared costs", "records"],
-      "misfits": ["inspiration", "media"],
-      "shell": "native list behaviour (swipe actions, edit) with ledger typography",
-      "first_viewport": [
-        "59-171 the running position: 40-56pt tabular figure + one line of meaning",
-        "171-187 double rule (hairline + 2pt) = the ledger's identity",
-        "187-675 rows: date column 44pt wide, description, right-aligned tabular amount; 52-60pt rows, ruled",
-        "675-818 add bar docked, or the closing total line"
-      ],
-      "vocabulary_slots": ["divider", "data_mark", "empty_illustration"],
-      "signature_move": "the settle moment: a total rule draws across and the balance line re-sets",
-      "live_thing": "swipe a row to settle it: the amount strikes through and slides into the total",
-      "risks": ["D04 if it grows tiles", "F04 long descriptions"]
-    },
-    {
-      "id": "timeline-spine",
-      "name": "The day as a spine",
-      "family": "time",
-      "device": "a vertical time line is the screen's structure: now is a fixed marker, the past above, what's next below",
-      "fits": ["day", "schedule", "care", "tracking", "transit"],
-      "misfits": ["catalogue", "settings"],
-      "shell": "native header and tabs; the spine is content",
-      "first_viewport": [
-        "59-131 now: one sentence or time + state at 28-34pt",
-        "131-818 spine at x=28-36: hour ticks 13/16 text-3, events as marks on the spine with 15-17pt labels; NOW marker pinned at ~y=320",
-        "future events in text-2 at half weight; past logged events with their own mark"
-      ],
-      "vocabulary_slots": ["status_dot", "data_mark", "progress_bar"],
-      "signature_move": "the spine itself encodes state (solid where logged, dotted where not yet known)",
-      "live_thing": "scrub along the spine with the thumb; the now-sentence rewrites for the scrubbed time",
-      "risks": ["unknown shown as nothing happened (states.md 3c)", "D31 legend for line styles"]
-    },
-    {
-      "id": "tally",
-      "name": "Marks that count",
-      "family": "object",
-      "device": "quantities shown as repeated marks of the domain (ticks, stamps, punches, beads) instead of numerals or charts",
-      "fits": ["habits", "attempts", "visits", "sessions", "counts under 30"],
-      "misfits": ["large numbers", "money"],
-      "shell": "native",
-      "first_viewport": [
-        "59-151 question or verdict, 28-34pt",
-        "151-391 the tally field: marks at 20-28pt on a 4-column rhythm, grouped by 5 or by the domain's natural unit",
-        "391-447 the count in words + numeral, 17/22",
-        "447-818 entries or the action to add a mark (thumb band)"
-      ],
-      "vocabulary_slots": ["data_mark", "progress_bar", "badge"],
-      "signature_move": "a new mark is drawn in the domain's gesture (a stroke, a stamp, a punch)",
-      "live_thing": "tap-and-hold the field to add a mark; the mark is drawn under the finger",
-      "risks": ["D31 if marks need a legend", "counts > 30 need a numeral"]
-    },
-    {
-      "id": "state-field",
-      "name": "State as a colour field",
-      "family": "space",
-      "device": "the top of the screen is one large field whose colour and words are the current state; one state, one field",
-      "fits": ["status", "health", "readiness", "delivery", "alerts"],
-      "misfits": ["neutral browsing", "brands that forbid colour"],
-      "shell": "native; the field sits under a transparent nav bar",
-      "first_viewport": [
-        "0-331 full-bleed field including the status bar area; state word or sentence 34-40pt on the field at y~200-300",
-        "331-387 what changed and when, 15/20",
-        "387-818 surface sheet rising over the field (radius 20-28 top corners) with the details"
-      ],
-      "vocabulary_slots": ["status_dot", "banner", "badge"],
-      "signature_move": "the field crossfades to the next state; nothing else on the screen repeats the state (D32)",
-      "live_thing": "drag the sheet down to give the field the whole screen (glanceable from a distance)",
-      "risks": ["contrast of text on each field", "colour-only meaning: the word must carry it"]
-    },
-    {
-      "id": "time-atmosphere",
-      "name": "Time of day",
-      "family": "time",
-      "device": "the ground and ink follow real time or real light, so the screen tells the hour before you read it",
-      "fits": ["daily rituals", "sleep", "outdoors", "hospitality", "weather"],
-      "misfits": ["work tools", "finance"],
-      "shell": "native",
-      "first_viewport": [
-        "59-251 the moment: sentence about now at 30-36pt over the time-tinted ground",
-        "251-307 the next change in time ('Light until 19:42')",
-        "307-818 content cards on surfaces that keep contrast across all tints"
-      ],
-      "vocabulary_slots": ["background", "data_mark"],
-      "signature_move": "4-6 designed grounds (dawn, day, dusk, night...) not a continuous gradient",
-      "live_thing": "scrub a small sun/moon mark to preview another hour",
-      "risks": ["contrast across every tint", "dark mode must be designed per tint"]
-    },
-    {
-      "id": "plan-first",
-      "name": "The plan",
-      "family": "space",
-      "device": "a drawn plan, schematic or map of the place (floor, route, garden, shelf layout) is the home and the index",
-      "fits": ["venues", "warehouses", "routes", "rooms", "sites"],
-      "misfits": ["abstract services", "money"],
-      "shell": "native header; plan is zoomable content with a list equivalent",
-      "first_viewport": [
-        "59-115 where you are / which zone, 17/22",
-        "115-515 the plan, drawn with the vocabulary's line weight; zones carry state by fill + word",
-        "515-818 the selected zone's detail as a sheet, or the list of zones"
-      ],
-      "vocabulary_slots": ["map", "status_dot", "data_mark"],
-      "signature_move": "tap a zone: the plan lifts that zone and the sheet answers for it",
-      "live_thing": "pinch/drag the plan with snap-to-zone detents",
-      "risks": ["accessibility: every zone also in a list", "map-first when the question is not spatial"]
-    },
-    {
-      "id": "specimen",
-      "name": "Specimen sheet",
-      "family": "sheet",
-      "device": "the catalogue drawn like a field guide: every item in the same frame, scale and lighting, labelled like a specimen",
-      "fits": ["collections", "menus", "catalogues", "plants", "products"],
-      "misfits": ["single-task tools", "status"],
-      "shell": "native search + filter; the grid is content",
-      "first_viewport": [
-        "59-131 collection title + count, 22/28",
-        "131-818 grid: 2 columns of 168x210 or 3 of 110x140; each item drawn/photographed on the same ground, label 13/16 with its specimen number"
-      ],
-      "vocabulary_slots": ["thumbnail", "badge", "empty_illustration"],
-      "signature_move": "uniform framing makes differences readable; selection opens the specimen card at full size",
-      "live_thing": "long-press a specimen to compare it with the last one viewed",
-      "risks": ["needs consistent assets", "D04 if it becomes tiles of stats"]
-    },
-    {
-      "id": "borrowed-artefact",
-      "name": "Borrowed artefact",
-      "family": "voice",
-      "device": "art-direct the screen as a printed artefact from the product's world (timetable, ticket, label, programme, prescription, menu, receipt)",
-      "fits": ["any product with a real printed artefact"],
-      "misfits": ["products without one (then don't invent one)"],
-      "shell": "native controls; the artefact's typography, rules and numbering carry the identity",
-      "first_viewport": [
-        "59-171 the artefact's header as it would be printed (issuer, number, date), set in its typographic tradition",
-        "171-675 the artefact's body: its columns, rules and numbering, holding live data",
-        "675-818 the one action, native"
-      ],
-      "vocabulary_slots": ["divider", "header", "badge", "data_mark"],
-      "signature_move": "a detail only the real artefact has (perforation, stamp, punched hole, serial number) carries state",
-      "live_thing": "the artefact's own gesture: tear off, stamp, flip to the back",
-      "risks": ["costume if the artefact isn't from this product's world", "skeuomorphic chrome on controls (keep controls native)"]
-    },
-    {
-      "id": "one-question",
-      "name": "One thing at a time",
-      "family": "voice",
-      "device": "one full-screen question or item per step; the next only appears when this one is answered",
-      "fits": ["onboarding", "check-in", "triage", "learning", "forms"],
-      "misfits": ["overview needs", "expert dashboards"],
-      "shell": "native nav bar with progress in words ('2 of 5')",
-      "first_viewport": [
-        "59-103 step in words, 13/16 text-2",
-        "103-371 the question, 28-34pt, up to 3 lines",
-        "371-675 the answers as large targets (64-80pt rows) or the object-control",
-        "675-818 continue / skip in the thumb band"
-      ],
-      "vocabulary_slots": ["progress_bar", "input_control"],
-      "signature_move": "the answer you give stays visible as a quiet line under the next question (a growing summary)",
-      "live_thing": "swipe the question card away to answer the most common way, with undo",
-      "risks": ["slow for repeat use: give an expert shortcut"]
-    },
-    {
-      "id": "dial",
-      "name": "Instrument",
-      "family": "object",
-      "device": "one physical-style instrument (gauge, scale, ruler, thermometer, level) as the hero, read exactly",
-      "fits": ["measurement", "budget left", "capacity", "progress against a limit"],
-      "misfits": ["lists", "social"],
-      "shell": "native",
-      "first_viewport": [
-        "59-115 what is measured, 17/22",
-        "115-451 the instrument, 280-336pt, with graduations in text-3 and the reading as 40-56pt tabular text inside or under it",
-        "451-507 what the reading means, 17/22",
-        "507-818 next actions / history"
-      ],
-      "vocabulary_slots": ["progress_bar", "data_mark"],
-      "signature_move": "graduations and the needle are the brand's line; the instrument settles with a damped spring",
-      "live_thing": "drag the needle to set a target; detents at meaningful values",
-      "risks": ["D04 ring clones: an instrument must be a real instrument of the domain, not a progress ring"]
-    },
-    {
-      "id": "ticket-stack",
-      "name": "Ticket stack",
-      "family": "object",
-      "device": "the items you hold (passes, bookings, orders) as a physical stack you thumb through, the next one on top",
-      "fits": ["bookings", "passes", "orders", "tickets", "coupons"],
-      "misfits": ["content reading", "analytics"],
-      "shell": "native; a list view is one tap away",
-      "first_viewport": [
-        "59-115 'Next' + time to it, 17/22",
-        "115-547 the top ticket at 345x420: issuer, the one fact you need at the door at 34-44pt, a perforation line",
-        "547-627 the edges of the next 2 tickets, offset 8-12pt",
-        "627-818 the ticket's action (show code, directions)"
-      ],
-      "vocabulary_slots": ["card", "badge", "divider"],
-      "signature_move": "the perforation carries state (torn = used), the stub carries the code",
-      "live_thing": "flick the top ticket to the back of the stack; drag down to tear the stub",
-      "risks": ["F07 gestures without buttons", "stack depth hidden from VoiceOver"]
-    },
-    {
-      "id": "notebook",
-      "name": "Field notebook",
-      "family": "sheet",
-      "device": "entries written into a ruled notebook: dated, annotated in the margin, crossed out rather than deleted",
-      "fits": ["journals", "care logs", "inspections", "fieldwork", "learning logs"],
-      "misfits": ["fast transactions"],
-      "shell": "native",
-      "first_viewport": [
-        "59-131 the page's date as the notebook writes it, 22/28",
-        "131-818 ruled lines every 28-32pt; entries sit on the baseline; a 44pt margin column holds times and marks"
-      ],
-      "vocabulary_slots": ["divider", "data_mark", "status_dot", "empty_illustration"],
-      "signature_move": "margin marks (tick, star, arrow) are the vocabulary; edits strike through and keep history",
-      "live_thing": "swipe right on an entry to add a margin mark",
-      "risks": ["handwriting faces for body text (only for marks/annotations)", "ruling must follow the text ramp"]
-    },
-    {
-      "id": "score-sheet",
-      "name": "Score sheet",
-      "family": "sheet",
-      "device": "a grid like a scorecard or attendance sheet: rows of subjects, columns of occasions, cells filled by marks",
-      "fits": ["sports", "classes", "habits over weeks", "rotas", "chores"],
-      "misfits": ["single values", "media"],
-      "shell": "native; horizontal scroll of columns with a pinned first column",
-      "first_viewport": [
-        "59-131 the sheet's title + today's column highlighted, 22/28",
-        "131-651 grid: first column 120pt names, cells 44x44pt with the domain mark; today column in the accent field",
-        "651-818 the action for today's cell"
-      ],
-      "vocabulary_slots": ["data_mark", "progress_bar", "badge"],
-      "signature_move": "today's column is a colour field; filled cells use the domain's mark, not a check-circle",
-      "live_thing": "tap a cell to cycle its mark with a detent haptic",
-      "risks": ["F04 at XXL: cells must grow; provide a list per row"]
-    },
-    {
-      "id": "pinned-board",
-      "name": "Pinned board",
-      "family": "space",
-      "device": "a noticeboard: what matters is pinned higher and larger; notices age visibly",
-      "fits": ["communities", "teams", "households", "venues", "schools"],
-      "misfits": ["personal finance", "precision tools"],
-      "shell": "native",
-      "first_viewport": [
-        "59-115 the board's place + date, 17/22",
-        "115-395 the pinned notice: 22-28pt headline, author + time, pin mark",
-        "395-818 smaller notices in a 2-column masonry with slight, deterministic offsets (0-2deg max, never on text)"
-      ],
-      "vocabulary_slots": ["card", "badge", "empty_illustration"],
-      "signature_move": "age shows by paper fade and position, not a 'new' badge",
-      "live_thing": "drag a notice to pin it for yourself",
-      "risks": ["clutter: max 1 pinned + 6 visible", "rotation hurts legibility: keep text axis-aligned"]
-    },
-    {
-      "id": "type-index",
-      "name": "Index by type",
-      "family": "voice",
-      "device": "huge type is the navigation: letters, numbers or names at display size form the index you scroll",
-      "fits": ["directories", "recipes", "collections by name", "contacts", "glossaries"],
-      "misfits": ["status", "money"],
-      "shell": "native search; the index is the list",
-      "first_viewport": [
-        "59-115 search field (native)",
-        "115-818 index rows: 44-64pt display words, 0.95 line height, the current entry's detail in 15/20 under it"
-      ],
-      "vocabulary_slots": ["thumbnail", "divider"],
-      "signature_move": "the display face is the brand; selection opens the entry where the word grows into its title",
-      "live_thing": "scrub the right edge to jump letters with selection haptics",
-      "risks": ["F04 long names at XXL: wrap, never ellipsis"]
-    },
-    {
-      "id": "shelf",
-      "name": "The shelf",
-      "family": "object",
-      "device": "items stand on shelves like spines, jars or boxes whose physical state (height, fill, tilt) shows their status",
-      "fits": ["libraries", "pantries", "stock", "subscriptions", "reading"],
-      "misfits": ["time-critical status"],
-      "shell": "native; a list equivalent exists",
-      "first_viewport": [
-        "59-131 shelf name + what needs you, 22/28",
-        "131-411 shelf 1: spines 28-44pt wide, 160-220pt tall, labels set vertically or on the base",
-        "411-691 shelf 2",
-        "691-818 the action for the selected item"
-      ],
-      "vocabulary_slots": ["card", "progress_bar", "status_dot"],
-      "signature_move": "an item that needs you leans out of the shelf",
-      "live_thing": "pull a spine out to open it",
-      "risks": ["vertical text legibility", "accessibility list required"]
-    },
-    {
-      "id": "voice-of-the-place",
-      "name": "The place speaks",
-      "family": "voice",
-      "device": "the product addresses you in short signed messages from real people of the place, instead of system banners",
-      "fits": ["small businesses", "care", "hospitality", "clubs"],
-      "misfits": ["impersonal utilities", "anything without real people behind it"],
-      "shell": "native",
-      "first_viewport": [
-        "59-131 the place's name + who is on today, 17/22",
-        "131-371 the latest message as a 22-28pt quote with signature and time",
-        "371-818 what you can do about it, then earlier messages"
-      ],
-      "vocabulary_slots": ["banner", "avatar", "empty_illustration"],
-      "signature_move": "every system state is said by a named person or the place itself, never 'Oops'",
-      "live_thing": "reply with one tap from the message (a short, prepared answer)",
-      "risks": ["F01 fabricated people: only real staff, labelled", "chat-app costume"]
-    },
-    {
-      "id": "countdown",
-      "name": "Time left",
-      "family": "time",
-      "device": "the time remaining before the thing that matters is the hero, drawn in the domain's way of counting",
-      "fits": ["departures", "deadlines", "pickups", "cooking", "events"],
-      "misfits": ["open-ended browsing"],
-      "shell": "native; Live Activity / widget mirrors it",
-      "first_viewport": [
-        "59-115 what you are waiting for, 17/22",
-        "115-299 time left at 64-96pt tabular, unit in words",
-        "299-355 the condition ('if you leave by 08:12')",
-        "355-818 the alternatives in order of usefulness"
-      ],
-      "vocabulary_slots": ["progress_bar", "data_mark"],
-      "signature_move": "the numeral's weight or width changes as time runs out (variable width/weight axis)",
-      "live_thing": "drag the condition to see the time left for a later choice",
-      "risks": ["stale numbers must look stale", "D04 if it becomes a ring"]
-    },
-    {
-      "id": "strata",
-      "name": "Layers",
-      "family": "space",
-      "device": "horizontal bands stacked like strata, floors or depths; position = level, thickness = amount",
-      "fits": ["buildings", "budgets by category", "depth", "progress through stages", "storage"],
-      "misfits": ["single facts"],
-      "shell": "native",
-      "first_viewport": [
-        "59-131 the total in a sentence, 22/28",
-        "131-651 bands full-width, height proportional (min 44pt), label + value inside each band",
-        "651-818 the selected band's detail or action"
-      ],
-      "vocabulary_slots": ["progress_bar", "data_mark", "chart"],
-      "signature_move": "bands grow or shrink with a settling spring; your position is a marker line across them",
-      "live_thing": "drag a band edge to rebalance, with detents",
-      "risks": ["D31 if band colours need a legend: labels inside bands"]
-    }
-  ]
+ "about": "Composition engines for app screens. An engine is not a look: it is how something that belongs to the product's world becomes the device the screen is built on. `kinetic deal` deals engines; the model chooses among them and fuses one with its inventory. Geometry is for a 393x852pt phone (iOS: content starts at y=59 under the status bar, home indicator band 818-852); scale bands proportionally on Android (412x915dp, top inset 24-48).",
+ "engines": [
+  {
+   "id": "verdict",
+   "name": "Verdict sentence",
+   "family": "voice",
+   "device": "a display-size sentence that answers the glance question in the product's voice, with the number as proof underneath",
+   "fits": [
+    "glance",
+    "monitor",
+    "status",
+    "decide"
+   ],
+   "misfits": [
+    "browse",
+    "catalogue",
+    "creation tool"
+   ],
+   "shell": "native navigation untouched; compact contextual header instead of a large title",
+   "first_viewport": [
+    "59-103 context line: place / subject + data age, 15/20 text-2",
+    "103-251 verdict: 34-44pt display, 2 lines max, sentence case, the answer first",
+    "251-307 proof: the number + its basis ('62 left - usually gone by 15:00'), tabular 17/22",
+    "307-371 one drawn vocabulary object at 48-64pt beside or under the proof, carrying state",
+    "371-818 the next decision (one list or one action group); primary action in the thumb band 730-818"
+   ],
+   "vocabulary_slots": [
+    "status_dot",
+    "data_mark",
+    "empty_illustration"
+   ],
+   "signature_move": "the sentence changes tense and wording with state and data age ('Was quiet at 11:40.') instead of a stale badge",
+   "live_thing": "pull down to re-ask: the sentence rewrites itself word by word when fresh data lands",
+   "risks": [
+    "D31 if the sentence hides the number",
+    "copy that sells instead of answers"
+   ]
+  },
+  {
+   "id": "object-control",
+   "name": "The object is the control",
+   "family": "object",
+   "device": "the product's real-world object, drawn large, is the primary input: you act on its parts instead of on a form",
+   "fits": [
+    "log",
+    "configure",
+    "pick",
+    "book"
+   ],
+   "misfits": [
+    "reading",
+    "feeds",
+    "multi-entity dashboards"
+   ],
+   "shell": "native navigation; the object replaces the form, not the nav",
+   "first_viewport": [
+    "59-115 title of the object + its current state, 17/22 semibold",
+    "115-555 the drawn object, 280-440pt tall, every interactive part >= 44pt with a visible boundary",
+    "555-640 readout of what the touched part means, 20/26",
+    "640-818 confirm action docked in the thumb band; secondary as text button"
+   ],
+   "vocabulary_slots": [
+    "input_control",
+    "progress_bar",
+    "data_mark"
+   ],
+   "signature_move": "parts of the object light, fill or mark as you act on them; the object is also the receipt",
+   "live_thing": "drag or tap directly on the object with haptic detents; a list fallback for VoiceOver/TalkBack",
+   "risks": [
+    "F05 small parts",
+    "F07 unlabeled parts",
+    "needs a non-visual equivalent"
+   ]
+  },
+  {
+   "id": "ledger",
+   "name": "The ledger",
+   "family": "sheet",
+   "device": "entries typeset like a ledger or receipt: ruled lines, a running balance, totals that settle",
+   "fits": [
+    "money",
+    "inventory",
+    "logs",
+    "shared costs",
+    "records"
+   ],
+   "misfits": [
+    "inspiration",
+    "media"
+   ],
+   "shell": "native list behaviour (swipe actions, edit) with ledger typography",
+   "first_viewport": [
+    "59-171 the running position: 40-56pt tabular figure + one line of meaning",
+    "171-187 double rule (hairline + 2pt) = the ledger's identity",
+    "187-675 rows: date column 44pt wide, description, right-aligned tabular amount; 52-60pt rows, ruled",
+    "675-818 add bar docked, or the closing total line"
+   ],
+   "vocabulary_slots": [
+    "divider",
+    "data_mark",
+    "empty_illustration"
+   ],
+   "signature_move": "the settle moment: a total rule draws across and the balance line re-sets",
+   "live_thing": "swipe a row to settle it: the amount strikes through and slides into the total",
+   "risks": [
+    "D04 if it grows tiles",
+    "F04 long descriptions"
+   ]
+  },
+  {
+   "id": "timeline-spine",
+   "name": "The day as a spine",
+   "family": "time",
+   "device": "a vertical time line is the screen's structure: now is a fixed marker, the past above, what's next below",
+   "fits": [
+    "day",
+    "schedule",
+    "care",
+    "tracking",
+    "transit"
+   ],
+   "misfits": [
+    "catalogue",
+    "settings"
+   ],
+   "shell": "native header and tabs; the spine is content",
+   "first_viewport": [
+    "59-131 now: one sentence or time + state at 28-34pt",
+    "131-818 spine at x=28-36: hour ticks 13/16 text-3, events as marks on the spine with 15-17pt labels; NOW marker pinned at ~y=320",
+    "future events in text-2 at half weight; past logged events with their own mark"
+   ],
+   "vocabulary_slots": [
+    "status_dot",
+    "data_mark",
+    "progress_bar"
+   ],
+   "signature_move": "the spine itself encodes state (solid where logged, dotted where not yet known)",
+   "live_thing": "scrub along the spine with the thumb; the now-sentence rewrites for the scrubbed time",
+   "risks": [
+    "unknown shown as nothing happened (states.md 3c)",
+    "D31 legend for line styles"
+   ]
+  },
+  {
+   "id": "tally",
+   "name": "Marks that count",
+   "family": "object",
+   "device": "quantities shown as repeated marks of the domain (ticks, stamps, punches, beads) instead of numerals or charts",
+   "fits": [
+    "habits",
+    "attempts",
+    "visits",
+    "sessions",
+    "counts under 30"
+   ],
+   "misfits": [
+    "large numbers",
+    "money"
+   ],
+   "shell": "native",
+   "first_viewport": [
+    "59-151 question or verdict, 28-34pt",
+    "151-391 the tally field: marks at 20-28pt on a 4-column rhythm, grouped by 5 or by the domain's natural unit",
+    "391-447 the count in words + numeral, 17/22",
+    "447-818 entries or the action to add a mark (thumb band)"
+   ],
+   "vocabulary_slots": [
+    "data_mark",
+    "progress_bar",
+    "badge"
+   ],
+   "signature_move": "a new mark is drawn in the domain's gesture (a stroke, a stamp, a punch)",
+   "live_thing": "tap-and-hold the field to add a mark; the mark is drawn under the finger",
+   "risks": [
+    "D31 if marks need a legend",
+    "counts > 30 need a numeral"
+   ]
+  },
+  {
+   "id": "state-field",
+   "name": "State as a colour field",
+   "family": "space",
+   "device": "the top of the screen is one large field whose colour and words are the current state; one state, one field",
+   "fits": [
+    "status",
+    "health",
+    "readiness",
+    "delivery",
+    "alerts"
+   ],
+   "misfits": [
+    "neutral browsing",
+    "brands that forbid colour"
+   ],
+   "shell": "native; the field sits under a transparent nav bar",
+   "first_viewport": [
+    "0-331 full-bleed field including the status bar area; state word or sentence 34-40pt on the field at y~200-300",
+    "331-387 what changed and when, 15/20",
+    "387-818 surface sheet rising over the field (radius 20-28 top corners) with the details"
+   ],
+   "vocabulary_slots": [
+    "status_dot",
+    "banner",
+    "badge"
+   ],
+   "signature_move": "the field crossfades to the next state; nothing else on the screen repeats the state (D32)",
+   "live_thing": "drag the sheet down to give the field the whole screen (glanceable from a distance)",
+   "risks": [
+    "contrast of text on each field",
+    "colour-only meaning: the word must carry it"
+   ]
+  },
+  {
+   "id": "time-atmosphere",
+   "name": "Time of day",
+   "family": "time",
+   "device": "the ground and ink follow real time or real light, so the screen tells the hour before you read it",
+   "fits": [
+    "daily rituals",
+    "sleep",
+    "outdoors",
+    "hospitality",
+    "weather"
+   ],
+   "misfits": [
+    "work tools",
+    "finance"
+   ],
+   "shell": "native",
+   "first_viewport": [
+    "59-251 the moment: sentence about now at 30-36pt over the time-tinted ground",
+    "251-307 the next change in time ('Light until 19:42')",
+    "307-818 content cards on surfaces that keep contrast across all tints"
+   ],
+   "vocabulary_slots": [
+    "background",
+    "data_mark"
+   ],
+   "signature_move": "4-6 designed grounds (dawn, day, dusk, night...) not a continuous gradient",
+   "live_thing": "scrub a small sun/moon mark to preview another hour",
+   "risks": [
+    "contrast across every tint",
+    "dark mode must be designed per tint"
+   ]
+  },
+  {
+   "id": "plan-first",
+   "name": "The plan",
+   "family": "space",
+   "device": "a drawn plan, schematic or map of the place (floor, route, garden, shelf layout) is the home and the index",
+   "fits": [
+    "venues",
+    "warehouses",
+    "routes",
+    "rooms",
+    "sites"
+   ],
+   "misfits": [
+    "abstract services",
+    "money"
+   ],
+   "shell": "native header; plan is zoomable content with a list equivalent",
+   "first_viewport": [
+    "59-115 where you are / which zone, 17/22",
+    "115-515 the plan, drawn with the vocabulary's line weight; zones carry state by fill + word",
+    "515-818 the selected zone's detail as a sheet, or the list of zones"
+   ],
+   "vocabulary_slots": [
+    "map",
+    "status_dot",
+    "data_mark"
+   ],
+   "signature_move": "tap a zone: the plan lifts that zone and the sheet answers for it",
+   "live_thing": "pinch/drag the plan with snap-to-zone detents",
+   "risks": [
+    "accessibility: every zone also in a list",
+    "map-first when the question is not spatial"
+   ]
+  },
+  {
+   "id": "specimen",
+   "name": "Specimen sheet",
+   "family": "sheet",
+   "device": "the catalogue drawn like a field guide: every item in the same frame, scale and lighting, labelled like a specimen",
+   "fits": [
+    "collections",
+    "menus",
+    "catalogues",
+    "plants",
+    "products"
+   ],
+   "misfits": [
+    "single-task tools",
+    "status"
+   ],
+   "shell": "native search + filter; the grid is content",
+   "first_viewport": [
+    "59-131 collection title + count, 22/28",
+    "131-818 grid: 2 columns of 168x210 or 3 of 110x140; each item drawn/photographed on the same ground, label 13/16 with its specimen number"
+   ],
+   "vocabulary_slots": [
+    "thumbnail",
+    "badge",
+    "empty_illustration"
+   ],
+   "signature_move": "uniform framing makes differences readable; selection opens the specimen card at full size",
+   "live_thing": "long-press a specimen to compare it with the last one viewed",
+   "risks": [
+    "needs consistent assets",
+    "D04 if it becomes tiles of stats"
+   ]
+  },
+  {
+   "id": "borrowed-artefact",
+   "name": "Borrowed artefact",
+   "family": "voice",
+   "device": "art-direct the screen as a printed artefact from the product's world (timetable, ticket, label, programme, prescription, menu, receipt)",
+   "fits": [
+    "any product with a real printed artefact"
+   ],
+   "misfits": [
+    "products without one (then don't invent one)"
+   ],
+   "shell": "native controls; the artefact's typography, rules and numbering carry the identity",
+   "first_viewport": [
+    "59-171 the artefact's header as it would be printed (issuer, number, date), set in its typographic tradition",
+    "171-675 the artefact's body: its columns, rules and numbering, holding live data",
+    "675-818 the one action, native"
+   ],
+   "vocabulary_slots": [
+    "divider",
+    "header",
+    "badge",
+    "data_mark"
+   ],
+   "signature_move": "a detail only the real artefact has (perforation, stamp, punched hole, serial number) carries state",
+   "live_thing": "the artefact's own gesture: tear off, stamp, flip to the back",
+   "risks": [
+    "costume if the artefact isn't from this product's world",
+    "skeuomorphic chrome on controls (keep controls native)"
+   ]
+  },
+  {
+   "id": "one-question",
+   "name": "One thing at a time",
+   "family": "voice",
+   "device": "one full-screen question or item per step; the next only appears when this one is answered",
+   "fits": [
+    "onboarding",
+    "check-in",
+    "triage",
+    "learning",
+    "forms"
+   ],
+   "misfits": [
+    "overview needs",
+    "expert dashboards"
+   ],
+   "shell": "native nav bar with progress in words ('2 of 5')",
+   "first_viewport": [
+    "59-103 step in words, 13/16 text-2",
+    "103-371 the question, 28-34pt, up to 3 lines",
+    "371-675 the answers as large targets (64-80pt rows) or the object-control",
+    "675-818 continue / skip in the thumb band"
+   ],
+   "vocabulary_slots": [
+    "progress_bar",
+    "input_control"
+   ],
+   "signature_move": "the answer you give stays visible as a quiet line under the next question (a growing summary)",
+   "live_thing": "swipe the question card away to answer the most common way, with undo",
+   "risks": [
+    "slow for repeat use: give an expert shortcut"
+   ]
+  },
+  {
+   "id": "dial",
+   "name": "Instrument",
+   "family": "object",
+   "device": "one physical-style instrument (gauge, scale, ruler, thermometer, level) as the hero, read exactly",
+   "fits": [
+    "measurement",
+    "budget left",
+    "capacity",
+    "progress against a limit"
+   ],
+   "misfits": [
+    "lists",
+    "social"
+   ],
+   "shell": "native",
+   "first_viewport": [
+    "59-115 what is measured, 17/22",
+    "115-451 the instrument, 280-336pt, with graduations in text-3 and the reading as 40-56pt tabular text inside or under it",
+    "451-507 what the reading means, 17/22",
+    "507-818 next actions / history"
+   ],
+   "vocabulary_slots": [
+    "progress_bar",
+    "data_mark"
+   ],
+   "signature_move": "graduations and the needle are the brand's line; the instrument settles with a damped spring",
+   "live_thing": "drag the needle to set a target; detents at meaningful values",
+   "risks": [
+    "D04 ring clones: an instrument must be a real instrument of the domain, not a progress ring"
+   ]
+  },
+  {
+   "id": "ticket-stack",
+   "name": "Ticket stack",
+   "family": "object",
+   "device": "the items you hold (passes, bookings, orders) as a physical stack you thumb through, the next one on top",
+   "fits": [
+    "bookings",
+    "passes",
+    "orders",
+    "tickets",
+    "coupons"
+   ],
+   "misfits": [
+    "content reading",
+    "analytics"
+   ],
+   "shell": "native; a list view is one tap away",
+   "first_viewport": [
+    "59-115 'Next' + time to it, 17/22",
+    "115-547 the top ticket at 345x420: issuer, the one fact you need at the door at 34-44pt, a perforation line",
+    "547-627 the edges of the next 2 tickets, offset 8-12pt",
+    "627-818 the ticket's action (show code, directions)"
+   ],
+   "vocabulary_slots": [
+    "card",
+    "badge",
+    "divider"
+   ],
+   "signature_move": "the perforation carries state (torn = used), the stub carries the code",
+   "live_thing": "flick the top ticket to the back of the stack; drag down to tear the stub",
+   "risks": [
+    "F07 gestures without buttons",
+    "stack depth hidden from VoiceOver"
+   ]
+  },
+  {
+   "id": "notebook",
+   "name": "Field notebook",
+   "family": "sheet",
+   "device": "entries written into a ruled notebook: dated, annotated in the margin, crossed out rather than deleted",
+   "fits": [
+    "journals",
+    "care logs",
+    "inspections",
+    "fieldwork",
+    "learning logs"
+   ],
+   "misfits": [
+    "fast transactions"
+   ],
+   "shell": "native",
+   "first_viewport": [
+    "59-131 the page's date as the notebook writes it, 22/28",
+    "131-818 ruled lines every 28-32pt; entries sit on the baseline; a 44pt margin column holds times and marks"
+   ],
+   "vocabulary_slots": [
+    "divider",
+    "data_mark",
+    "status_dot",
+    "empty_illustration"
+   ],
+   "signature_move": "margin marks (tick, star, arrow) are the vocabulary; edits strike through and keep history",
+   "live_thing": "swipe right on an entry to add a margin mark",
+   "risks": [
+    "handwriting faces for body text (only for marks/annotations)",
+    "ruling must follow the text ramp"
+   ]
+  },
+  {
+   "id": "score-sheet",
+   "name": "Score sheet",
+   "family": "sheet",
+   "device": "a grid like a scorecard or attendance sheet: rows of subjects, columns of occasions, cells filled by marks",
+   "fits": [
+    "sports",
+    "classes",
+    "habits over weeks",
+    "rotas",
+    "chores"
+   ],
+   "misfits": [
+    "single values",
+    "media"
+   ],
+   "shell": "native; horizontal scroll of columns with a pinned first column",
+   "first_viewport": [
+    "59-131 the sheet's title + today's column highlighted, 22/28",
+    "131-651 grid: first column 120pt names, cells 44x44pt with the domain mark; today column in the accent field",
+    "651-818 the action for today's cell"
+   ],
+   "vocabulary_slots": [
+    "data_mark",
+    "progress_bar",
+    "badge"
+   ],
+   "signature_move": "today's column is a colour field; filled cells use the domain's mark, not a check-circle",
+   "live_thing": "tap a cell to cycle its mark with a detent haptic",
+   "risks": [
+    "F04 at XXL: cells must grow; provide a list per row"
+   ]
+  },
+  {
+   "id": "pinned-board",
+   "name": "Pinned board",
+   "family": "space",
+   "device": "a noticeboard: what matters is pinned higher and larger; notices age visibly",
+   "fits": [
+    "communities",
+    "teams",
+    "households",
+    "venues",
+    "schools"
+   ],
+   "misfits": [
+    "personal finance",
+    "precision tools"
+   ],
+   "shell": "native",
+   "first_viewport": [
+    "59-115 the board's place + date, 17/22",
+    "115-395 the pinned notice: 22-28pt headline, author + time, pin mark",
+    "395-818 smaller notices in ONE column (or an aligned 2-up with equal tops and heights): age and priority show by size, pin and paper tone — never by offsets or rotation"
+   ],
+   "vocabulary_slots": [
+    "card",
+    "badge",
+    "empty_illustration"
+   ],
+   "signature_move": "age shows by paper fade and position, not a 'new' badge",
+   "live_thing": "drag a notice to pin it for yourself",
+   "risks": [
+    "clutter: max 1 pinned + 4 visible",
+    "staggered or rotated cards read as misalignment, not a board"
+   ]
+  },
+  {
+   "id": "type-index",
+   "name": "Index by type",
+   "family": "voice",
+   "device": "huge type is the navigation: letters, numbers or names at display size form the index you scroll",
+   "fits": [
+    "directories",
+    "recipes",
+    "collections by name",
+    "contacts",
+    "glossaries"
+   ],
+   "misfits": [
+    "status",
+    "money"
+   ],
+   "shell": "native search; the index is the list",
+   "first_viewport": [
+    "59-115 search field (native)",
+    "115-818 index rows: 44-64pt display words, 0.95 line height, the current entry's detail in 15/20 under it"
+   ],
+   "vocabulary_slots": [
+    "thumbnail",
+    "divider"
+   ],
+   "signature_move": "the display face is the brand; selection opens the entry where the word grows into its title",
+   "live_thing": "scrub the right edge to jump letters with selection haptics",
+   "risks": [
+    "F04 long names at XXL: wrap, never ellipsis"
+   ]
+  },
+  {
+   "id": "shelf",
+   "name": "The shelf",
+   "family": "object",
+   "device": "items stand on shelves like spines, jars or boxes whose physical state (height, fill, tilt) shows their status",
+   "fits": [
+    "libraries",
+    "pantries",
+    "stock",
+    "subscriptions",
+    "reading"
+   ],
+   "misfits": [
+    "time-critical status"
+   ],
+   "shell": "native; a list equivalent exists",
+   "first_viewport": [
+    "59-131 shelf name + what needs you, 22/28",
+    "131-411 shelf 1: spines 28-44pt wide, 160-220pt tall, labels set vertically or on the base",
+    "411-691 shelf 2",
+    "691-818 the action for the selected item"
+   ],
+   "vocabulary_slots": [
+    "card",
+    "progress_bar",
+    "status_dot"
+   ],
+   "signature_move": "an item that needs you leans out of the shelf",
+   "live_thing": "pull a spine out to open it",
+   "risks": [
+    "vertical text legibility",
+    "accessibility list required"
+   ]
+  },
+  {
+   "id": "voice-of-the-place",
+   "name": "The place speaks",
+   "family": "voice",
+   "device": "the product addresses you in short signed messages from real people of the place, instead of system banners",
+   "fits": [
+    "small businesses",
+    "care",
+    "hospitality",
+    "clubs"
+   ],
+   "misfits": [
+    "impersonal utilities",
+    "anything without real people behind it"
+   ],
+   "shell": "native",
+   "first_viewport": [
+    "59-131 the place's name + who is on today, 17/22",
+    "131-371 the latest message as a 22-28pt quote with signature and time",
+    "371-818 what you can do about it, then earlier messages"
+   ],
+   "vocabulary_slots": [
+    "banner",
+    "avatar",
+    "empty_illustration"
+   ],
+   "signature_move": "every system state is said by a named person or the place itself, never 'Oops'",
+   "live_thing": "reply with one tap from the message (a short, prepared answer)",
+   "risks": [
+    "F01 fabricated people: only real staff, labelled",
+    "chat-app costume"
+   ]
+  },
+  {
+   "id": "countdown",
+   "name": "Time left",
+   "family": "time",
+   "device": "the time remaining before the thing that matters is the hero, drawn in the domain's way of counting",
+   "fits": [
+    "departures",
+    "deadlines",
+    "pickups",
+    "cooking",
+    "events"
+   ],
+   "misfits": [
+    "open-ended browsing"
+   ],
+   "shell": "native; Live Activity / widget mirrors it",
+   "first_viewport": [
+    "59-115 what you are waiting for, 17/22",
+    "115-299 time left at 64-96pt tabular, unit in words",
+    "299-355 the condition ('if you leave by 08:12')",
+    "355-818 the alternatives in order of usefulness"
+   ],
+   "vocabulary_slots": [
+    "progress_bar",
+    "data_mark"
+   ],
+   "signature_move": "the numeral's weight or width changes as time runs out (variable width/weight axis)",
+   "live_thing": "drag the condition to see the time left for a later choice",
+   "risks": [
+    "stale numbers must look stale",
+    "D04 if it becomes a ring"
+   ]
+  },
+  {
+   "id": "strata",
+   "name": "Layers",
+   "family": "space",
+   "device": "horizontal bands stacked like strata, floors or depths; position = level, thickness = amount",
+   "fits": [
+    "buildings",
+    "budgets by category",
+    "depth",
+    "progress through stages",
+    "storage"
+   ],
+   "misfits": [
+    "single facts"
+   ],
+   "shell": "native",
+   "first_viewport": [
+    "59-131 the total in a sentence, 22/28",
+    "131-651 bands full-width, height proportional (min 44pt), label + value inside each band",
+    "651-818 the selected band's detail or action"
+   ],
+   "vocabulary_slots": [
+    "progress_bar",
+    "data_mark",
+    "chart"
+   ],
+   "signature_move": "bands grow or shrink with a settling spring; your position is a marker line across them",
+   "live_thing": "drag a band edge to rebalance, with detents",
+   "risks": [
+    "D31 if band colours need a legend: labels inside bands"
+   ]
+  }
+ ]
 }

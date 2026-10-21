@@ -82,6 +82,19 @@ def measure(path: str) -> dict:
         sizes[round(math.log(y1 - y0) / math.log(1.3))] += 1
     distinct_sizes = sum(1 for _, n in sizes.items() if n >= 2) + (1 if any(n == 1 for n in sizes.values()) else 0)
     text_rows = sum(b - a for a, b in lines)
+    # loudness: saturated colour areas. One loud thing per viewport reads as calm; two or three compete.
+    loud_rows, loud_px = [], 0
+    for y in range(h):
+        row = px[y]
+        n = 0
+        for x in range(0, w, 2):
+            r, g, b = row[3 * x], row[3 * x + 1], row[3 * x + 2]
+            mx, mn = max(r, g, b), min(r, g, b)
+            if mx - mn > 70 and mx > 90:
+                n += 1
+        loud_px += n
+        loud_rows.append(n >= 0.08 * (w / 2))
+    loud_bands = [b for b in _bands(loud_rows, gap=8) if b[1] - b[0] >= 10]
     return {
         "file": path,
         "lines": len(lines),
@@ -92,12 +105,14 @@ def measure(path: str) -> dict:
         "text_share": round(text_rows / h, 2),
         "largest_gap_pt": max(gaps) if gaps else 0,
         "edge_density": round(sum(edges) / (VIEW_W * h), 3),
+        "loud_share": round(loud_px / (h * w / 2), 3),
+        "loud_things": len(loud_bands),
     }
 
 
 # per-viewport budgets: (good, bad) — linear between
 BUDGET = {"words": (45, 120), "lines": (12, 28), "text_sizes": (4, 7), "quiet_share": (0.60, 0.35),
-          "edge_density": (0.030, 0.07)}
+          "edge_density": (0.030, 0.07), "loud_share": (0.02, 0.08), "loud_things": (1, 3)}
 
 
 def _sub(v, good, bad):
@@ -108,8 +123,9 @@ def _sub(v, good, bad):
 
 def grade(m: dict) -> dict:
     parts = {k: round(_sub(m[k], *BUDGET[k]) * 100) for k in BUDGET}
-    score = round(0.30 * parts["words"] + 0.20 * parts["lines"] + 0.15 * parts["text_sizes"]
-                  + 0.20 * parts["quiet_share"] + 0.15 * parts["edge_density"])
+    score = round(0.25 * parts["words"] + 0.12 * parts["lines"] + 0.10 * parts["text_sizes"]
+                  + 0.15 * parts["quiet_share"] + 0.08 * parts["edge_density"]
+                  + 0.15 * parts["loud_share"] + 0.15 * parts["loud_things"])
     notes = []
     if m["words"] > BUDGET["words"][1] * 0.8:
         notes.append(f"~{m['words']} words in the first viewport: cut to the answer, its proof and one action")
@@ -117,6 +133,8 @@ def grade(m: dict) -> dict:
         notes.append(f"{m['text_sizes']} text sizes: merge to 4–5 (display, title, body, meta)")
     if m["quiet_share"] < 0.33:
         notes.append(f"only {int(m['quiet_share'] * 100)}% quiet rows: remove containers or a block, let space group")
+    if m["loud_things"] > 1:
+        notes.append(f"{m['loud_things']} loud colour areas compete: keep one (the answer or the act), quiet the rest")
     if m["largest_gap_pt"] < 24:
         notes.append("no breathing gap ≥ 24pt anywhere: give the hero room")
     return {"clarity": score, "parts": parts, "notes": notes}

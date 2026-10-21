@@ -24,7 +24,13 @@ world becomes the screen's device, with first-viewport geometry), a native
 Rules:
 - Choose **among the dealt options**. Do not blend them back toward what you
   would have done anyway.
-- Replace a slot only with `kinetic deal --redraw N.slot --reason "…"`, and
+- **A slot that contradicts the thesis must be redrawn.** Check each dealt
+  type, palette and engine against `thesis.feel`, `thesis.never` and the
+  brief's own tone words: a cool navy palette for "the counter of a warm local
+  shop", 9pt engraved small caps for tired older readers, a pinned board for a
+  calm one-glance answer — each is a reason (`--reason "thesis.never: cold
+  portal"`). The deal exists to escape your priors, not to overrule the brief.
+- Otherwise replace a slot only with `kinetic deal --redraw N.slot --reason "…"`, and
   only for a **product fact or brand constraint** ("brand colour is #0A7A3E",
   "the venue has no printed artefact"). "I prefer…" is not a reason. Redraws
   are logged; the validator rejects a chosen engine that was never dealt (K29).
@@ -52,7 +58,10 @@ brief's must-haves above the fold), `feasibility` (stack, time, assets),
 
 ## 4. Converge: the most distinctive viable direction
 1. **Viable** = product_fit ≥ 4, usability ≥ 4, feasibility ≥ 3, every `must`
-   requirement served in the first viewport where the brief needs it.
+   requirement served in the first viewport where the brief needs it, no slot
+   contradicting `thesis.feel`/`never`, and the clarity budgets reachable
+   (knowledge/clarity.md: a direction that needs two loud things per screen
+   or a two-column card grid is not viable on a phone).
 2. Among viable directions, **choose the highest distinctiveness**. Fit is a
    floor, not the tie-breaker: a calm, correct, forgettable direction lost
    every blind round. If a brand or user fact rules the more distinctive one

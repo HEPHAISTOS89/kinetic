@@ -58,6 +58,22 @@ def _weighted(rng: random.Random, items: list, weights: list):
     return items[-1]
 
 
+WARM = {"warm", "warmth", "cosy", "cozy", "homely", "local", "friendly", "human", "family", "hands", "handmade",
+        "counter", "shop", "kitchen", "craft", "community", "trusted", "cold", "clinical", "sterile", "hospital", "portal"}
+CALM = {"calm", "quiet", "seasoned", "practical", "unfussy", "anxious", "worried", "tired", "reassure", "reassuring",
+        "gentle", "restful", "older", "elderly", "care"}
+
+
+def tone(words: set) -> set:
+    """What the brief's own words ask of colour: warmth (or no coldness) and calm (no loud palettes)."""
+    t = set()
+    if words & WARM:
+        t.add("warm")
+    if words & CALM:
+        t.add("calm")
+    return t
+
+
 def _pick(rng, pool, words, taken, slot, engine=None):
     cand = [p for p in pool if p["id"] not in taken]
     if not cand:
@@ -65,6 +81,12 @@ def _pick(rng, pool, words, taken, slot, engine=None):
     weights = []
     for p in cand:
         w = 1.0 + 1.5 * _hits(p.get("fits"), words)
+        if slot == "palette":
+            tn = tone(words)
+            if "warm" in tn and p.get("temperature") == "cool":
+                w *= 0.1
+            if "calm" in tn and p.get("temperature") == "bold":
+                w *= 0.2
         if engine is not None:
             # an engine names the slots it works best with
             if slot == "palette" and engine["id"] == "state-field":

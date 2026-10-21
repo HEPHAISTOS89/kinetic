@@ -1,68 +1,404 @@
 {
-  "about": "Palette systems: a seed accent, the hue of the tinted neutrals, and a FIELD — a large colour area (hero band, state field, today column, the vocabulary's fill) that gives the screen its colour identity without colouring every control. `kinetic deal` derives contrast-checked light/dark roles from seed + neutral hue, then checks text on each field. Proportion is part of the palette: identity comes from how much field, not how many hues. Spent grounds (cream/parchment, near-black + acid accent, AI violet) are deliberately absent (knowledge/priors.md).",
-  "palettes": [
-    {"id": "signal-blue", "name": "Signal blue on concrete", "seed": "#1F4FD8", "neutral_hue": 250, "neutral_chroma": 0.010,
-     "field": {"light": "#DCE4F5", "dark": "#18264A"}, "proportion": "ground 70 / field 20 / accent 5 / ink 5",
-     "fits": ["transit", "civic", "logistics", "utilities"]},
-    {"id": "highlighter", "name": "Ink and highlighter", "seed": "#1A2B6D", "neutral_hue": 260, "neutral_chroma": 0.008,
-     "field": {"light": "#FFE45C", "dark": "#5C4E00"}, "proportion": "ground 75 / field 10 (marks and today only) / ink 15",
-     "fits": ["study", "notes", "tasks", "records"], "rule": "yellow is a field behind ink, never text"},
-    {"id": "forest-ledger", "name": "Forest ledger", "seed": "#B5651D", "neutral_hue": 160, "neutral_chroma": 0.012,
-     "field": {"light": "#0F3D2E", "dark": "#0B2A20"}, "proportion": "field 35 (hero) / ground 55 / amber accent 5 / ink 5",
-     "fits": ["money", "membership", "outdoors"], "rule": "hero sits on the deep green field with near-white ink; the rest is ground"},
-    {"id": "night-school", "name": "Night school", "seed": "#2E8FC4", "neutral_hue": 245, "neutral_chroma": 0.014,
-     "field": {"light": "#1B2A4A", "dark": "#121D33"}, "proportion": "field 30 / ground 60 / accent 5 / chalk ink 5",
-     "fits": ["learning", "evening venues", "planning"]},
-    {"id": "raspberry-grey", "name": "Raspberry on cool grey", "seed": "#B5174B", "neutral_hue": 240, "neutral_chroma": 0.006,
-     "field": {"light": "#F6D9E2", "dark": "#4A1426"}, "proportion": "ground 80 / field 10 / accent 5 / ink 5",
-     "fits": ["social", "events", "retail"], "rule": "danger is a different shape + word, never just red-ish"},
-    {"id": "cobalt-orange", "name": "Cobalt and orange", "seed": "#2340C2", "neutral_hue": 255, "neutral_chroma": 0.006,
-     "field": {"light": "#FF8A3D", "dark": "#B4501A"}, "proportion": "ground 70 / cobalt 15 / orange field 10 / ink 5",
-     "fits": ["sport", "events", "tools"], "rule": "two-colour print logic: cobalt for structure, orange for the one live thing"},
-    {"id": "lake-teal", "name": "Lake", "seed": "#006D77", "neutral_hue": 200, "neutral_chroma": 0.012,
-     "field": {"light": "#BFE3E6", "dark": "#0E3A3F"}, "proportion": "ground 70 / field 20 / accent 5 / ink 5",
-     "fits": ["health", "water", "travel"], "rule": "Kinetic arms over-used petrol/teal accents on warm paper (priors): keep the ground cool"},
-    {"id": "moss", "name": "Moss and stone", "seed": "#4F7A28", "neutral_hue": 110, "neutral_chroma": 0.012,
-     "field": {"light": "#D6E6BF", "dark": "#26361A"}, "proportion": "ground 70 / field 20 / accent 5 / ink 5",
-     "fits": ["gardens", "food", "outdoors", "community"]},
-    {"id": "pool", "name": "Swimming pool", "seed": "#0077C8", "neutral_hue": 220, "neutral_chroma": 0.010,
-     "field": {"light": "#BDE6F7", "dark": "#0D3550"}, "proportion": "field 30 / ground 60 / accent 5 / ink 5",
-     "fits": ["sport", "kids", "leisure"]},
-    {"id": "ultramarine-mono", "name": "Ultramarine monochrome", "seed": "#1E2A78", "neutral_hue": 262, "neutral_chroma": 0.018, "strategy": "monochrome",
-     "field": {"light": "#1E2A78", "dark": "#C9CFF5"}, "proportion": "one hue in 4 values; field = the darkest value",
-     "fits": ["finance", "culture", "precision tools"]},
-    {"id": "red-pencil", "name": "Graphite and red pencil", "seed": "#D7263D", "neutral_hue": 250, "neutral_chroma": 0.004,
-     "field": {"light": "#ECEDEF", "dark": "#26282C"}, "proportion": "graphite 90 / red marks 3 / field 7",
-     "fits": ["editing", "inspections", "grading", "notebooks"], "rule": "red only for marks made by a person (corrections, ticks); system danger uses an icon + word"},
-    {"id": "harbour", "name": "Harbour buoy", "seed": "#0B6E4F", "neutral_hue": 190, "neutral_chroma": 0.010,
-     "field": {"light": "#F7D046", "dark": "#6B5A10"}, "proportion": "ground 75 / green structure 10 / buoy yellow field 10 / ink 5",
-     "fits": ["boats", "outdoors", "deliveries", "safety"]},
-    {"id": "riso-duo", "name": "Riso duotone", "seed": "#0078BF", "neutral_hue": 240, "neutral_chroma": 0.006,
-     "field": {"light": "#FF48B0", "dark": "#8A1F5E"}, "proportion": "ground 75 / blue 10 / pink field 10 / ink 5",
-     "fits": ["culture", "zines", "music", "youth"], "rule": "overprint look: fields may overlap with multiply, text never sits on the overlap"},
-    {"id": "mustard-graphite", "name": "Mustard and graphite", "seed": "#9A6A00", "neutral_hue": 85, "neutral_chroma": 0.006,
-     "field": {"light": "#F2C14E", "dark": "#5E4708"}, "proportion": "graphite ground 75 / mustard field 15 / ink 10",
-     "fits": ["trades", "workshops", "coffee", "inventory"], "rule": "the ground stays grey, not cream: warmth comes only from the field"},
-    {"id": "plum-ink", "name": "Plum ink", "seed": "#6B1E4E", "neutral_hue": 340, "neutral_chroma": 0.008,
-     "field": {"light": "#EBD5E2", "dark": "#3A1129"}, "proportion": "ground 75 / field 15 / accent 5 / ink 5",
-     "fits": ["wine", "beauty", "evening"]},
-    {"id": "state-fields", "name": "Weather of states", "seed": "#2D5BA8", "neutral_hue": 240, "neutral_chroma": 0.008,
-     "field": {"light": "#CFE3F3", "dark": "#1C3550"},
-     "states": {"calm": {"light": "#CFE3F3", "dark": "#1C3550"}, "attention": {"light": "#FFD9A8", "dark": "#5A3A10"},
-                "alert": {"light": "#F7B9B2", "dark": "#5C1F1A"}, "done": {"light": "#CFE8C9", "dark": "#1F3D1B"}},
-     "proportion": "field 40 (state) / ground 55 / ink 5", "fits": ["status", "care", "deliveries", "health"],
-     "rule": "for the state-field engine: one field per state, the word on it carries the meaning"},
-    {"id": "brick-concrete", "name": "Brick on concrete", "seed": "#A63A24", "neutral_hue": 70, "neutral_chroma": 0.004,
-     "field": {"light": "#D9DCDF", "dark": "#2A2D30"}, "proportion": "concrete 85 / brick 5 / field 10",
-     "fits": ["venues", "urban", "construction"], "rule": "concrete grey ground (chroma <= 0.005), never cream; brick is the accent, not the ground"},
-    {"id": "sky-ink", "name": "Sky and ink", "seed": "#14213D", "neutral_hue": 230, "neutral_chroma": 0.010,
-     "field": {"light": "#9CC9F0", "dark": "#1E3A5C"}, "proportion": "field 30 / ground 60 / ink 10",
-     "fits": ["weather", "travel", "outdoors", "aviation"]},
-    {"id": "pistachio", "name": "Pistachio and pine", "seed": "#2E6B3F", "neutral_hue": 130, "neutral_chroma": 0.010,
-     "field": {"light": "#CDE7B0", "dark": "#24391C"}, "proportion": "ground 65 / field 25 / accent 5 / ink 5",
-     "fits": ["food", "health habits", "family"]},
-    {"id": "tangerine-navy", "name": "Tangerine on navy", "seed": "#E8590C", "neutral_hue": 250, "neutral_chroma": 0.012,
-     "field": {"light": "#14223F", "dark": "#0E1830"}, "proportion": "navy field 35 / ground 55 / tangerine 5 / ink 5",
-     "fits": ["sport", "delivery", "events"], "rule": "tangerine marks the live thing only"}
-  ]
+ "about": "Palette systems: a seed accent, the hue of the tinted neutrals, and a FIELD — a large colour area (hero band, state field, today column, the vocabulary's fill) that gives the screen its colour identity without colouring every control. `kinetic deal` derives contrast-checked light/dark roles from seed + neutral hue, then checks text on each field. Proportion is part of the palette: identity comes from how much field, not how many hues. Spent grounds (cream/parchment, near-black + acid accent, AI violet) are deliberately absent (knowledge/priors.md). Dark fields of light hues (yellow, orange, pink, green) stay luminous with dark ink — a darkened yellow reads as mud. `temperature` (warm · cool · neutral · bold) lets the deal follow the brief's tone: a brief that asks for warmth, or names coldness in its `never`, is not dealt cool palettes.",
+ "palettes": [
+  {
+   "id": "signal-blue",
+   "name": "Signal blue on concrete",
+   "seed": "#1F4FD8",
+   "neutral_hue": 250,
+   "neutral_chroma": 0.01,
+   "field": {
+    "light": "#DCE4F5",
+    "dark": "#18264A"
+   },
+   "proportion": "ground 70 / field 20 / accent 5 / ink 5",
+   "fits": [
+    "transit",
+    "civic",
+    "logistics",
+    "utilities"
+   ],
+   "temperature": "cool"
+  },
+  {
+   "id": "highlighter",
+   "name": "Ink and highlighter",
+   "seed": "#1A2B6D",
+   "neutral_hue": 260,
+   "neutral_chroma": 0.008,
+   "field": {
+    "light": "#FFE45C",
+    "dark": "#E9C84A"
+   },
+   "proportion": "ground 75 / field 10 (marks and today only) / ink 15",
+   "fits": [
+    "study",
+    "notes",
+    "tasks",
+    "records"
+   ],
+   "rule": "yellow is a field behind ink, never text",
+   "temperature": "cool"
+  },
+  {
+   "id": "forest-ledger",
+   "name": "Forest ledger",
+   "seed": "#B5651D",
+   "neutral_hue": 160,
+   "neutral_chroma": 0.012,
+   "field": {
+    "light": "#0F3D2E",
+    "dark": "#0B2A20"
+   },
+   "proportion": "field 35 (hero) / ground 55 / amber accent 5 / ink 5",
+   "fits": [
+    "money",
+    "membership",
+    "outdoors"
+   ],
+   "rule": "hero sits on the deep green field with near-white ink; the rest is ground",
+   "temperature": "warm"
+  },
+  {
+   "id": "night-school",
+   "name": "Night school",
+   "seed": "#2E8FC4",
+   "neutral_hue": 245,
+   "neutral_chroma": 0.014,
+   "field": {
+    "light": "#1B2A4A",
+    "dark": "#121D33"
+   },
+   "proportion": "field 30 / ground 60 / accent 5 / chalk ink 5",
+   "fits": [
+    "learning",
+    "evening venues",
+    "planning"
+   ],
+   "temperature": "cool"
+  },
+  {
+   "id": "raspberry-grey",
+   "name": "Raspberry on cool grey",
+   "seed": "#B5174B",
+   "neutral_hue": 240,
+   "neutral_chroma": 0.006,
+   "field": {
+    "light": "#F6D9E2",
+    "dark": "#4A1426"
+   },
+   "proportion": "ground 80 / field 10 / accent 5 / ink 5",
+   "fits": [
+    "social",
+    "events",
+    "retail"
+   ],
+   "rule": "danger is a different shape + word, never just red-ish",
+   "temperature": "cool"
+  },
+  {
+   "id": "cobalt-orange",
+   "name": "Cobalt and orange",
+   "seed": "#2340C2",
+   "neutral_hue": 255,
+   "neutral_chroma": 0.006,
+   "field": {
+    "light": "#FF8A3D",
+    "dark": "#E8843F"
+   },
+   "proportion": "ground 70 / cobalt 15 / orange field 10 / ink 5",
+   "fits": [
+    "sport",
+    "events",
+    "tools"
+   ],
+   "rule": "two-colour print logic: cobalt for structure, orange for the one live thing",
+   "temperature": "bold"
+  },
+  {
+   "id": "lake",
+   "name": "Lake and slate",
+   "seed": "#2B5F8A",
+   "neutral_hue": 220,
+   "neutral_chroma": 0.012,
+   "field": {
+    "light": "#C9DCEA",
+    "dark": "#4E86B3"
+   },
+   "proportion": "ground 70 / field 20 / accent 5 / ink 5",
+   "fits": [
+    "health",
+    "water",
+    "travel"
+   ],
+   "rule": "cool water blue, not the petrol teal Kinetic arms over-used (priors.md)",
+   "temperature": "cool"
+  },
+  {
+   "id": "moss",
+   "name": "Moss and stone",
+   "seed": "#4F7A28",
+   "neutral_hue": 110,
+   "neutral_chroma": 0.012,
+   "field": {
+    "light": "#D6E6BF",
+    "dark": "#8FB46A"
+   },
+   "proportion": "ground 70 / field 20 / accent 5 / ink 5",
+   "fits": [
+    "gardens",
+    "food",
+    "outdoors",
+    "community"
+   ],
+   "temperature": "warm"
+  },
+  {
+   "id": "pool",
+   "name": "Swimming pool",
+   "seed": "#0077C8",
+   "neutral_hue": 220,
+   "neutral_chroma": 0.01,
+   "field": {
+    "light": "#BDE6F7",
+    "dark": "#4FA9D6"
+   },
+   "proportion": "field 30 / ground 60 / accent 5 / ink 5",
+   "fits": [
+    "sport",
+    "kids",
+    "leisure"
+   ],
+   "temperature": "cool"
+  },
+  {
+   "id": "ultramarine-mono",
+   "name": "Ultramarine monochrome",
+   "seed": "#1E2A78",
+   "neutral_hue": 262,
+   "neutral_chroma": 0.018,
+   "strategy": "monochrome",
+   "field": {
+    "light": "#1E2A78",
+    "dark": "#C9CFF5"
+   },
+   "proportion": "one hue in 4 values; field = the darkest value",
+   "fits": [
+    "finance",
+    "culture",
+    "precision tools"
+   ],
+   "temperature": "cool"
+  },
+  {
+   "id": "red-pencil",
+   "name": "Graphite and red pencil",
+   "seed": "#D7263D",
+   "neutral_hue": 250,
+   "neutral_chroma": 0.004,
+   "field": {
+    "light": "#ECEDEF",
+    "dark": "#26282C"
+   },
+   "proportion": "graphite 90 / red marks 3 / field 7",
+   "fits": [
+    "editing",
+    "inspections",
+    "grading",
+    "notebooks"
+   ],
+   "rule": "red only for marks made by a person (corrections, ticks); system danger uses an icon + word",
+   "temperature": "neutral"
+  },
+  {
+   "id": "harbour",
+   "name": "Harbour buoy",
+   "seed": "#0B6E4F",
+   "neutral_hue": 190,
+   "neutral_chroma": 0.01,
+   "field": {
+    "light": "#F7D046",
+    "dark": "#D9B23C"
+   },
+   "proportion": "ground 75 / green structure 10 / buoy yellow field 10 / ink 5",
+   "fits": [
+    "boats",
+    "outdoors",
+    "deliveries",
+    "safety"
+   ],
+   "temperature": "bold"
+  },
+  {
+   "id": "riso-duo",
+   "name": "Riso duotone",
+   "seed": "#0078BF",
+   "neutral_hue": 240,
+   "neutral_chroma": 0.006,
+   "field": {
+    "light": "#FF48B0",
+    "dark": "#E86AAE"
+   },
+   "proportion": "ground 75 / blue 10 / pink field 10 / ink 5",
+   "fits": [
+    "culture",
+    "zines",
+    "music",
+    "youth"
+   ],
+   "rule": "overprint look: fields may overlap with multiply, text never sits on the overlap",
+   "temperature": "bold"
+  },
+  {
+   "id": "mustard-graphite",
+   "name": "Mustard and graphite",
+   "seed": "#9A6A00",
+   "neutral_hue": 85,
+   "neutral_chroma": 0.006,
+   "field": {
+    "light": "#F2C14E",
+    "dark": "#D6A93A"
+   },
+   "proportion": "graphite ground 75 / mustard field 15 / ink 10",
+   "fits": [
+    "trades",
+    "workshops",
+    "coffee",
+    "inventory"
+   ],
+   "rule": "the ground stays grey, not cream: warmth comes only from the field",
+   "temperature": "warm"
+  },
+  {
+   "id": "plum-ink",
+   "name": "Plum ink",
+   "seed": "#6B1E4E",
+   "neutral_hue": 340,
+   "neutral_chroma": 0.008,
+   "field": {
+    "light": "#EBD5E2",
+    "dark": "#3A1129"
+   },
+   "proportion": "ground 75 / field 15 / accent 5 / ink 5",
+   "fits": [
+    "wine",
+    "beauty",
+    "evening"
+   ],
+   "temperature": "warm"
+  },
+  {
+   "id": "state-fields",
+   "name": "Weather of states",
+   "seed": "#2D5BA8",
+   "neutral_hue": 240,
+   "neutral_chroma": 0.008,
+   "field": {
+    "light": "#CFE3F3",
+    "dark": "#1C3550"
+   },
+   "states": {
+    "calm": {
+     "light": "#CFE3F3",
+     "dark": "#1C3550"
+    },
+    "attention": {
+     "light": "#FFD9A8",
+     "dark": "#5A3A10"
+    },
+    "alert": {
+     "light": "#F7B9B2",
+     "dark": "#5C1F1A"
+    },
+    "done": {
+     "light": "#CFE8C9",
+     "dark": "#1F3D1B"
+    }
+   },
+   "proportion": "field 40 (state) / ground 55 / ink 5",
+   "fits": [
+    "status",
+    "care",
+    "deliveries",
+    "health"
+   ],
+   "rule": "for the state-field engine: one field per state, the word on it carries the meaning",
+   "temperature": "neutral"
+  },
+  {
+   "id": "brick-concrete",
+   "name": "Brick on concrete",
+   "seed": "#A63A24",
+   "neutral_hue": 70,
+   "neutral_chroma": 0.004,
+   "field": {
+    "light": "#D9DCDF",
+    "dark": "#2A2D30"
+   },
+   "proportion": "concrete 85 / brick 5 / field 10",
+   "fits": [
+    "venues",
+    "urban",
+    "construction"
+   ],
+   "rule": "concrete grey ground (chroma <= 0.005), never cream; brick is the accent, not the ground",
+   "temperature": "warm"
+  },
+  {
+   "id": "sky-ink",
+   "name": "Sky and ink",
+   "seed": "#14213D",
+   "neutral_hue": 230,
+   "neutral_chroma": 0.01,
+   "field": {
+    "light": "#9CC9F0",
+    "dark": "#5E95C8"
+   },
+   "proportion": "field 30 / ground 60 / ink 10",
+   "fits": [
+    "weather",
+    "travel",
+    "outdoors",
+    "aviation"
+   ],
+   "temperature": "cool"
+  },
+  {
+   "id": "pistachio",
+   "name": "Pistachio and pine",
+   "seed": "#2E6B3F",
+   "neutral_hue": 130,
+   "neutral_chroma": 0.01,
+   "field": {
+    "light": "#CDE7B0",
+    "dark": "#9CC47A"
+   },
+   "proportion": "ground 65 / field 25 / accent 5 / ink 5",
+   "fits": [
+    "food",
+    "health habits",
+    "family"
+   ],
+   "temperature": "warm"
+  },
+  {
+   "id": "tangerine-navy",
+   "name": "Tangerine on navy",
+   "seed": "#E8590C",
+   "neutral_hue": 250,
+   "neutral_chroma": 0.012,
+   "field": {
+    "light": "#14223F",
+    "dark": "#0E1830"
+   },
+   "proportion": "navy field 35 / ground 55 / tangerine 5 / ink 5",
+   "fits": [
+    "sport",
+    "delivery",
+    "events"
+   ],
+   "rule": "tangerine marks the live thing only",
+   "temperature": "bold"
+  }
+ ]
 }

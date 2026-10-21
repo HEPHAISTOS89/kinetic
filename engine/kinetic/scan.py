@@ -674,7 +674,7 @@ class Scanner:
                                            line=f.line, message=f"cream/parchment ground {hx} (the most common generated look)",
                                            fix="a dealt palette's ground; warmth belongs in a field or the accent, not the paper",
                                            snippet=(f.context or f.raw or "")[:120]))
-            elif color.delta_e_ok(hx, "#D97757") < 0.04:
+            elif color.delta_e_ok(hx, "#D97757") < 0.04 and not re.search(r"danger|error|alert|warning|destructive", ctx):
                 fs.findings.append(Finding(rule="D34", tier="D", severity="minor", evidence="inferred", file=fs.path,
                                            line=f.line, message=f"terracotta/clay accent {hx} (a generated-look tell)",
                                            fix="take the dealt palette's accent", snippet=(f.context or f.raw or "")[:120]))

@@ -14,10 +14,11 @@ reassurance lands on the same screen at the same weight. Kinetic separates
 | Text sizes | ≤ 4 | ≥ 7 | display, title, body, meta — a fifth needs a reason |
 | Quiet rows | ≥ 60% | ≤ 35% | space does the grouping that boxes would do |
 | Largest gap | ≥ 32pt around the hero | < 16pt | the hero needs air to be the hero |
+| Loud colour areas | 1 | ≥ 3 | one saturated field, button or highlight per viewport; three compete |
 Target `clarity ≥ 85` on the home and every key state; `< 70` is a finding
 that blocks `ship` like a judged dimension below 3.
 
-## Ten rules
+## Rules
 1. **One idea per block, one block per idea.** If two blocks say the same
    thing (a status pill and a banner), delete one (D32).
 2. **Answer, proof, act.** The first viewport holds the answer (verdict or
@@ -39,7 +40,14 @@ that blocks `ship` like a judged dimension below 3.
 9. **Disclose, don't display.** Rules, policies, legends, "how it works",
    secondary history: one tap away (sheet, row, "More"). Coverage lives in
    states, not in the default viewport.
-10. **Remove one accessory.** Before shipping each screen, name the element
+10. **One column on phones.** Unequal content in a 2-up card grid staggers,
+    wraps and doubles the boxes; use one column, or a 2-up only for equal,
+    comparable items with aligned tops and heights.
+11. **The sticky bar carries the state's action.** A persistent bottom button
+    that says "Renew" during a recall competes with "Call us": the docked
+    action changes with the state, or steps back to secondary when a card
+    holds the primary.
+12. **Remove one accessory.** Before shipping each screen, name the element
     whose removal costs least — and remove it. If nothing can go, say why.
 
 ## Calm ≠ bland
