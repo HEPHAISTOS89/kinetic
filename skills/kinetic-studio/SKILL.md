@@ -70,7 +70,10 @@ Agents return their work as text; you save it to the files named below (some rol
    is ambiguous, not that one critic is wrong. Re-render → editor → panel.
    Max 3 loops; stop when two loops don't raise the median mean. The **last
    loop ends with a panel** on the final renders (fix → render → panel → stop):
-   never ship fixes nobody judged.
+   never ship fixes nobody judged. One exception: a **regression** the final
+   panel found (something that worked in an earlier judged loop and broke) may
+   be reverted after the last panel — revert only, re-render, and list it in
+   `lead.md`; anything new waits for a panel.
 8. **Prove**: `kinetic score --kdl .kinetic/design.kdl --code <src> --renders <shots> --judged .kinetic/critique.json`.
    An independent panel can reach `ship`; clarity < 70 blocks it.
 

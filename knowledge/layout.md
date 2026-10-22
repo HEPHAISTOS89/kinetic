@@ -82,6 +82,11 @@ point lost came from the list below. Check each on every render before the panel
    the thumb, or bring up the next useful block (what's next, the summary,
    the season). `kinetic clarity` reports `void_pt`; > 130pt is a finding.
    Space around a hero is calm; space *below everything* is unfinished.
+   **The scrolling-home pattern** that satisfies both this and item 2: the
+   first viewport ends on a *complete* row or on the next section's heading
+   fully visible with ~8pt of its first row (a deliberate peek); the scroll
+   content carries bottom padding = pinned bar + tab bar + 24pt; a short state
+   fills the space with the next useful block, never by pushing content down.
 2. **Sticky bars reserve their space.** Scroll content ends with bottom
    padding = bar height + tab bar + 24pt; the last row never sits half under
    a pinned action or a fade ("'Keep tomorrow' cut off by the tab bar" cost
