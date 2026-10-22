@@ -843,6 +843,39 @@ class TestV20Craft(unittest.TestCase):
             self.assertGreater(color.wcag(r["dark"]["on-accent"], r["dark"]["accent"]), 4.4)
 
 
+class TestV21Round10(unittest.TestCase):
+    def test_deal_honours_the_briefs_never(self):
+        brief = "A quiet neighbourhood library, never a bookstore, never a gamified reading tracker."
+        self.assertIn("catalogues", deal.never_words(brief))
+        for sd in range(25):
+            ids = {o["engine"]["id"] for o in deal.deal(brief, seed=sd, options=3)["options"]}
+            self.assertNotIn("specimen", ids)
+
+    def test_brisk_brief_is_not_warm_from_one_stray_word(self):
+        self.assertNotIn("warm", deal.tone(deal._words("Brisk, bright and exact. How warm is the water?")))
+        self.assertIn("warm", deal.tone(deal._words("A warm, friendly local shop.")))
+
+    def test_identical_renders_keep_a_panel_fresh(self):
+        d = tempfile.mkdtemp()
+        try:
+            _png_with_lines(os.path.join(d, "a.png"), 3, 2)
+            h1 = score.renders_hash([d])
+            self.assertEqual(h1, score.renders_hash([d]))
+            _png_with_lines(os.path.join(d, "a.png"), 5, 2)
+            self.assertNotEqual(h1, score.renders_hash([d]))
+        finally:
+            shutil.rmtree(d)
+
+    def test_fade_over_content_is_flagged(self):
+        d = tempfile.mkdtemp()
+        try:
+            with open(os.path.join(d, "home.dart"), "w") as fh:
+                fh.write("final g = LinearGradient(colors: [c.bg.withValues(alpha: 0), c.bg]);\n")
+            self.assertIn("D37", {f["rule"] for f in scan([d])["findings"]})
+        finally:
+            shutil.rmtree(d)
+
+
 class TestPluginStructure(unittest.TestCase):
     def test_skills_frontmatter_and_links(self):
         for name in os.listdir(os.path.join(ROOT, "skills")):

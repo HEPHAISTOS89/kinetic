@@ -153,15 +153,15 @@ directions must differ on ≥3 axes (the validator compares axis strings).
 Required in create/redesign once `directions` exist (K28–K32).
 ```yaml
 inventory:            # 8–12 things only this product's world has (nouns you could photograph)
-  - the date stamp on the returns slip
-  - the spine labels
+  - the drum numbers painted above each washer
+  - the coin-slot cycle dial
 idea:
-  subject_item: the date stamp on the returns slip     # must be an inventory item
-  becomes: days left shown as stamps you collect, not a progress bar
-  competitor_test: {competitor: the city library app, fails_because: "it has no stamps: a slip date is this library's ritual"}
+  subject_item: the coin-slot cycle dial     # must be an inventory item
+  becomes: the minutes left shown as the dial's pointer, not a progress bar
+  competitor_test: {competitor: the generic laundry app, fails_because: "it has a bar: the dial is what you watch at this counter"}
 vocabulary:           # drawn marks replacing generic parts; >= 4 sites incl. the hero
-  - {mark: date-stamp, from: the date stamp, replaces: progress_bar, sites: [hero, loan rows], file: .kinetic/vocab/date-stamp.svg}
-  - {mark: spine, from: the spine labels, replaces: data_mark, sites: [loan rows, empty shelf]}
+  - {mark: cycle-dial, from: the coin-slot cycle dial, replaces: progress_bar, sites: [hero, machine rows], file: .kinetic/vocab/cycle-dial.svg}
+  - {mark: drum-number, from: the drum numbers, replaces: data_mark, sites: [machine rows, empty floor]}
 contract:             # <= 200 words, re-read before every screen
   thesis: …
   idea: …

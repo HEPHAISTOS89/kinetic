@@ -306,6 +306,7 @@ SIG = {
         ("D28", "D", "info", "observed", r"TextOverflow\.ellipsis", "ellipsis truncation (fine for secondary text, harmful on critical content)", "check each: wrap or restructure titles, prices, CTAs and legal text"),
         ("D30", "D", "major", "observed", r"seedColor\s*:\s*Colors\.(deepPurple|purple|indigo)|primarySwatch\s*:\s*Colors\.blue\b", "Flutter template default palette left in place", "make the palette a decision from the thesis (`kinetic palette`)"),
         ("D26", "D", "minor", "inferred", r"\bShaderMask\(", "ShaderMask (often gradient text / glow)", "carry emphasis with weight, size, color"),
+        ("D37", "D", "minor", "inferred", r"colors\s*:\s*\[\s*(?:[\w.]+\.with(?:Values\(alpha|Opacity\()\s*:?\s*0(?:\.0)?\s*\)|Colors\.transparent)\s*,\s*[\w.]+\s*\]", "a fade from transparent into the ground (a scroll fade over content at the fold)", "end the first viewport between sections, or let the row cut cleanly at a solid bar: blind critics read faded half-rows under a dock as muddy (layout.md §3b)"),
         ("D05", "D", "minor", "observed", r"\bBackdropFilter\(|ImageFilter\.blur", "blur filter", "native materials on bars/sheets only; never as card decoration"),
         ("D09", "D", "minor", "inferred", r"\bFloatingActionButton(?:\.\w+)?\(", "floating action button", "on iOS use a nav-bar/toolbar action; on Android only for creation-first screens"),
         ("D08", "D", "minor", "inferred", r"\bdrawer\s*:\s*Drawer\(|\bNavigationDrawer\(", "navigation drawer", "drawers hide navigation; avoid on iOS; prefer tabs or a hub"),

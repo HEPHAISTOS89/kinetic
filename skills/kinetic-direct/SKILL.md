@@ -72,11 +72,15 @@ The expression level sets the **volume** of identity, never its presence
    grid) and record them in KDL `vocabulary: [{mark, from, replaces, sites,
    file}]`. Each **replaces** a generic part: progress_bar, status_dot, chip,
    badge, tab_icon, empty_illustration, data_mark, divider, card… Examples
-   from other domains: a library's loans are spine labels, not list bullets;
-   days left are date stamps, not a progress bar; a renewal waiting for signal
-   is an *outlined* stamp.
-2. **≥ 4 sites**: the hero, a list item, a data encoding, a degraded state
-   (K31). The scanner flags a stock progress bar or chip left in a role the
+   from other domains: a laundrette's machines are their painted drum numbers,
+   not list bullets; minutes left are the coin-slot dial, not a progress bar;
+   a machine out of order is the taped-over number.
+2. **≥ 4 sites, one carrier**: the hero, a list item, a data encoding, a
+   degraded state (K31) — all marks come from **one object family** (the slip
+   and its stamps; the dial and its numbers). Four unrelated metaphors on one
+   screen (receipt edges + rubber stamp + masking tape + spine labels) read as
+   decoration, not identity: round 10 critics asked to "pick one carrier and
+   drop the rest" and scored cleanness 4 vs 5 for the single-idea rival. The scanner flags a stock progress bar or chip left in a role the
    vocabulary covers (D35).
 3. **The hero is the vocabulary's home.** The first viewport holds the answer
    *and* the identity. When the glance question is qualitative, the answer is a

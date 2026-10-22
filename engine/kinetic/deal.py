@@ -61,7 +61,8 @@ def _weighted(rng: random.Random, items: list, weights: list):
 WARM = {"warm", "warmth", "cosy", "cozy", "homely", "local", "friendly", "human", "family", "hands", "handmade",
         "counter", "shop", "kitchen", "craft", "community", "trusted", "cold", "clinical", "sterile", "hospital", "portal",
         "patient", "kind", "kindly", "neighbourly", "neighborly", "welcoming", "encouraging", "generous", "volunteer",
-        "volunteers", "retired", "together", "belonging", "grandparents", "parents", "members", "regulars"}
+        "volunteers", "retired", "belonging"}
+BRISK = {"brisk", "exact", "crisp", "precise", "sharp", "bright", "energetic", "athletic", "fast"}
 CALM = {"calm", "quiet", "seasoned", "practical", "unfussy", "anxious", "worried", "tired", "reassure", "reassuring",
         "gentle", "restful", "older", "elderly", "care"}
 
@@ -69,7 +70,9 @@ CALM = {"calm", "quiet", "seasoned", "practical", "unfussy", "anxious", "worried
 def tone(words: set) -> set:
     """What the brief's own words ask of colour: warmth (or no coldness) and calm (no loud palettes)."""
     t = set()
-    if words & WARM:
+    warm = words & WARM
+    # a brief that asks for brisk/exact wins over one stray warm word ("how warm is the water?")
+    if len(warm) >= 2 or (warm and not words & BRISK):
         t.add("warm")
     if words & CALM:
         t.add("calm")
@@ -127,14 +130,31 @@ def _roles(pal: dict, tn=frozenset()) -> dict:
     return roles
 
 
-def _engine_ok(e, words):
-    # a misfit named in the brief removes the engine ("no printed artefact" etc. are judged by the model)
-    return _hits(e.get("misfits"), words) == 0
+NEVER_KIN = {"bookstore": {"catalogues", "products", "shop"}, "bookshop": {"catalogues", "products", "shop"},
+             "shop": {"products", "catalogues"}, "store": {"products", "catalogues"}, "marketplace": {"products", "catalogues"},
+             "social": {"feed", "social"}, "feed": {"feed"}, "dashboard": {"monitor", "dashboard"},
+             "tracker": {"streaks", "goals"}, "gamified": {"streaks", "goals", "games"}}
 
 
-def _option(rng, lib, words, taken, families, engine=None):
+def never_words(brief: str) -> set:
+    """What the brief rules out ('never a bookstore, never a social feed'), widened to the library's fit words."""
+    out = set()
+    for m in re.finditer(r"(?i)\bnever\s+(?:an?\s+|the\s+)?([a-zà-ÿ -]{3,40}?)(?=[,.;:—)]|\s+never\b|$)", brief or ""):
+        for w in re.findall(r"[a-zà-ÿ]+", m.group(1).lower()):
+            if len(w) > 2:
+                out.add(w)
+                out |= NEVER_KIN.get(w, set())
+    return out
+
+
+def _engine_ok(e, words, never=frozenset()):
+    # a misfit named in the brief removes the engine; so does an engine whose fits are what the brief rules out
+    return _hits(e.get("misfits"), words) == 0 and _hits(e.get("fits"), set(never)) == 0
+
+
+def _option(rng, lib, words, taken, families, engine=None, never=frozenset()):
     if engine is None:
-        pool = [e for e in lib["engine"] if _engine_ok(e, words) and e["family"] not in families] \
+        pool = [e for e in lib["engine"] if _engine_ok(e, words, never) and e["family"] not in families] \
             or [e for e in lib["engine"] if e["family"] not in families] or lib["engine"]
         engine = _pick(rng, pool, words, taken["engine"], "engine")
     opt = {"engine": engine}
@@ -175,7 +195,8 @@ def deal(brief: str = "", seed: int | None = None, options: int = 3, exclude=(),
     families: set = set()
     opts = []
     for _ in range(max(1, min(options, 5))):
-        opts.append(_summary(_option(rng, lib, words, taken, families), frozenset(tone(words))))
+        opts.append(_summary(_option(rng, lib, words, taken, families, never=frozenset(never_words(brief))),
+                             frozenset(tone(words))))
     return {"tool": "deal", "seed": seed, "brief_words": sorted(words)[:40], "options": opts,
             "standing_exit": "The category standard (what a competent template would ship) is always available "
                              "as an exit if the user asks for it — never recommend it.",

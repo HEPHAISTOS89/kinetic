@@ -588,8 +588,10 @@ def to_rn(doc, src="design.kdl") -> str:
         else:
             fam_s = f", fontFamily: '{fam}'" if fam and not SYSTEM_FONTS.match(str(fam)) else ""
         num = ", fontVariant: ['tabular-nums']" if st.get("numerals") == "tabular" else ""
+        # a bundled face is one file per weight (its name carries the weight): a fontWeight on it fakes bold
+        wt = "" if fam_s else f"fontWeight: '{_weight(st.get('weight'))}', "
         L.append(f"  {ident(name)}: {{ fontSize: {size}, lineHeight: {_num(st.get('line'), size * 1.3)}, "
-                 f"fontWeight: '{_weight(st.get('weight'))}', letterSpacing: {round(_num(st.get('track')) * size, 3)}{fam_s}{num} }},")
+                 f"{wt}letterSpacing: {round(_num(st.get('track')) * size, 3)}{fam_s}{num} }},")
     L.append("} satisfies Record<string, TextStyle>;\n")
     mot = _sys(doc, "motion", default={}) or {}
     L.append("/** Reanimated withSpring configs (physics form; mass 1). */")

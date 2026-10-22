@@ -51,7 +51,7 @@ every critic's full sheet to find splits. Add `"lens": "<name>"` to your JSON.
    pointing at a render (`shot-N: …`), a file:line, or a KDL path, and one fix —
    the single most valuable change for that dimension, concrete enough to implement.
 6. Run `bin/kinetic clarity <renders>` and use it as evidence for hierarchy and layout_craft:
-   a key state under 70 cannot score 4 on layout_craft; count the words in the first viewport
+   a key state under 70 cannot score 4 on layout_craft, unless what it counts is a drawn data mark (discs, ropes, tallies — check the render); count the words in the first viewport
    yourself for the home render and quote the number.
 6b. Check the floors blind critics punish most (knowledge/color.md §3b–3c and §5,
    typography.md §10b, layout.md §3b): a grey or navy palette on a warm brief, a link-blue

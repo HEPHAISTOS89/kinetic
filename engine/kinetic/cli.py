@@ -265,6 +265,8 @@ def cmd_clarity(a):
 
 def cmd_panel(a):
     r = panel.merge_files(a.critiques)
+    if a.renders:  # stamp the pixels the panel judged: a later code edit that renders identically keeps it fresh
+        r["renders_hash"] = score.renders_hash(a.renders)
     with open(a.out, "w", encoding="utf-8") as fh:
         json.dump(r, fh, indent=1, ensure_ascii=False)
     p = r["panel"]
@@ -400,6 +402,7 @@ def build_parser():
     s = sub.add_parser("panel", help="merge independent critiques (median per dimension, disagreement, consensus)")
     s.add_argument("critiques", nargs="+")
     s.add_argument("--out", default=".kinetic/critique.json")
+    s.add_argument("--renders", nargs="*", help="the renders the critics judged (stamps their content hash)")
     common(s, False)
     s.set_defaults(fn=cmd_panel)
 

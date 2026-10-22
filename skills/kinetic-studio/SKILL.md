@@ -19,7 +19,7 @@ removal and judgment.
 |---|---|---|---|---|
 | Director ×3 | kinetic-director | in parallel, one per dealt option | brief, inventory, ONE option | that option developed: idea, competitor test, first viewport, vocabulary, live thing, scores |
 | Rival | kinetic-rival | in parallel with the directors | brief only | the category-standard home (what to beat) |
-| Editor | kinetic-editor | after each build | renders + contract | a ranked cut list + clarity |
+| Editor | kinetic-editor | after each build | renders + contract + the previous panel's fixes (never reverse one) | a ranked cut list + clarity |
 | Critic ×3 | kinetic-critic | in parallel, different lenses | renders, KDL, rival | protocol JSON each |
 | Forensics | kinetic-forensics | redesign/improve only | the existing code | style DNA, KEEP/EVOLVE/REPLACE/REMOVE |
 
@@ -57,7 +57,7 @@ Agents return their work as text; you save it to the files named below (some rol
    - lens **identity**: distinctiveness, typography, color, cover-the-logo vs the rival;
    - lens **clarity & craft**: layout_craft, native_fidelity, clarity budgets, squint/silence.
    Every critic still scores all dimensions. Save `.kinetic/studio/loopN/critic-{product,identity,clarity}.json` (one folder per loop), then
-   `kinetic panel .kinetic/studio/loopN/critic-*.json --out .kinetic/critique.json`.
+   `kinetic panel .kinetic/studio/loopN/critic-*.json --out .kinetic/critique.json --renders shots` (stamps the judged pixels, so a code edit that renders identically keeps the panel fresh).
    Render **both platforms**: at least the default state as an Android
    variant (Material navigation, sheets, buttons) beside iOS — native
    fidelity was 3/5 for every arm that rendered only one platform.

@@ -85,7 +85,10 @@ point lost came from the list below. Check each on every render before the panel
 2. **Sticky bars reserve their space.** Scroll content ends with bottom
    padding = bar height + tab bar + 24pt; the last row never sits half under
    a pinned action or a fade ("'Keep tomorrow' cut off by the tab bar" cost
-   points in 4 of 6 reads).
+   points in 4 of 6 reads). **No fade over content** (D37): a gradient that
+   dissolves rows into a dock reads as "faded, half-cut, muddy" (round 10,
+   3 of 3 critics); the fold falls on space between sections, or the dock
+   sits on a solid band with the scroll ending above it.
 3. **Drawn data snaps to a grid.** Columns in a drawing are fixed slots (a
    row of 3 events aligns with a row of 4 by time, with explicit empty cells);
    labels are centred on their node or all aligned the same way; nothing

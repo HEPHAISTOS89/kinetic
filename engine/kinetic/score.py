@@ -97,6 +97,23 @@ def _newest_mtime(paths, exts):
     return newest
 
 
+def renders_hash(items) -> str:
+    """Content hash of a set of PNG renders: a judgment stays fresh while the pixels it saw are unchanged."""
+    import hashlib
+    files = []
+    for it in items or []:
+        if os.path.isdir(it):
+            files += [os.path.join(it, f) for f in os.listdir(it) if f.lower().endswith(".png")]
+        elif str(it).lower().endswith(".png"):
+            files.append(it)
+    h = hashlib.sha256()
+    for f in sorted(files, key=os.path.basename):
+        h.update(os.path.basename(f).encode())
+        with open(f, "rb") as fh:
+            h.update(hashlib.sha256(fh.read()).digest())
+    return h.hexdigest()
+
+
 def check_judged(judged: dict) -> tuple[dict, list]:
     """Validate critic JSON (docs/PROTOCOL.md §critic). Returns (scores, problems)."""
     ok, problems = {}, []
@@ -197,7 +214,8 @@ def run(kdl_path=None, code_paths=None, judged_path=None, platforms=("ios", "and
         meta = {"self_judged": bool(raw.get("self_judged")), "unjudged": raw.get("unjudged") or [],
                 "panel": (raw.get("panel") or {}).get("size", 1)}
         newest = _newest_mtime(code_paths or [], (".swift", ".dart", ".kt", ".tsx", ".jsx", ".css", ".png"))
-        if newest and newest > os.path.getmtime(judged_path) + 1:
+        same_pixels = bool(renders and raw.get("renders_hash") and raw["renders_hash"] == renders_hash(renders))
+        if newest and newest > os.path.getmtime(judged_path) + 1 and not same_pixels:
             problems.append("judgment is older than the current code/renders: re-run the critic on the new renders")
             meta["stale"] = True
     v, reasons = verdict(measured, blocks, judged_scores, meta)
