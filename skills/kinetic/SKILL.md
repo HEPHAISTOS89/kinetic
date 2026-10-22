@@ -2,7 +2,7 @@
 name: kinetic
 description: "Senior mobile product design system for native and cross-platform apps (Flutter, SwiftUI, Jetpack Compose, React Native). Use to create, redesign, improve, audit or evolve a mobile app's UI/UX; to build or extract a design system; for design-to-code and code-to-design; for typography, color, layout, icons/SVG, states, motion, haptics and anti-slop review. Thinks like a designer before styling: product thesis and inventory, directions dealt from a native library (so the result is not the category average), a drawn domain vocabulary, the full state matrix, then precise implementation verified by an engine and an independent critic. Not for websites/landing pages (use prismora) or backend work."
 metadata:
-  version: "1.9"
+  version: "2.1"
 ---
 
 # Kinetic — think like a design lead, execute like an engineer
