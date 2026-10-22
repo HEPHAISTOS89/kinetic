@@ -34,7 +34,7 @@ Limits: N = 1 brief, one model, one critic; macOS `ImageRenderer` cannot show
 Dynamic Type scaling (XXL needs the iOS Simulator); a blind critic is still a
 model. Treat a result as evidence about this brief, not a universal ranking.
 
-## 4. Results so far (ten blind rounds, sixteen briefs, 54 critic reads)
+## 4. Results so far (eleven blind rounds, eighteen briefs, 60 critic reads)
 | Round | Brief | Stack | Arms | Critics | Judged mean (baseline / Kinetic) | Clean (baseline / Kinetic) | Verdicts |
 |---|---|---|---|---|---|---|---|
 | 1 | Courant (transit) | SwiftUI | model vs v1.0 | 2 | 3.67 / 3.78 | — | split |
@@ -58,6 +58,8 @@ Rounds 7–9 are three-arm head-to-heads on fresh briefs (Kinetic studio vs othe
 | 9b | Tern (bird survey) | React Native | **Kinetic 4.41 · 4.67**, frontend-design 3.63 · 4.0, model 3.48 · 2.67 | K 1st ×3, margin large/clear |
 | 10a | Branch (public library) | Flutter | **Kinetic v2.0 4.19 · 4.0**, taste-skill 4.19 · 5.0, ui-ux-pro-max 3.41 · 2.67 | K 1st ×2, T 1st ×1 (tie on mean) |
 | 10b | Lido (open-air pool) | React Native | **Kinetic v2.0 4.44 · 3.67**, taste-skill 3.63 · 3.67, ui-ux-pro-max 3.30 · 3.0 | K 1st ×3, margins clear/large |
+| 11a | Fernhill (vet practice) | Flutter | **Kinetic v2.1 4.07 · 3.33**, taste-skill 3.74 · 4.0, ui-ux-pro-max 3.19 · 3.33 | K 1st ×3 |
+| 11b | Sound (island car ferry) | React Native | **Kinetic 4.22 · 3.67**, taste-skill 4.11 · 4.0, ui-ux-pro-max 3.22 · 2.33 | T 1st ×2 (slight), K 1st ×1 (clear) |
 
 Honest reading, round by round:
 - **Rounds 1–4**: Kinetic matched a strong frontier model (pooled 3.90 / 3.91). Stable trade: Kinetic more
@@ -98,5 +100,12 @@ Honest reading, round by round:
   used a library example (date stamp, spine labels) that the Branch arm picked up; replaced in v2.1.
   The Flutter render harness was missing from the arm scaffolds; ui-ux-pro-max's Branch renders were
   re-rendered with the canonical harness before sealing (the other arms had copied it).
+- **Round 11 (v2.1, fresh domains, no leaked examples)**: Kinetic 4.15, taste-skill 3.93, ui-ux-pro-max 3.20;
+  first in 4 of 6 reads, highest mean on both briefs. Three rematches with taste-skill now read 4.31/3.98,
+  4.31/3.91, 4.15/3.93: a steady lead of 0.2–0.4, not yet a rout. What still costs Kinetic the head-to-head
+  reads: **cleanness** (3.3–3.7 vs 4.0 — ornament: pin dots, pip rasters, boxed notes), **layout craft**
+  (voids or clipped rows near the dock, 3.3–3.7), a **hero that changes tint but not evidence** across
+  states, and dark ochre fields that turn to mud. taste-skill's recurring losses: native fidelity (2–3,
+  no navigation, underlined web links), glaring saturated fields at night, thinner anticipation.
 - Measured rigor still holds: baselines keep shipping engine-detectable defects; Kinetic arms ship none
   (caveat: Kinetic's own engine).
