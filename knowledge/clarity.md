@@ -69,6 +69,14 @@ second sentence, the third meta line, the box around the box, the legend.
 A clean screen with no identity is the category template; an identity buried
 in clutter is noise. Kinetic ships neither.
 
+## A loud signature is still one loud thing
+The drawn signature (a lane board, a shelf, a gauge) is the identity, and in
+rounds 9–10 it was also the main source of clutter ("about 50 dots, rope
+dashes, chips and counts in eight rows"). Draw data at two volumes: **yours
+and what you can act on** at full ink; everything else at text-3 weight,
+thinner, or collapsed ("All lanes"). The signature keeps its shape; only
+one row of it shouts.
+
 ## The editor's pass (kinetic-editor, or yourself without agents)
 On each key render: run `kinetic clarity`, then list every element of the
 first viewport with its job in ≤ 4 words. Cut list, in this order: duplicates

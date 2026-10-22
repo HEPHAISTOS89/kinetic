@@ -34,7 +34,7 @@ Limits: N = 1 brief, one model, one critic; macOS `ImageRenderer` cannot show
 Dynamic Type scaling (XXL needs the iOS Simulator); a blind critic is still a
 model. Treat a result as evidence about this brief, not a universal ranking.
 
-## 4. Results so far (nine blind rounds, fourteen briefs, 48 critic reads)
+## 4. Results so far (ten blind rounds, sixteen briefs, 54 critic reads)
 | Round | Brief | Stack | Arms | Critics | Judged mean (baseline / Kinetic) | Clean (baseline / Kinetic) | Verdicts |
 |---|---|---|---|---|---|---|---|
 | 1 | Courant (transit) | SwiftUI | model vs v1.0 | 2 | 3.67 / 3.78 | — | split |
@@ -56,6 +56,8 @@ Rounds 7–9 are three-arm head-to-heads on fresh briefs (Kinetic studio vs othe
 | 8b | Chorus (community choir) | React Native | **Kinetic 4.44 · 4.33**, taste-skill 3.81 · 3.0, impeccable 3.52 · 2.33 | K 1st ×3 |
 | 9a | Plot 42 (allotments) | Flutter | **Kinetic v1.8 4.41 · 4.33**, native-polish 3.81 · 3.0, frontend-design 3.74 · 3.0 | K 1st ×3 |
 | 9b | Tern (bird survey) | React Native | **Kinetic 4.41 · 4.67**, frontend-design 3.63 · 4.0, model 3.48 · 2.67 | K 1st ×3, margin large/clear |
+| 10a | Branch (public library) | Flutter | **Kinetic v2.0 4.19 · 4.0**, taste-skill 4.19 · 5.0, ui-ux-pro-max 3.41 · 2.67 | K 1st ×2, T 1st ×1 (tie on mean) |
+| 10b | Lido (open-air pool) | React Native | **Kinetic v2.0 4.44 · 3.67**, taste-skill 3.63 · 3.67, ui-ux-pro-max 3.30 · 3.0 | K 1st ×3, margins clear/large |
 
 Honest reading, round by round:
 - **Rounds 1–4**: Kinetic matched a strong frontier model (pooled 3.90 / 3.91). Stable trade: Kinetic more
@@ -88,5 +90,13 @@ Honest reading, round by round:
   anticipation ≥ 4.67 on both. Recurring weaknesses still named by the critics: colour (cool, near-grey
   neutrals; the primary turning outline-only in dark mode), layout craft (accidental voids below a short
   state), and a signature mark that is only explained once it becomes an alert.
+- **Round 10 (v2.0, the colour/type/layout floors) — rematch vs taste-skill and ui-ux-pro-max**: Kinetic
+  4.31, taste-skill 3.91, ui-ux-pro-max 3.35; first in 5 of 6 reads. Colour rose from 3.4 (rounds 7–9) to
+  4.0 on both briefs; taste-skill's dark mode failed the night test on Lido. Branch was a tie on the mean
+  (4.19): taste-skill won cleanness (5 vs 4) and distinctiveness (one idea vs four paper metaphors), and
+  Kinetic's dock faded rows over content (layout 3.33). **Caveat**: Kinetic's KDL.md and kinetic-direct
+  used a library example (date stamp, spine labels) that the Branch arm picked up; replaced in v2.1.
+  The Flutter render harness was missing from the arm scaffolds; ui-ux-pro-max's Branch renders were
+  re-rendered with the canonical harness before sealing (the other arms had copied it).
 - Measured rigor still holds: baselines keep shipping engine-detectable defects; Kinetic arms ship none
   (caveat: Kinetic's own engine).
