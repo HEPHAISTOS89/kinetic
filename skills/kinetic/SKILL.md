@@ -2,7 +2,7 @@
 name: kinetic
 description: "Senior mobile product design system for native and cross-platform apps (Flutter, SwiftUI, Jetpack Compose, React Native). Use to create, redesign, improve, audit or evolve a mobile app's UI/UX; to build or extract a design system; for design-to-code and code-to-design; for typography, color, layout, icons/SVG, states, motion, haptics and anti-slop review. Thinks like a designer before styling: product thesis and inventory, directions dealt from a native library (so the result is not the category average), a drawn domain vocabulary, the full state matrix, then precise implementation verified by an engine and an independent critic. Not for websites/landing pages (use prismora) or backend work."
 metadata:
-  version: "2.1"
+  version: "2.2"
 ---
 
 # Kinetic — think like a design lead, execute like an engineer
@@ -82,7 +82,9 @@ Agent tool exists — then you play each role in order and mark judgments
 5. **Craft** (`kinetic-craft`, `kinetic-motion`): pixel-level precision,
    icons, signature detail, choreography.
 6. **Realise** (`kinetic-code`): `kinetic export` the tokens, implement in the
-   existing architecture, smallest coherent diff.
+   existing architecture, smallest coherent diff. Every recurring part (docked
+   action, navigation, sheet/pass, state hero, list row, offline…) meets its
+   behaviour contract in `knowledge/components.md` — the look stays the direction's.
 7. **Clean** (`knowledge/clarity.md`): `kinetic clarity <renders>`; cut until
    key states score ≥ 85 — answer, proof, act; one loud thing per viewport.
 8. **Prove** (`kinetic-critique`): `kinetic scan` the changed code, capture

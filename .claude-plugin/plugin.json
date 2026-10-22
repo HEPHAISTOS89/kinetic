@@ -1,6 +1,6 @@
 {
   "name": "kinetic",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Senior mobile product design system for Flutter, SwiftUI, Compose and React Native: designer-grade reasoning (thesis, expression level, divergent directions, full state matrix), a design reasoning language (KDL), deep taste knowledge, a deterministic engine (validate, palette, scan, dna, export, svg, states, score) and an independent critic.",
   "author": {
     "name": "HEPHAISTOS89"

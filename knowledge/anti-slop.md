@@ -74,6 +74,7 @@ render/critic can decide; **kdl** = `kinetic validate` checks the decision recor
 | D35 | **Generic part where the vocabulary draws one** — a stock progress bar, chip or status dot in a role the KDL `vocabulary` replaces with the product's mark | `LinearProgressIndicator(value:)`, `ProgressView(value:)`, `FilterChip(` with a matching `vocabulary.replaces` | Use the drawn mark; or remove the role from `vocabulary` | auto |
 | D36 | **Clutter** — the first viewport says everything at once: > 100 words, > 25 lines, 7+ text sizes, boxes inside boxes, two grey meta lines per row, a stat strip under the hero | `kinetic clarity` < 70 | Answer, proof, act; disclose the rest one tap away (knowledge/clarity.md) | auto+judge |
 | D37 | **Muddy fold** — a gradient fade or a floating dock over half-cut rows at the bottom of every screen | a transparent→ground gradient over a scroll; content under a pinned bar | Reserve the bar's height; end the first viewport on space between sections; no fade over content | auto+judge |
+| D38 | **Web link on a phone** — underlined body text as the secondary action ('Change', 'Refund', 'Other times') | `textDecorationLine: 'underline'`, `TextDecoration.underline` | A platform text or tonal button with a full target (components.md §12) | auto+judge |
 | D30 | **Default theme untouched** — stock Material purple / iOS default blue with no decision | `Colors.deepPurple`, `seedColor: Colors.purple`, unmodified template | Make the palette a decision from the thesis | auto |
 
 ## C — conditional (judge against thesis and level)

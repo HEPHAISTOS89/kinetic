@@ -876,6 +876,22 @@ class TestV21Round10(unittest.TestCase):
             shutil.rmtree(d)
 
 
+class TestV22Contracts(unittest.TestCase):
+    def test_underlined_link_actions_are_flagged(self):
+        d = tempfile.mkdtemp()
+        try:
+            with open(os.path.join(d, "Home.tsx"), "w") as fh:
+                fh.write("import { Text } from 'react-native';\n"
+                         "export const L = () => <Text onPress={() => go()} style={{textDecorationLine: 'underline'}}>Change</Text>;\n")
+            self.assertIn("D38", {f["rule"] for f in scan([d])["findings"]})
+        finally:
+            shutil.rmtree(d)
+
+    def test_contracts_carry_no_look(self):
+        text = rd(os.path.join(ROOT, "knowledge", "components.md"))
+        self.assertNotRegex(text, r"#[0-9A-Fa-f]{6}")  # behaviour only: no colours, so nothing to copy
+
+
 class TestPluginStructure(unittest.TestCase):
     def test_skills_frontmatter_and_links(self):
         for name in os.listdir(os.path.join(ROOT, "skills")):

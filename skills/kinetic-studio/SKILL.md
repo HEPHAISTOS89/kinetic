@@ -44,7 +44,8 @@ your context (≈10k tokens per critic per loop) and breaks "never edit a critiq
    `contract`. The rival's "what it gets right" becomes your floor; its
    home becomes what you must beat on distinctiveness.
 4. **Build** (you): kinetic-states → kinetic-system → kinetic-code, with
-   `knowledge/clarity.md` budgets from the first screen. Render every state.
+   `knowledge/clarity.md` budgets from the first screen and `knowledge/components.md`
+   contracts for every recurring part (behaviour only — the look stays the direction's). Render every state.
 5. **Edit** (agent): kinetic-editor on the renders → apply the cut list
    unless a cut would lose a `must`, an alert action or the last vocabulary
    site. Re-render. `kinetic clarity` ≥ 85 on key states, no `void_pt` > 130.
