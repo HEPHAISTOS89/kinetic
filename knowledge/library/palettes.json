@@ -304,7 +304,7 @@
     },
     "attention": {
      "light": "#FFD9A8",
-     "dark": "#5A3A10"
+     "dark": "#D2A061"
     },
     "alert": {
      "light": "#F7B9B2",
@@ -475,7 +475,7 @@
    "neutral_chroma": 0.016,
    "field": {
     "light": "#EBD9A8",
-    "dark": "#3A3218"
+    "dark": "#BAA260"
    },
    "proportion": "ground 65 / ochre field 20 / olive accent 5 / ink 10",
    "fits": [
@@ -497,7 +497,7 @@
    "neutral_chroma": 0.02,
    "field": {
     "light": "#D8C3A0",
-    "dark": "#3B2E1F"
+    "dark": "#2E2821"
    },
    "proportion": "ground 60 / kraft field 25 / beet accent 5 / ink 10",
    "fits": [
@@ -541,7 +541,7 @@
    "neutral_chroma": 0.02,
    "field": {
     "light": "#F3D79A",
-    "dark": "#4A3510"
+    "dark": "#D1A255"
    },
    "proportion": "ground 60 / saffron field 20 / umber ink 15 / accent 5",
    "fits": [
@@ -585,7 +585,7 @@
    "neutral_chroma": 0.018,
    "field": {
     "light": "#F1D9A6",
-    "dark": "#3D3015"
+    "dark": "#C6A667"
    },
    "proportion": "ground 65 / candle field 15 / pine accent 10 / ink 10",
    "fits": [
@@ -616,7 +616,7 @@
     },
     "attention": {
      "light": "#F3D79A",
-     "dark": "#4A3510"
+     "dark": "#D0A260"
     },
     "alert": {
      "light": "#EFC0B2",

@@ -22,6 +22,14 @@ trust state, not a page label. A 34pt large title there costs the primary
 element its place (blind critics penalised exactly this). Use large titles for
 browse/list hubs; use a compact contextual header for glance screens.
 
+**The hero belongs to the state, not to the default answer.** When something
+else is today's priority (a dose due, a bill overdue, a hold to collect), it
+takes the hero slot and the everyday answer ("3 left today") collapses to one
+line under it. A combined state (recovering *and* a bill) shows both above
+the fold, ranked. Round 11: all three critics asked the same of a design that
+kept its desk block on top in every state, and of the rival whose brand
+banner pushed every task below the fold.
+
 **Answer a qualitative question with a verdict, then the number.** When the
 user's glance question is a judgement ("is it packed?", "is she OK?", "can I
 afford it?"), the display-size element is a short verdict sentence in the

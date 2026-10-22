@@ -624,6 +624,14 @@ class Validator:
                              "an outline-only primary fades at 20% brightness (color.md §5)",
                              self.line("system.color.roles.dark.accent"))
                 for role, v in r.items():
+                    if re.match(r"^(field|state-[\w-]+)$", role) and color.is_hex(str(v)):
+                        mL, mC, mH = color.hex_to_oklch(str(v))
+                        if 50 <= mH <= 115 and 0.2 < mL < 0.5 and mC > 0.03:
+                            self.add("K35", "C", "minor", f"system.color.roles.dark.{role}",
+                                     f"`{role}` is a darkened ochre/olive at night ({v}): it reads as mud",
+                                     "keep yellow/ochre fields luminous in dark (L ≈ 0.72, dark ink), or drop to a deep "
+                                     "warm neutral (C ≤ 0.02); round 11: 'a muddy olive-brown that feels dirty'",
+                                     self.line(f"system.color.roles.dark.{role}"))
                     if re.match(r"^(field|state-[\w-]+)$", role) and color.is_hex(str(v)) and color.hex_to_oklch(str(v))[0] > 0.62:
                         lf = str((roles.get("light") or {}).get(role, ""))
                         if color.is_hex(lf) and color.hex_to_oklch(lf)[0] > 0.62 and color.hex_to_oklch(lf)[1] < 0.08:
