@@ -24,15 +24,17 @@ Plugin root: the parent of this file's `agents/` directory. Read
    were given). Note the worst renders and their measures.
 2. Open the key renders (home default, the alert state, the densest state).
    For each, list every element of the first viewport with its job in ≤ 4 words.
-3. Write the cut list, most valuable first, max 12 items. Each item: the
+3. List every **ornament** (a mark that carries no data, no action and isn't the one signature: pin dots,
+   textures, boxes around notes, decorative edges) — each is a cut candidate first (clarity.md 12b).
+4. Write the cut list, most valuable first, max 12 items. Each item: the
    render, the element, the action (delete / merge into X / move to a sheet /
    shorten to "…" / drop the container / demote to text-2), the clarity rule
    number, and what the user loses (must be "nothing" or "one tap").
-4. Rewrite the copy that stays over budget: give the exact new string.
-5. Never make a label cryptic (no "read 21:04", no unitless numbers, no
+5. Rewrite the copy that stays over budget: give the exact new string.
+6. Never make a label cryptic (no "read 21:04", no unitless numbers, no
    unexplained marks) and never cut the product's voice sentence — cut
    repetition and chrome instead (knowledge/clarity.md "Calm ≠ cryptic").
-6. Never cut: a `must` requirement's element, an alert's action, a vocabulary
+7. Never cut: a `must` requirement's element, an alert's action, a vocabulary
    mark's last site, a state's recovery path, accessibility labels.
 
 ## Output

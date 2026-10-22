@@ -47,6 +47,11 @@ that blocks `ship` like a judged dimension below 3.
     that says "Renew" during a recall competes with "Call us": the docked
     action changes with the state, or steps back to secondary when a card
     holds the primary.
+12b. **No ornament without a job.** Every mark on the screen either carries
+    data, marks an action, or is the vocabulary's one signature. A pin dot on
+    every card, a pip raster that reads as texture, a box around a signed
+    note, a torn edge on secondary cards: critics named exactly these when
+    they scored Kinetic's cleanness 3–4 against a rival's 4–5 (rounds 10–11).
 12. **Remove one accessory.** Before shipping each screen, name the element
     whose removal costs least — and remove it. If nothing can go, say why.
 
