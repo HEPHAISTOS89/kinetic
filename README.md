@@ -1,110 +1,167 @@
 # Kinetic
 
-**Un système de design complet pour le modèle, dédié aux apps mobiles** (Flutter,
-SwiftUI, Jetpack Compose, React Native). Le modèle doit penser comme un
-directeur de design avant de styliser, décider avec précision, anticiper chaque
-état, puis prouver la qualité du résultat.
+**Un studio de design mobile pour l'agent** : Flutter, SwiftUI, Jetpack Compose,
+React Native. Kinetic fait penser le modèle comme une équipe de design
+(directeurs, rival, éditeur, critiques à l'aveugle), décide par écrit, construit
+chaque état, puis **prouve** le résultat avec un moteur déterministe.
 
 > Penser comme un design lead, livrer comme un ingénieur.
 
-## Pourquoi les modèles produisent du « slop », et la réponse de Kinetic
+---
 
-| Cause | Symptôme | Couche Kinetic |
-|---|---|---|
-| Retour à la moyenne : sans cible précise, le modèle produit l'app moyenne | dégradé violet, « Bonjour Sam 👋 », grille de cartes | **Savoir de goût** concret (14 directions chiffrées, exemplaires, secteurs) + **thèse** propre au produit |
-| Raisonnement superficiel : on décide au pixel avant de comprendre | joli écran qui répond à la mauvaise question, aucun état d'erreur | **Architecture cognitive** : comprendre → décider → anticiper → systématiser → réaliser → prouver |
-| Décisions implicites, invérifiables | 14 tailles de police, 9 gris, 6 rayons | **KDL**, le langage de raisonnement design : chaque décision est explicite, justifiée et vérifiée |
-| Auto-critique complaisante | « ça a l'air premium » | **Moteur de goût** (mesuré) + **critique indépendant** (jugé, dans un contexte neuf) |
+## Installer (2 minutes)
 
-## Architecture
+Prérequis : Claude Code, Python 3.9+ (aucune dépendance), Git.
 
-```
-kinetic/
-├── skills/                 la couche cognitive (9 modules)
-│   ├── kinetic/            routeur : mode × cible × profondeur, boucle, règles F
-│   ├── kinetic-think/      lecture produit, moment d'usage, thèse/anti-thèse, idée directrice, niveau d'expression, parcours
-│   ├── kinetic-direct/     3 directions vraiment divergentes → 1 choisie, avec raisons ; signature
-│   ├── kinetic-states/     chaque écran × chaque état, chaque composant × chaque variante, l'environnement de chaque élément
-│   ├── kinetic-system/     typo → couleur → espace → forme → élévation → icônes → mouvement → haptique
-│   ├── kinetic-craft/      précision au pixel, revue de code pointilleuse, icônes et SVG dessinés à la main
-│   ├── kinetic-motion/     physique (springs), chorégraphie, gestes, reduce-motion, haptique
-│   ├── kinetic-code/       design→code et code→design en Flutter, SwiftUI, Compose, React Native, web mobile
-│   └── kinetic-critique/   pré-mortem, audit, évaluation du goût, verdicts, boucle d'amélioration
-├── agents/                 kinetic-critic (adversarial, à l'aveugle) · kinetic-director (divergence) · kinetic-forensics (code→design)
-├── commands/               /kinetic:create · redesign · improve · audit · system · build · read · evolve
-├── knowledge/              ~2 900 lignes de savoir concret : anti-slop (52 règles F/D/C), typographie, couleur (OKLCH),
-│                           layout, mouvement, états, iconographie/SVG, iOS, Android, copy, 14 directions, exemplaires,
-│                           18 secteurs, grille de goût, et 5 stacks
-├── docs/                   ARCHITECTURE · KDL (le langage) · PROTOCOL (communication) · TOOLS (contrats) · EVALUATION
-├── engine/ + bin/kinetic   moteur déterministe, Python 3 sans dépendance
-├── hooks/                  lint design continu après chaque modification UI (seulement dans les projets avec .kinetic/)
-├── examples/lune/          un enregistrement KDL complet de référence
-├── evals/                  4 rounds A/B à l'aveugle : briefs, harness (SwiftUI, Flutter, React Native), résultats, retours
-└── tests/                  52 tests, dont la compilation réelle des exports Swift (iOS + macOS), TypeScript, Flutter et Kotlin (stubs)
-```
-
-### Le langage : KDL
-`.kinetic/design.kdl` contient toutes les décisions, de la thèse jusqu'au
-dernier état du dernier bouton. C'est un sous-ensemble strict de YAML, avec un
-vocabulaire fermé et des références de tokens (`$color.accent`, `$spring.settle`).
-Le moteur vérifie que l'enregistrement est complet et cohérent ; le même fichier
-s'exporte vers 5 stacks. Spécification : [docs/KDL.md](docs/KDL.md). Exemple
-complet : [examples/lune/design.kdl](examples/lune/design.kdl).
-
-### Le moteur
 ```bash
-bin/kinetic init .                                 # .kinetic/ (config + squelette KDL), détecte la stack
-bin/kinetic validate .kinetic/design.kdl           # complétude + cohérence (contraste, grille, rampe, états, physique…)
-bin/kinetic palette "#C9A27E" --kdl                # rôles clair/sombre en OKLCH, contrastes WCAG + APCA vérifiés
-bin/kinetic scan lib/                              # faits de design + slop dans le code, fichier:ligne, niveau de preuve
-bin/kinetic dna lib/ --kdl                         # code → système de design réel + proposition consolidée
-bin/kinetic states code lib/                       # écrans qui chargent des données sans état erreur/vide/chargement
-bin/kinetic export .kinetic/design.kdl --stack swiftui --out Sources/Design/
-bin/kinetic svg lint icons/                        # 13 règles de fabrication d'icônes, sur un fichier et sur le set
-bin/kinetic spring 0.4 0.9                         # un spring traduit pour SwiftUI, Flutter, Compose, Reanimated, CSS
-bin/kinetic score --kdl … --code … --judged .kinetic/critique.json   # mesuré + jugé → verdict
+git clone <url-du-repo> kinetic
 ```
-Chaque résultat sépare ce qui est **observé**, **dérivé** et **inféré**. Une
-zone non scannée est **inconnue**, jamais « propre ». Contrats : [docs/TOOLS.md](docs/TOOLS.md).
-
-## Installation (Claude Code)
 ```bash
-claude plugin marketplace add /chemin/vers/kinetic
+claude plugin marketplace add ./kinetic
 ```
 ```bash
 claude plugin install kinetic@kinetic-local
 ```
-Pour Codex, le manifeste `.codex-plugin/plugin.json` expose les mêmes skills.
 
-## Utilisation
-Demande naturellement (« redesign mon app Flutter, elle fait cheap ») ou
-utilise un mode explicite : `/kinetic:create`, `/kinetic:redesign`,
-`/kinetic:improve`, `/kinetic:audit`, `/kinetic:system`, `/kinetic:build`,
-`/kinetic:read`, `/kinetic:evolve`.
+Vérifier que tout fonctionne :
 
-## Vérifier
 ```bash
-python3 -m unittest discover -s tests -v
+python3 -m unittest discover -s kinetic/tests
 ```
-Protocole d'évaluation (moteur, déclenchement, A/B à l'aveugle) : [docs/EVALUATION.md](docs/EVALUATION.md).
 
-## Ce que l'évaluation montre (4 rounds A/B à l'aveugle, 12 lectures de critiques indépendants)
-| Round | Brief | Stack | Moyenne jugée (modèle seul / Kinetic) | Findings mesurés (modèle seul / Kinetic) |
+Codex : le manifeste `.codex-plugin/plugin.json` expose les mêmes skills.
+
+## Utiliser
+
+Demande simplement, en langage naturel :
+
+> « Redesign l'écran d'accueil de mon app Flutter, elle fait générique. »
+
+Ou choisis un mode :
+
+| Commande | Pour |
+|---|---|
+| `/kinetic:studio <quoi>` | **le meilleur résultat** : l'équipe complète d'agents (recommandé) |
+| `/kinetic:create` | concevoir une app, un parcours ou un écran |
+| `/kinetic:redesign` | refaire une app existante en gardant ce qui marche |
+| `/kinetic:improve` | améliorer sans tout changer |
+| `/kinetic:audit` | diagnostic chiffré, sans modifier le code |
+| `/kinetic:system` | design system : tokens, rôles couleur, typo, motion |
+| `/kinetic:build` | implémenter un design décidé |
+| `/kinetic:read` | lire une app existante et en extraire son vrai système |
+| `/kinetic:evolve` | faire évoluer un design system en place |
+
+Tout est consigné dans `.kinetic/` à la racine du projet : le dossier de
+décisions (`design.kdl`), le tirage des directions, le travail du studio par
+boucle, et le verdict des critiques.
+
+## Comment ça marche
+
+```
+brief ─► comprendre ─► diverger ─► choisir ─► construire ─► nettoyer ─► juger ─► prouver
+         (thèse,       (3 directeurs  (le plus     (états,      (éditeur,   (3 critiques   (moteur :
+          inventaire)   en parallèle   distinctif   système,     budgets     à l'aveugle,   score + verdict)
+                        + un rival)    viable)      contrats)    de clarté)  médiane)
+```
+
+1. **Comprendre** : produit, moments d'usage, thèse, inventaire des choses que
+   seul ce produit possède.
+2. **Diverger** : une direction écrite par le lead, plus deux directions
+   **tirées au sort** dans une bibliothèque native (21 compositions,
+   20 typographies, 30 palettes, 8 personnalités de mouvement). C'est ce qui
+   empêche le design « moyen ». Un **rival** dessine le standard de la
+   catégorie à battre.
+3. **Choisir** : la direction la plus distinctive qui reste viable, avec son
+   **vocabulaire dessiné** (les objets du domaine remplacent les pièces
+   génériques).
+4. **Construire** : chaque écran × chaque état (vide, erreur, hors-ligne,
+   grand texte, nuit, Android et iOS), avec des **contrats de composants** qui
+   fixent le comportement sans jamais imposer d'apparence.
+5. **Nettoyer** : un éditeur coupe le superflu. Le moteur mesure l'encombrement
+   directement sur les rendus (mots, tailles, vides, zones bruyantes).
+6. **Juger** : trois critiques à l'aveugle, chacun avec son angle (produit,
+   identité, clarté et finition). Leurs notes sont fusionnées par médiane.
+   Jusqu'à 3 boucles.
+7. **Prouver** : `kinetic score` combine le mesuré et le jugé, puis rend un
+   verdict (`ship` ou `iterate`).
+
+## Ce qu'il y a dedans
+
+```
+kinetic/
+├── skills/        10 skills : routeur, think, direct, states, system, craft,
+│                  motion, code, critique, studio (l'équipe multi-agents)
+├── agents/        5 agents : director, rival, editor, critic, forensics
+├── commands/      9 commandes /kinetic:*
+├── knowledge/     ~3 600 lignes de savoir concret : couleur (OKLCH, chaleur,
+│                  nuit), typographie, mise en page, clarté, contrats de
+│                  composants, états, mouvement, iOS, Android, copy, anti-slop
+│                  (catalogue F/D/C), priors, 5 stacks, et la bibliothèque de
+│                  directions (library/*.json)
+├── engine/ + bin/kinetic   moteur Python sans dépendance
+├── hooks/         lint de design après chaque modification UI (actif seulement
+│                  dans les projets qui ont un dossier .kinetic/)
+├── docs/          ARCHITECTURE · KDL · PROTOCOL · TOOLS · EVALUATION
+├── examples/lune/ un dossier de décisions KDL complet de référence
+├── evals/         11 rounds de tests à l'aveugle : briefs, résultats, retours
+└── tests/         79 tests (dont la compilation réelle des exports)
+```
+
+### Le moteur
+
+```bash
+bin/kinetic init .                                 # crée .kinetic/ et détecte la stack
+bin/kinetic deal --brief-file BRIEF.md --options 2 # tire 2 directions adaptées au ton du brief
+bin/kinetic validate .kinetic/design.kdl           # complétude, contrastes, rampe, chaleur, nuit…
+bin/kinetic palette "#7A2430" --kdl                # rôles clair/sombre en OKLCH, contrastes vérifiés
+bin/kinetic scan lib/                              # slop et défauts dans le code, fichier:ligne
+bin/kinetic clarity shots/                         # encombrement mesuré sur les rendus PNG
+bin/kinetic sheet shots/                           # planche contact de tous les états
+bin/kinetic panel loop3/critic-*.json --renders shots   # fusionne 3 critiques (médiane, désaccords)
+bin/kinetic export .kinetic/design.kdl --stack flutter --out lib/design/
+bin/kinetic score --kdl .kinetic/design.kdl --code lib --renders shots --judged .kinetic/critique.json
+```
+
+Chaque résultat distingue ce qui est **observé**, **dérivé** et **inféré**.
+Une zone non scannée est « inconnue », jamais « propre ».
+Contrats des outils : [docs/TOOLS.md](docs/TOOLS.md). Le langage de
+décision : [docs/KDL.md](docs/KDL.md).
+
+## Résultats : 11 rounds à l'aveugle
+
+Protocole : même brief inédit pour chaque bras. Les rendus sont anonymisés
+(X/Y/Z), puis jugés par trois critiques indépendants qui ne savent pas qui a
+fait quoi. Notes sur 9 dimensions, de 1 à 5.
+
+| Round | Contre | Kinetic | Adversaire(s) | 1er dans |
 |---|---|---|---|---|
-| 1 | Courant (transport) | SwiftUI | 3,67 / 3,78 | 3 majeurs / 0 |
-| 2 | Courant (transport) | SwiftUI | 3,78 / 3,56 | 3 majeurs / 0 |
-| 3 | Tally (dépenses partagées), les deux avec boucle critique | SwiftUI | 3,83 / 3,83 | 1 F + 6 D / 0 |
-| 4a | Prise (salle d'escalade), 3 critiques | Flutter | 4,26 / 4,22 | 5 F + 6 D / 1 mineur |
-| 4b | Petit Jour (crèche, interface en français), 3 critiques | React Native | 3,81 / 3,96 | 1 F + 8 D / 0 |
+| 8 | taste-skill, impeccable | **4.31** | 3.98 · 3.41 | 5 / 6 lectures |
+| 9 | native-polish, frontend-design, modèle seul | **4.41** | 3.81 · 3.69 · 3.48 | 6 / 6 |
+| 10 | taste-skill, ui-ux-pro-max | **4.31** | 3.91 · 3.35 | 5 / 6 |
+| 11 | taste-skill, ui-ux-pro-max | **4.15** | 3.93 · 3.20 | 4 / 6 |
 
-- En qualité jugée à l'aveugle, Kinetic **égale** un modèle de pointe (3,91 contre 3,90 sur les 12 lectures) ; il ne le dépasse pas.
-- Le compromis est stable sur 4 briefs et 3 stacks : Kinetic gagne en **anticipation** (états, hors-ligne, XXL, mode « en séance »), en **fidélité native** et en **rigueur mesurée** ; le modèle seul gagne en **identité** (6 critiques sur 6 au round 4).
-- Le plancher d'identité v1.4 n'a pas suffi. Le round 4 montre pourquoi : les designs gagnants dessinent un **vocabulaire tiré du domaine** (prises, scotch, bâtons de comptage, lune/soleil/maison) et le substituent aux éléments génériques. La v1.5 réécrit la règle en ce sens (kinetic-direct §4b), ajoute le héros « verdict d'abord » et les règles des moments à fort enjeu — **pas encore re-mesurée**.
-- L'auto-critique s'est calibrée (±0,1 au round 4) mais surestime encore l'identité : `ship` exige un critique indépendant.
-Détails et rapports : [docs/EVALUATION.md](docs/EVALUATION.md), `evals/`.
+Points forts constants de Kinetic :
+- l'adéquation au produit ;
+- l'anticipation des états (souvent 5/5) ;
+- le texte ;
+- la fidélité native (variantes Android et iOS) ;
+- un mode sombre vraiment conçu.
+
+Ce qui reste à gagner :
+- la **propreté** face à taste-skill (3,3 à 3,7 contre 4) ;
+- la finition de la mise en page près de la barre d'action.
+
+La v2.2 cible ces deux points (contrats de composants, règle « aucun ornement
+sans fonction ») ; le round 12 la mesure en A/B. Le détail honnête de chaque
+round, biais compris, est dans [docs/EVALUATION.md](docs/EVALUATION.md).
 
 ## Limites assumées
-- Le scan est lexical (sans AST) : ses findings `inferred` sont des hypothèses à confirmer.
-- Le score ne donne jamais un « chiffre de goût » unique : le mesuré et le jugé restent séparés.
-- L'export Compose est compilé avec `kotlinc` contre des stubs de signatures Compose, pas contre les vraies librairies : seul un build Gradle dans l'app le prouve totalement.
-- Génération d'images (illustrations, icône d'app) : hors périmètre de la v1.
+
+- Le scan est lexical (sans AST) : ses findings `inferred` sont des hypothèses
+  à vérifier sur le rendu.
+- La mesure de clarté est une heuristique sur les pixels, pas de l'OCR.
+- La motion n'a jamais été jugée par les critiques : ils ne voient que des
+  rendus fixes.
+- L'export Compose compile contre des stubs ; seul un build Gradle dans l'app
+  le prouve totalement.
+- Kinetic conçoit des apps mobiles, pas des sites vitrines.
