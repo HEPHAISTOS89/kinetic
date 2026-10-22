@@ -11,22 +11,23 @@ chaque état, puis **prouve** le résultat avec un moteur déterministe.
 
 ## Installer (2 minutes)
 
-Prérequis : Claude Code, Python 3.9+ (aucune dépendance), Git.
+Prérequis : Claude Code, Python 3.9+ (aucune dépendance), un accès au repo GitHub.
 
 ```bash
-git clone https://github.com/HEPHAISTOS89/kinetic.git
-```
-```bash
-claude plugin marketplace add ./kinetic
+claude plugin marketplace add HEPHAISTOS89/kinetic
 ```
 ```bash
 claude plugin install kinetic@kinetic-local
 ```
 
+Installation testée le 21 octobre 2026 avec Claude Code 2.1.307 : le plugin
+apparaît activé (`claude plugin list`). Pour travailler sur le code, clone le
+repo (`git clone https://github.com/HEPHAISTOS89/kinetic.git`).
+
 Vérifier que tout fonctionne :
 
 ```bash
-python3 -m unittest discover -s kinetic/tests
+python3 -m unittest discover -s tests   # depuis le dossier cloné
 ```
 
 Codex : le manifeste `.codex-plugin/plugin.json` expose les mêmes skills.
