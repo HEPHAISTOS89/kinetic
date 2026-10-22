@@ -1,7 +1,14 @@
 {
   "name": "kinetic-local",
-  "owner": { "name": "HEPHAISTOS89" },
+  "owner": {
+    "name": "HEPHAISTOS89"
+  },
   "plugins": [
-    { "name": "kinetic", "source": "./", "description": "Kinetic — senior mobile product design system" }
-  ]
+    {
+      "name": "kinetic",
+      "source": "./",
+      "description": "Kinetic — senior mobile product design system"
+    }
+  ],
+  "description": "Kinetic: a multi-agent mobile design studio (Flutter, SwiftUI, Compose, React Native)."
 }
