@@ -14,7 +14,7 @@ chaque état, puis **prouve** le résultat avec un moteur déterministe.
 Prérequis : Claude Code, Python 3.9+ (aucune dépendance), Git.
 
 ```bash
-git clone <url-du-repo> kinetic
+git clone https://github.com/HEPHAISTOS89/kinetic.git
 ```
 ```bash
 claude plugin marketplace add ./kinetic
