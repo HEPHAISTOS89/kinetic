@@ -11,5 +11,6 @@
     "defaultPrompt": [
       "Use Kinetic to understand this mobile app, choose a distinctive direction, build the design system, implement it and prove the result."
     ]
-  }
+  },
+  "license": "MIT"
 }

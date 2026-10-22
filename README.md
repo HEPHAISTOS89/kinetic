@@ -166,3 +166,7 @@ round, biais compris, est dans [docs/EVALUATION.md](docs/EVALUATION.md).
 - L'export Compose compile contre des stubs ; seul un build Gradle dans l'app
   le prouve totalement.
 - Kinetic conçoit des apps mobiles, pas des sites vitrines.
+
+## Licence
+
+MIT — voir [LICENSE](LICENSE).

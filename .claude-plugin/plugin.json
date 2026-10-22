@@ -18,5 +18,6 @@
     "accessibility",
     "multi-agent",
     "studio"
-  ]
+  ],
+  "license": "MIT"
 }
