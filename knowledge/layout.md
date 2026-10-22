@@ -26,7 +26,11 @@ browse/list hubs; use a compact contextual header for glance screens.
 else is today's priority (a dose due, a bill overdue, a hold to collect), it
 takes the hero slot and the everyday answer ("3 left today") collapses to one
 line under it. A combined state (recovering *and* a bill) shows both above
-the fold, ranked. Round 11: all three critics asked the same of a design that
+the fold, ranked. **And the hero shows that state's evidence, not just its
+tint**: a wind risk draws the gusts against the boat's limit, a full deck
+draws the deck, a closure draws the closed section. A hero that only changes
+colour and status word lost a blind read to one that drew the proof (round 11,
+"Sound"). Round 11: all three critics asked the same of a design that
 kept its desk block on top in every state, and of the rival whose brand
 banner pushed every task below the fold.
 

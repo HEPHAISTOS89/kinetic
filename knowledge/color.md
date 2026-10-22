@@ -135,6 +135,10 @@ The violet→pink "AI gradient" with no product meaning is D01.
 - **Severity is a ladder with distinct steps**: routine notice (neutral or
   accent-soft), attention (ochre), danger (brick/red + icon + word). A gale
   warning in the same tint as a fee reminder has no urgency (round 7).
+- **Each state its own step**: "full", "at risk" and "late" are different
+  severities; three states in one ochre can't be told apart (round 11). Map
+  them: late = quiet note tone, full = attention, at risk = attention + the
+  decision time, cancelled = danger.
 - **Good news is never alarm-coloured.** A rare bird, a new piece, a free slot
   are welcome: accent or the warm lift, never the danger hue (round 9: "a
   welcome rare bird reads as an error").
