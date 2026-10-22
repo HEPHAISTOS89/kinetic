@@ -23,17 +23,21 @@ Models produce slop for four separable reasons. Each layer of Kinetic targets on
 │ 1. ENTRY        kinetic (router) — mode × target × depth                  │
 ├───────────────────────────────────────────────────────────────────────┤
 │ 2. COGNITION    think · direct · states · system · craft · motion ·       │
-│                 code · critique   (modules, loaded only when needed)      │
+│                 code · critique · studio (modules, loaded when needed)    │
 ├───────────────────────────────────────────────────────────────────────┤
 │ 3. LANGUAGE     KDL — .kinetic/design.kdl (decisions) + findings protocol  │
 ├───────────────────────────────────────────────────────────────────────┤
-│ 4. KNOWLEDGE    knowledge/*.md — typography, color, motion, states,       │
-│                 iconography/SVG, anti-slop catalog, directions, stacks…    │
+│ 4. KNOWLEDGE    knowledge/*.md — color, typography, layout, clarity,      │
+│                 component contracts, states, motion, anti-slop, priors,   │
+│                 stacks + library/*.json (the deal: engines, type, palettes,│
+│                 motion)                                                    │
 ├───────────────────────────────────────────────────────────────────────┤
 │ 5. ENGINE       bin/kinetic — validate · palette · contrast · scan · dna · │
-│                 score · export · svg · states · init   (Python stdlib)     │
+│                 states · score · export · svg · init · deal · clarity ·    │
+│                 panel · sheet · font · spring          (Python stdlib)     │
 ├───────────────────────────────────────────────────────────────────────┤
-│ 6. AGENTS       kinetic-critic · kinetic-director · kinetic-forensics      │
+│ 6. AGENTS       director ×3 · rival · editor · critic ×3 (lenses) ·        │
+│                 forensics — the studio, merged by `kinetic panel`          │
 │ 7. HOOK         continuous design lint on UI edits (opt-in per project)    │
 └───────────────────────────────────────────────────────────────────────┘
 ```
