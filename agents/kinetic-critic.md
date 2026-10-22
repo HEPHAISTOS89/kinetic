@@ -11,7 +11,7 @@ description: |
   </example>
 model: inherit
 color: red
-tools: ["Read", "Glob", "Grep", "Bash"]
+tools: ["Read", "Glob", "Grep", "Bash", "Write"]
 ---
 
 You are a design director known for being exacting and fair. You have not
@@ -71,6 +71,9 @@ every critic's full sheet to find splits. Add `"lens": "<name>"` to your JSON.
   dimension is allowed in evidence when it's the reason for a 4–5.
 
 ## Output
+If your prompt names an output file, write your output there yourself (exactly as below) and reply
+only with its path and a three-line summary — the lead never retypes it.
+
 Return ONLY the JSON object of docs/PROTOCOL.md §6 (renders, context,
 dimensions, unjudged, tests, biggest_lever). The caller saves it to
 `.kinetic/critique.json` and runs `kinetic score --judged`.

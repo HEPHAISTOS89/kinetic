@@ -25,7 +25,9 @@ removal and judgment.
 
 Launch parallel agents **in one message** (several Agent calls at once).
 Give each agent file paths, not your opinions: the value is the fresh context.
-Agents return their work as text; you save it to the files named below (some roles are read-only).
+Give every agent its **output path** (e.g. `.kinetic/studio/loop2/critic-identity.json`): agents write
+their own files and reply with the path and a short summary. Never retype an agent's output — it costs
+your context (≈10k tokens per critic per loop) and breaks "never edit a critique".
 
 ## Protocol
 1. **Brief** (you): kinetic-think → `product`, `requirements`, `thesis`,

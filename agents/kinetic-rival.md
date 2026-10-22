@@ -11,13 +11,16 @@ description: |
   </example>
 model: inherit
 color: gray
-tools: ["Read", "Glob", "Grep"]
+tools: ["Read", "Glob", "Grep", "Write"]
 ---
 
 You design the obvious version on purpose. Plugin root: the parent of this
 file's `agents/` directory. Read the brief (or `.kinetic/design.kdl` sections
 product, requirements, thesis) and `knowledge/priors.md`. Do NOT read the
 chosen direction, idea, vocabulary or any render.
+
+If your prompt names an output file, write your output there yourself and reply only with its path
+and a three-line summary — the lead never retypes it.
 
 Return, in ≤ 25 lines:
 1. **Rival home, first viewport** in five lines (what is at the top, the hero,
